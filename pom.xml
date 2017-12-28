@@ -122,4 +122,8 @@
 			</build>
 		</profile>
 	</profiles>
+	<modules>
+		<module>irodsext-data-profiler</module>
+		<module>irodsext-data-typer</module>
+	</modules>
 </project>
