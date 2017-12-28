@@ -22,6 +22,10 @@
 			<artifactId>jargon-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+		</dependency>
 	</dependencies>
 	<description>Tools for managing data type/format recognition</description>
 	<build>

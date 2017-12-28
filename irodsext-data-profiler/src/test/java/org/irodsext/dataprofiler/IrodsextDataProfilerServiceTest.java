@@ -3,13 +3,14 @@
  */
 package org.irodsext.dataprofiler;
 
-import static org.junit.Assert.fail;
-
 import java.util.Properties;
 
+import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.connection.JargonProperties;
 import org.irods.jargon.core.connection.SettableJargonProperties;
+import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.IRODSFileSystem;
+import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
 import org.irods.jargon.testutils.IRODSTestSetupUtilities;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.irods.jargon.testutils.filemanip.ScratchFileUtils;
@@ -69,8 +70,21 @@ public class IrodsextDataProfilerServiceTest {
 	 * {@link org.irodsext.dataprofiler.IrodsextDataProfilerService#retrieveDataProfile(java.lang.String, org.irods.jargon.extensions.dataprofiler.DataProfilerSettings)}.
 	 */
 	@Test
-	public void testRetrieveDataProfileStringDataProfilerSettings() {
-		fail("Not yet implemented");
+	public void testBasicDataProfileWithCollection() throws Exception {
+		IRODSAccount irodsAccount = testingPropertiesHelper.buildIRODSAccountFromTestProperties(testingProperties);
+		IRODSAccessObjectFactory accessObjectFactory = irodsFileSystem.getIRODSAccessObjectFactory();
+		String targetIrodsCollection = testingPropertiesHelper
+				.buildIRODSCollectionAbsolutePathFromTestProperties(testingProperties, IRODS_TEST_SUBDIR_PATH);
+
+		DataProfilerSettings dataProfilerSettings = new DataProfilerSettings();
+		dataProfilerSettings.setDetectMimeAndInfoType(false);
+		dataProfilerSettings.setRetrieveAcls(true);
+		dataProfilerSettings.setRetrieveMetadata(true);
+		dataProfilerSettings.setRetrieveReplicas(false);
+		dataProfilerSettings.setRetrieveShared(false);
+		dataProfilerSettings.setRetrieveStarred(false);
+		dataProfilerSettings.setRetrieveTickets(false);
+
 	}
 
 }
