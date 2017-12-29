@@ -11,7 +11,7 @@ import org.irods.jargon.core.connection.SettableJargonProperties;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.IRODSFileSystem;
 import org.irods.jargon.extensions.dataprofiler.DataProfile;
-import org.irods.jargon.extensions.dataprofiler.DataProfileService;
+import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
 import org.irods.jargon.extensions.datatyper.DataTypeResolutionService;
 import org.irods.jargon.extensions.datatyper.DataTyperSettings;
@@ -96,7 +96,7 @@ public class IrodsextDataProfilerServiceTest {
 		DataTypeResolutionService dataTyperService = new IrodsextDataTypeResolutionService(accessObjectFactory,
 				irodsAccount, dataTyperSettings);
 
-		DataProfileService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings,
+		DataProfilerService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings,
 				accessObjectFactory, irodsAccount);
 		dataProfilerService.setDataTypeResolutionService(dataTyperService);
 		@SuppressWarnings("rawtypes")

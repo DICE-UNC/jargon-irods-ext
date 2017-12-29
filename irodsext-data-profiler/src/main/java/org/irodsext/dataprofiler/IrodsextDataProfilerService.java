@@ -9,7 +9,7 @@ import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.domain.Collection;
 import org.irods.jargon.core.pub.domain.DataObject;
 import org.irods.jargon.extensions.dataprofiler.DataProfile;
-import org.irods.jargon.extensions.dataprofiler.DataProfileService;
+import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author Mike Conway - NIEHS
  *
  */
-public class IrodsextDataProfilerService extends DataProfileService {
+public class IrodsextDataProfilerService extends DataProfilerService {
 
 	public static final Logger log = LoggerFactory.getLogger(IrodsextDataProfilerService.class);
 
