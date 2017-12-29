@@ -10,12 +10,18 @@ import org.irods.jargon.core.connection.JargonProperties;
 import org.irods.jargon.core.connection.SettableJargonProperties;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.IRODSFileSystem;
+import org.irods.jargon.extensions.dataprofiler.DataProfile;
+import org.irods.jargon.extensions.dataprofiler.DataProfileService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
+import org.irods.jargon.extensions.datatyper.DataTypeResolutionService;
+import org.irods.jargon.extensions.datatyper.DataTyperSettings;
 import org.irods.jargon.testutils.IRODSTestSetupUtilities;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.irods.jargon.testutils.filemanip.ScratchFileUtils;
+import org.irodsext.datatyper.IrodsextDataTypeResolutionService;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -84,6 +90,17 @@ public class IrodsextDataProfilerServiceTest {
 		dataProfilerSettings.setRetrieveShared(false);
 		dataProfilerSettings.setRetrieveStarred(false);
 		dataProfilerSettings.setRetrieveTickets(false);
+		DataTyperSettings dataTyperSettings = new DataTyperSettings();
+		dataTyperSettings.setDetailedDetermination(false);
+		dataTyperSettings.setPersistDataTypes(false);
+		DataTypeResolutionService dataTyperService = new IrodsextDataTypeResolutionService(accessObjectFactory,
+				irodsAccount, dataTyperSettings);
+
+		DataProfileService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings, dataTyperService,
+				accessObjectFactory, irodsAccount);
+		@SuppressWarnings("rawtypes")
+		DataProfile dataProfile = dataProfilerService.retrieveDataProfile(targetIrodsCollection);
+		Assert.assertNotNull("null data profile returned", dataProfile);
 
 	}
 

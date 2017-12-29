@@ -43,13 +43,38 @@ public class IrodsextDataTypeResolutionService extends DataTypeResolutionService
 	public DataType resolveDataType(String irodsAbsolutePath) throws DataNotFoundException, JargonException {
 		log.info("resolveDataType()");
 
+		return resolveDataType(irodsAbsolutePath, this.getDefaultDataTyperSettings());
+
+	}
+
+	private String determineMimeTypeViaTika(String irodsAbsolutePath) throws JargonException {
+		AutoDetectParser parser = new AutoDetectParser();
+		Detector detector = parser.getDetector();
+		Metadata md = new Metadata();
+		String fileName = MiscIRODSUtils.getLastPathComponentForGivenAbsolutePath(irodsAbsolutePath);
+
+		md.add(Metadata.RESOURCE_NAME_KEY, fileName);
+		MediaType mediaType;
+		try {
+			mediaType = detector.detect(null, md);
+		} catch (IOException e) {
+			throw new JargonException("io exception determining file type by extension", e);
+		}
+		return mediaType.toString();
+	}
+
+	@Override
+	public DataType resolveDataType(String irodsAbsolutePath, DataTyperSettings dataTyperSettings)
+			throws DataNotFoundException, JargonException {
+		log.info("resolveDataType()");
+
 		if (irodsAbsolutePath == null || irodsAbsolutePath.isEmpty()) {
 			throw new IllegalArgumentException("null or empty irodsAbsolutePath");
 		}
 
 		log.info("irodsAbsolutePath:{}", irodsAbsolutePath);
 
-		if (this.getDefaultDataTyperSettings().isDetailedDetermination()) {
+		if (dataTyperSettings.isDetailedDetermination()) {
 			log.warn("detailedDetermination not yet implemented, will default to check of file path");
 		}
 
@@ -73,30 +98,6 @@ public class IrodsextDataTypeResolutionService extends DataTypeResolutionService
 		dataType.setMimeType(mimeType);
 		log.info("dataType:{}", dataType);
 		return dataType;
-
-	}
-
-	private String determineMimeTypeViaTika(String irodsAbsolutePath) throws JargonException {
-		AutoDetectParser parser = new AutoDetectParser();
-		Detector detector = parser.getDetector();
-		Metadata md = new Metadata();
-		String fileName = MiscIRODSUtils.getLastPathComponentForGivenAbsolutePath(irodsAbsolutePath);
-
-		md.add(Metadata.RESOURCE_NAME_KEY, fileName);
-		MediaType mediaType;
-		try {
-			mediaType = detector.detect(null, md);
-		} catch (IOException e) {
-			throw new JargonException("io exception determining file type by extension", e);
-		}
-		return mediaType.toString();
-	}
-
-	@Override
-	public DataType resolveDataType(String irodsAbsolutePath, DataTyperSettings dataTyperSettings)
-			throws DataNotFoundException, JargonException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/**

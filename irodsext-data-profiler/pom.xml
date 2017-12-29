@@ -8,7 +8,6 @@
 		<groupId>org.irods.jargon</groupId>
 		<version>4.2.1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.irods.jargon</groupId>
 	<artifactId>irodsext-data-profiler</artifactId>
 	<name>irodsext-data-profiler</name>
 	<dependencies>
@@ -20,6 +19,11 @@
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.irods.jargon</groupId>
+			<artifactId>irodsext-data-typer</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
