@@ -96,8 +96,9 @@ public class IrodsextDataProfilerServiceTest {
 		DataTypeResolutionService dataTyperService = new IrodsextDataTypeResolutionService(accessObjectFactory,
 				irodsAccount, dataTyperSettings);
 
-		DataProfileService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings, dataTyperService,
+		DataProfileService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings,
 				accessObjectFactory, irodsAccount);
+		dataProfilerService.setDataTypeResolutionService(dataTyperService);
 		@SuppressWarnings("rawtypes")
 		DataProfile dataProfile = dataProfilerService.retrieveDataProfile(targetIrodsCollection);
 		Assert.assertNotNull("null data profile returned", dataProfile);
