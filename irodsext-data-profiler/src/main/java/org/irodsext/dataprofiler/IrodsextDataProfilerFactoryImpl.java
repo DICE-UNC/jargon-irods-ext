@@ -6,11 +6,15 @@ package org.irodsext.dataprofiler;
 import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.exception.JargonRuntimeException;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
-import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerFactory;
+import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
 import org.irods.jargon.extensions.datatyper.DataTypeResolutionServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.emc.metalnx.core.domain.entity.DataGridUser;
+import com.emc.metalnx.services.interfaces.FavoritesService;
+import com.emc.metalnx.services.interfaces.UserService;
 
 /**
  * Factory for {@link DataProfiler} implementation
@@ -29,16 +33,35 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 	@Autowired
 	private DataTypeResolutionServiceFactory dataTypeResolutionServiceFactory;
 
-	/* (non-Javadoc)
-	 * @see org.irodsext.dataprofiler.DataProfilerFactory#instanceDataProfilerService(org.irods.jargon.core.connection.IRODSAccount)
+	/**
+	 * MetaLnx favorites service is current source of 'favorites' and bookmarks,
+	 * this comes from the irods-ext database at moment. This is provided to the
+	 * data profiler service instance during factory creation
+	 */
+	@Autowired
+	private FavoritesService favoritesService;
+
+	/**
+	 * MetaLnx service to map user/zone accounts to the MetaLnx {@link DataGridUser}
+	 */
+	@Autowired
+	private UserService userService;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.irodsext.dataprofiler.DataProfilerFactory#instanceDataProfilerService(org
+	 * .irods.jargon.core.connection.IRODSAccount)
 	 */
 	@Override
 	public DataProfilerService instanceDataProfilerService(final IRODSAccount irodsAccount) {
-		validateDependencies();
-		DataProfilerService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings,
+		validateContext();
+		IrodsextDataProfilerService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings,
 				irodsAccessObjectFactory, irodsAccount);
 		dataProfilerService.setDataTypeResolutionService(
 				dataTypeResolutionServiceFactory.instanceDataTypeResolutionService(irodsAccount));
+		dataProfilerService.setFavoritesService(getFavoritesService());
 		return dataProfilerService;
 	}
 
@@ -69,7 +92,7 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 	/**
 	 * Just a sanity check
 	 */
-	private void validateDependencies() {
+	private void validateContext() {
 		if (irodsAccessObjectFactory == null) {
 			throw new JargonRuntimeException("null irodsAccessObjectFactory");
 		}
@@ -81,6 +104,26 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 		if (dataTypeResolutionServiceFactory == null) {
 			throw new IllegalArgumentException("null dataTypeResolutionServiceFactory");
 		}
+
+		if (userService == null) {
+			throw new IllegalArgumentException("null dataTypeResolutionServiceFactory");
+		}
+	}
+
+	public FavoritesService getFavoritesService() {
+		return favoritesService;
+	}
+
+	public void setFavoritesService(FavoritesService favoritesService) {
+		this.favoritesService = favoritesService;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
 }

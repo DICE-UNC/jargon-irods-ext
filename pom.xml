@@ -9,6 +9,9 @@
 		<artifactId>jargon-pom</artifactId>
 		<version>4.3.0.0-SNAPSHOT</version>
 	</parent>
+	<properties>
+		<metalnx.version>2.0.0</metalnx.version>
+	</properties>
 	<packaging>pom</packaging>
 	<name>jargon-extensions</name>
 	<description>Jargon Extensions using the irods-ext database used in metalnx</description>
@@ -22,6 +25,20 @@
 			</roles>
 		</developer>
 	</developers>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+			<groupId>com.emc.metalnx</groupId>
+			<artifactId>emc-metalnx-services</artifactId>
+			<version>${metalnx.version}</version>
+		</dependency>
+		<dependency>
+		<groupId>com.emc.metalnx</groupId>
+		<artifactId>emc-metalnx-core</artifactId>
+		<version>${metalnx.version}</version>
+	</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
