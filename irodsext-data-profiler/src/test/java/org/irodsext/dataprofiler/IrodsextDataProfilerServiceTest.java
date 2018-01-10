@@ -30,6 +30,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import com.emc.metalnx.core.domain.entity.DataGridUser;
+import com.emc.metalnx.services.interfaces.FavoritesService;
 
 /**
  * @author Mike Conway - NIEHS
@@ -74,6 +78,47 @@ public class IrodsextDataProfilerServiceTest {
 	@After
 	public void afterEach() throws Exception {
 		irodsFileSystem.closeAndEatExceptions();
+	}
+
+	/**
+	 * Test method for
+	 * {@link org.irodsext.dataprofiler.IrodsextDataProfilerService#retrieveDataProfile(java.lang.String, org.irods.jargon.extensions.dataprofiler.DataProfilerSettings)}.
+	 */
+	@Test
+	public void testProfileWithCollectionWithStar() throws Exception {
+		IRODSAccount irodsAccount = testingPropertiesHelper.buildIRODSAccountFromTestProperties(testingProperties);
+		IRODSAccessObjectFactory accessObjectFactory = irodsFileSystem.getIRODSAccessObjectFactory();
+		String targetIrodsCollection = testingPropertiesHelper
+				.buildIRODSCollectionAbsolutePathFromTestProperties(testingProperties, IRODS_TEST_SUBDIR_PATH);
+
+		DataProfilerSettings dataProfilerSettings = new DataProfilerSettings();
+		dataProfilerSettings.setDetectMimeAndInfoType(false);
+		dataProfilerSettings.setRetrieveAcls(true);
+		dataProfilerSettings.setRetrieveMetadata(true);
+		dataProfilerSettings.setRetrieveReplicas(false);
+		dataProfilerSettings.setRetrieveShared(false);
+		dataProfilerSettings.setRetrieveStarred(true);
+		dataProfilerSettings.setRetrieveTickets(false);
+		DataTyperSettings dataTyperSettings = new DataTyperSettings();
+		dataTyperSettings.setDetailedDetermination(false);
+		dataTyperSettings.setPersistDataTypes(false);
+		DataTypeResolutionService dataTyperService = new IrodsextDataTypeResolutionService(accessObjectFactory,
+				irodsAccount, dataTyperSettings);
+		DataGridUser dataGridUser = new DataGridUser();
+		dataGridUser.setUsername(irodsAccount.getUserName());
+
+		FavoritesService favoritesService = Mockito.mock(FavoritesService.class);
+		Mockito.when(favoritesService.isPathFavoriteForUser(dataGridUser, targetIrodsCollection)).thenReturn(true);
+
+		IrodsextDataProfilerService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings,
+				accessObjectFactory, irodsAccount);
+		dataProfilerService.setFavoritesService(favoritesService);
+		dataProfilerService.setDataTypeResolutionService(dataTyperService);
+		@SuppressWarnings("rawtypes")
+		DataProfile dataProfile = dataProfilerService.retrieveDataProfile(targetIrodsCollection);
+
+		Assert.assertTrue("should be starred", dataProfile.isStarred());
+
 	}
 
 	/**

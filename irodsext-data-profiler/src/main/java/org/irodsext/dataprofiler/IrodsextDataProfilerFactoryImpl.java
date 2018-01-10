@@ -10,6 +10,8 @@ import org.irods.jargon.extensions.dataprofiler.DataProfilerFactory;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
 import org.irods.jargon.extensions.datatyper.DataTypeResolutionServiceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.emc.metalnx.core.domain.entity.DataGridUser;
@@ -23,6 +25,10 @@ import com.emc.metalnx.services.interfaces.UserService;
  *
  */
 public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
+
+	public static final Logger log = LoggerFactory.getLogger(IrodsextDataProfilerFactoryImpl.class);
+
+	public static final String DATA_GRID_USER_KEY = "DataGridUser";
 
 	@Autowired
 	private IRODSAccessObjectFactory irodsAccessObjectFactory;
@@ -62,6 +68,7 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 		dataProfilerService.setDataTypeResolutionService(
 				dataTypeResolutionServiceFactory.instanceDataTypeResolutionService(irodsAccount));
 		dataProfilerService.setFavoritesService(getFavoritesService());
+		dataProfilerService.setDataGridUser(resolveDataGridUser(irodsAccount));
 		return dataProfilerService;
 	}
 
@@ -124,6 +131,11 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+
+	private DataGridUser resolveDataGridUser(final IRODSAccount irodsAccount) {
+		log.info("resolveDataGridUser");
+		return userService.findByUsernameAndAdditionalInfo(irodsAccount.getUserName(), irodsAccount.getZone());
 	}
 
 }
