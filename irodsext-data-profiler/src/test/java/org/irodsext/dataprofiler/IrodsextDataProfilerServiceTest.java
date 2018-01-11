@@ -114,6 +114,7 @@ public class IrodsextDataProfilerServiceTest {
 				accessObjectFactory, irodsAccount);
 		dataProfilerService.setFavoritesService(favoritesService);
 		dataProfilerService.setDataTypeResolutionService(dataTyperService);
+		dataProfilerService.setDataGridUser(dataGridUser);
 		@SuppressWarnings("rawtypes")
 		DataProfile dataProfile = dataProfilerService.retrieveDataProfile(targetIrodsCollection);
 
@@ -157,6 +158,58 @@ public class IrodsextDataProfilerServiceTest {
 		Assert.assertFalse("no parent path", dataProfile.getParentPath().isEmpty());
 		Assert.assertFalse("no path components", dataProfile.getPathComponents().isEmpty());
 		Assert.assertNotNull("no domain object", dataProfile.getDomainObject());
+
+	}
+
+	@Test
+	public void testStarDataObject() throws Exception {
+		IRODSAccount irodsAccount = testingPropertiesHelper.buildIRODSAccountFromTestProperties(testingProperties);
+		IRODSAccessObjectFactory accessObjectFactory = irodsFileSystem.getIRODSAccessObjectFactory();
+
+		String testFileName = "testStarDataObject.txt";
+		String absPath = scratchFileUtils.createAndReturnAbsoluteScratchPath(IRODS_TEST_SUBDIR_PATH);
+		String localFileName = FileGenerator.generateFileOfFixedLengthGivenName(absPath, testFileName, 1);
+
+		File localFile = new File(localFileName);
+
+		// now put the file
+		String targetIrodsFile = testingPropertiesHelper
+				.buildIRODSCollectionAbsolutePathFromTestProperties(testingProperties, IRODS_TEST_SUBDIR_PATH);
+
+		IRODSFileFactory irodsFileFactory = accessObjectFactory.getIRODSFileFactory(irodsAccount);
+		IRODSFile destFile = irodsFileFactory.instanceIRODSFile(targetIrodsFile);
+		DataTransferOperations dataTransferOperations = accessObjectFactory.getDataTransferOperations(irodsAccount);
+		dataTransferOperations.putOperation(localFile, destFile, null, null);
+		String dataName = destFile.getAbsolutePath() + "/" + testFileName;
+
+		DataProfilerSettings dataProfilerSettings = new DataProfilerSettings();
+		dataProfilerSettings.setDetectMimeAndInfoType(false);
+		dataProfilerSettings.setRetrieveAcls(true);
+		dataProfilerSettings.setRetrieveMetadata(true);
+		dataProfilerSettings.setRetrieveReplicas(false);
+		dataProfilerSettings.setRetrieveShared(false);
+		dataProfilerSettings.setRetrieveStarred(true);
+		dataProfilerSettings.setRetrieveTickets(false);
+		DataTyperSettings dataTyperSettings = new DataTyperSettings();
+		dataTyperSettings.setDetailedDetermination(false);
+		dataTyperSettings.setPersistDataTypes(false);
+		DataTypeResolutionService dataTyperService = new IrodsextDataTypeResolutionService(accessObjectFactory,
+				irodsAccount, dataTyperSettings);
+
+		DataGridUser dataGridUser = new DataGridUser();
+		dataGridUser.setUsername(irodsAccount.getUserName());
+
+		FavoritesService favoritesService = Mockito.mock(FavoritesService.class);
+		Mockito.when(favoritesService.isPathFavoriteForUser(dataGridUser, dataName)).thenReturn(true);
+
+		IrodsextDataProfilerService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings,
+				accessObjectFactory, irodsAccount);
+		dataProfilerService.setDataTypeResolutionService(dataTyperService);
+		dataProfilerService.setDataGridUser(dataGridUser);
+		dataProfilerService.setFavoritesService(favoritesService);
+		@SuppressWarnings("rawtypes")
+		DataProfile dataProfile = dataProfilerService.retrieveDataProfile(dataName);
+		Assert.assertTrue("should be starred", dataProfile.isStarred());
 
 	}
 
