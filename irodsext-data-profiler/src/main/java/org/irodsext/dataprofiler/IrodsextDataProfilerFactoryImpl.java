@@ -12,7 +12,6 @@ import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
 import org.irods.jargon.extensions.datatyper.DataTypeResolutionServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.emc.metalnx.core.domain.entity.DataGridUser;
 import com.emc.metalnx.services.interfaces.FavoritesService;
@@ -28,15 +27,10 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 
 	public static final Logger log = LoggerFactory.getLogger(IrodsextDataProfilerFactoryImpl.class);
 
-	public static final String DATA_GRID_USER_KEY = "DataGridUser";
-
-	@Autowired
 	private IRODSAccessObjectFactory irodsAccessObjectFactory;
 
-	@Autowired
 	private DataProfilerSettings dataProfilerSettings;
 
-	@Autowired
 	private DataTypeResolutionServiceFactory dataTypeResolutionServiceFactory;
 
 	/**
@@ -44,13 +38,11 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 	 * this comes from the irods-ext database at moment. This is provided to the
 	 * data profiler service instance during factory creation
 	 */
-	@Autowired
 	private FavoritesService favoritesService;
 
 	/**
 	 * MetaLnx service to map user/zone accounts to the MetaLnx {@link DataGridUser}
 	 */
-	@Autowired
 	private UserService userService;
 
 	/*
