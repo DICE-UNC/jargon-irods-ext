@@ -27,4 +27,20 @@ public class IrodsextDataTypeResolutionServiceTest {
 
 	}
 
+	@Test
+	public void testQuickType() throws Exception {
+		String testName = "/a/path/file.txt";
+		IRODSAccount dummyAccount = Mockito.mock(IRODSAccount.class);
+		IRODSAccessObjectFactory irodsAccessObjectFactory = Mockito.mock(IRODSAccessObjectFactory.class);
+		DataTyperSettings dataTyperSettings = new DataTyperSettings();
+		dataTyperSettings.setDetailedDetermination(false);
+		dataTyperSettings.setPersistDataTypes(false);
+		DataTypeResolutionService dtrs = new IrodsextDataTypeResolutionService(irodsAccessObjectFactory, dummyAccount,
+				dataTyperSettings);
+		String actual = dtrs.quickMimeType(testName);
+		Assert.assertNotNull("no type returned", actual);
+		Assert.assertEquals("text/plain", actual);
+
+	}
+
 }

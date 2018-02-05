@@ -104,7 +104,7 @@ public class IrodsextDataTypeResolutionService extends DataTypeResolutionService
 	 * front-load detection of special irods file types
 	 * 
 	 * @param dataObject
-	 * @return
+	 * @return {@link String} with the mime type of special irods objects
 	 */
 	private String determimeMimeTypeOfIrodsObjects(final String irodsAbsolutePath) {
 
@@ -119,6 +119,35 @@ public class IrodsextDataTypeResolutionService extends DataTypeResolutionService
 		} else {
 			return null;
 		}
+
+	}
+
+	@Override
+	public String quickMimeType(String irodsAbsolutePath) throws DataNotFoundException, JargonException {
+		log.info("quickMimeType()");
+
+		if (irodsAbsolutePath == null || irodsAbsolutePath.isEmpty()) {
+			throw new IllegalArgumentException("null or empty irodsAbsolutePath");
+		}
+
+		log.info("irodsAbsolutePath:{}", irodsAbsolutePath);
+
+		String mimeType = determimeMimeTypeOfIrodsObjects(irodsAbsolutePath);
+
+		log.info("use Tika to derive based on file extenstion");
+
+		if (mimeType == null) {
+			log.info("not a known irods type, try tika");
+			mimeType = determineMimeTypeViaTika(irodsAbsolutePath);
+		}
+
+		if (mimeType == null) {
+			log.info("no mime type found via tika");
+			mimeType = "";
+		}
+
+		log.info("mime type is:{}", mimeType);
+		return mimeType;
 
 	}
 
