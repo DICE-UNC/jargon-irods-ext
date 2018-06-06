@@ -1,4 +1,4 @@
-package org.irodsext.template;
+package org.irodsext.mdtemplate;
 
 public interface HelloWorld {
 

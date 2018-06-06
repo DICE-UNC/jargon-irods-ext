@@ -1,11 +1,20 @@
-package org.irodsext.template.dao.impl;
+package org.irodsext.mdtemplate.dao.impl;
+
+import java.io.Serializable;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.irodsext.template.dao.GenericDao;
+import org.hibernate.query.Query;
+import org.irodsext.mdtemplate.dao.GenericDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-public class GenericDaoImpl<T> implements GenericDao<T>{
+@Component
+@Transactional
+@SuppressWarnings({ "rawtypes", "unchecked" })
+public class GenericDaoImpl<T, id extends Serializable> implements GenericDao<T, id>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -14,11 +23,10 @@ public class GenericDaoImpl<T> implements GenericDao<T>{
 		return sessionFactory.getCurrentSession();
 	}
 	
-
-	public void save(T entity) {
+	public id save(T entity) {
 		Session hibernateSession = this.getSession();
 		System.out.println("Hiberate session :: " +hibernateSession);
-		hibernateSession.save(entity);
+		return (id) hibernateSession.save(entity);
 	}
 	
 	public void merge(T entity) {
@@ -30,6 +38,15 @@ public class GenericDaoImpl<T> implements GenericDao<T>{
         Session hibernateSession = this.getSession();
         hibernateSession.delete(entity);
     }
+
+
+	public List<T> findAll(Class clazz) {
+		Session hibernateSession = this.getSession();
+        List<T> T = null;
+        Query query = hibernateSession.createQuery("from " + clazz.getName());
+        T = query.list();
+        return T;
+	}
 
 
 }

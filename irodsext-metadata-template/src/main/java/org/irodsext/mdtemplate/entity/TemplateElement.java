@@ -1,4 +1,4 @@
-package org.irodsext.template.entity;
+package org.irodsext.mdtemplate.entity;
 
 import java.util.UUID;
 
@@ -22,7 +22,7 @@ public class TemplateElement {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "template_field_id", unique = true, nullable = false)
+	@Column(name = "element_id", unique = true, nullable = false)
 	private Long id;
 
 	@Column(name = "attribute",nullable = false, length = MAX_ATTR_LENGTH)

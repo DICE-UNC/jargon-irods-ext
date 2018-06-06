@@ -1,6 +1,5 @@
-package org.irodsext.template;
+package org.irodsext.mdtemplate;
 
-import org.springframework.stereotype.Component;
 
 public class HelloWorldImpl implements HelloWorld {
 

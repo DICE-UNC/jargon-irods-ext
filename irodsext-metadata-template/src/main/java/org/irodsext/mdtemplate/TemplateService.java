@@ -1,6 +1,6 @@
-package org.irodsext.template;
+package org.irodsext.mdtemplate;
 
-import org.irodsext.template.entity.Template;
+import org.irodsext.mdtemplate.entity.Template;
 
 public interface TemplateService {
 

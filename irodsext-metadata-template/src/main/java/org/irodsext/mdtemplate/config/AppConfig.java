@@ -1,7 +1,7 @@
-package org.irodsext.template.config;
+package org.irodsext.mdtemplate.config;
 
-import org.irodsext.template.TemplateService;
-import org.irodsext.template.TemplateServiceImpl;
+import org.irodsext.mdtemplate.TemplateService;
+import org.irodsext.mdtemplate.TemplateServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

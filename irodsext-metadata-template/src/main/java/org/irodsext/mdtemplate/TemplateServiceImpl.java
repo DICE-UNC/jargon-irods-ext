@@ -1,7 +1,7 @@
-package org.irodsext.template;
+package org.irodsext.mdtemplate;
 
-import org.irodsext.template.dao.TemplateDao;
-import org.irodsext.template.entity.Template;
+import org.irodsext.mdtemplate.dao.TemplateDao;
+import org.irodsext.mdtemplate.entity.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,8 +1,13 @@
-package org.irodsext.template.dao;
+package org.irodsext.mdtemplate.dao;
 
-public interface GenericDao<T> {
+import java.io.Serializable;
+import java.util.List;
 
-	public void save(T entity);
+@SuppressWarnings("rawtypes")
+public interface GenericDao<T, id extends Serializable> {
+
+	public Serializable save(T entity);
 	public void merge(T entity);
 	public void delete(T entity);
+	public List<T> findAll(Class clazz);
 }

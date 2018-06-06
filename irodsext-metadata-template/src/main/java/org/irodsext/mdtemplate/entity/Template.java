@@ -1,4 +1,4 @@
-package org.irodsext.template.entity;
+package org.irodsext.mdtemplate.entity;
 
 
 import java.nio.ByteBuffer;

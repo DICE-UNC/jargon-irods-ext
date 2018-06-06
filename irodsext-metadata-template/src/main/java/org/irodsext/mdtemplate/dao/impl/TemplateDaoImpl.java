@@ -1,18 +1,18 @@
-package org.irodsext.template.dao.impl;
+package org.irodsext.mdtemplate.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.irodsext.template.dao.TemplateDao;
-import org.irodsext.template.entity.Template;
-import org.irodsext.template.entity.TemplateElement;
+import org.irodsext.mdtemplate.dao.TemplateDao;
+import org.irodsext.mdtemplate.entity.Template;
+import org.irodsext.mdtemplate.entity.TemplateElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository("TemplateEntityDao")
-public class TemplateDaoImpl extends GenericDaoImpl<Template> implements TemplateDao{
+public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements TemplateDao{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -29,13 +29,13 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template> implements Templat
 	
 	public Template findByName(String templateName) {
 		  Query<Template> q = this.sessionFactory.getCurrentSession()
-	                .createQuery("from TemplateEntity where templateName = (:templateName)")
+	                .createQuery("from Template where templateName = (:templateName)")
 	                .setParameter("templateName", templateName);	
 		  return q.uniqueResult();
 	}
 
 	public Template findById(long id) {
-		 Query<Template> q = this.sessionFactory.getCurrentSession().createQuery("from TemplateEntity where id=(:id)");
+		 Query<Template> q = this.sessionFactory.getCurrentSession().createQuery("from Template where id=(:id)");
 	        q.setParameter("id", id);
 
 	        return q.uniqueResult();
@@ -65,7 +65,7 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template> implements Templat
 
 	public List<TemplateElement> listTemplateElements(Long id) {
 		 Query q = this.sessionFactory.getCurrentSession()
-	                .createQuery("from template_poc where template_id = :templateID");
+	                .createQuery("from Template where template_id = :templateID");
 
 	        q.setParameter("templateID", id);
 

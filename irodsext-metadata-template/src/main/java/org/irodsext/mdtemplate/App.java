@@ -1,4 +1,4 @@
-package org.irodsext.template;
+package org.irodsext.mdtemplate;
 
 import java.nio.ByteBuffer;
 import java.sql.Timestamp;
@@ -6,9 +6,9 @@ import java.util.UUID;
 
 
 
-import org.irodsext.template.TemplateService;
-import org.irodsext.template.config.AppConfig;
-import org.irodsext.template.entity.Template;
+import org.irodsext.mdtemplate.TemplateService;
+import org.irodsext.mdtemplate.config.AppConfig;
+import org.irodsext.mdtemplate.entity.Template;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -38,7 +38,7 @@ public class App
     
     public void addTemplate(TemplateService templateService) {
     	Template template =new Template();
-    	template.setTemplateName("template3");
+    	template.setTemplateName("template5");
     	Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
     	template.setCreateTs(timestamp);
     	UUID uuid = UUID.randomUUID();

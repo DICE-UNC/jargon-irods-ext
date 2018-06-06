@@ -1,4 +1,4 @@
-package org.irodsext.template.config;
+package org.irodsext.mdtemplate.config;
 
 import java.util.Properties;
 

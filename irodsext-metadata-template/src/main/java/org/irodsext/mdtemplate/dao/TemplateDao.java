@@ -1,11 +1,11 @@
-package org.irodsext.template.dao;
+package org.irodsext.mdtemplate.dao;
 
 import java.util.List;
 
-import org.irodsext.template.entity.Template;
-import org.irodsext.template.entity.TemplateElement;
+import org.irodsext.mdtemplate.entity.Template;
+import org.irodsext.mdtemplate.entity.TemplateElement;
 
-public interface TemplateDao extends GenericDao<Template> {
+public interface TemplateDao extends GenericDao<Template , Long> {
 
 	public Template findByName(String templateName);
 	public long getTemplateId(String templateName);
