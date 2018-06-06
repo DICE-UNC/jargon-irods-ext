@@ -205,5 +205,6 @@
 	<modules>
 		<module>irodsext-data-profiler</module>
 		<module>irodsext-data-typer</module>
+		<module>irodsext-metadata-template</module>
 	</modules>
 </project>
