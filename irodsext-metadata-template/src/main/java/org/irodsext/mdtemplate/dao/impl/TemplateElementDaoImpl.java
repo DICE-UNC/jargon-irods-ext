@@ -5,7 +5,9 @@ import org.hibernate.SessionFactory;
 import org.irodsext.mdtemplate.dao.TemplateElementDao;
 import org.irodsext.mdtemplate.entity.TemplateElement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository("TemplateElementDao")
 public class TemplateElementDaoImpl extends GenericDaoImpl<TemplateElement , Long> implements TemplateElementDao{
 
 	@Autowired

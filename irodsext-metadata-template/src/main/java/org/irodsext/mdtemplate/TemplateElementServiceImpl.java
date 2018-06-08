@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TemplateElementServiceImpl implements TemplateElementService {
 	
-	@Autowired TemplateElementDao templateElementDao;
+	@Autowired 
+	TemplateElementDao templateElementDao;
 	
 	public TemplateElement findById(long id) {
 		return templateElementDao.findById(id);

@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "org.irodsext.template" })
+@ComponentScan({ "org.irodsext.mdtemplate" })
 @PropertySource(value = { "classpath:db.properties" })
 public class HibernateConfiguration {
 

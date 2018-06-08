@@ -45,7 +45,8 @@ public class App
 		long l = ByteBuffer.wrap(uuid.toString().getBytes()).getLong();
 		System.out.println("UUID :: " +UUID.randomUUID().toString());
     	template.setGuid(UUID.randomUUID());  	
-    	templateService.createTemplate(template);
+    	Long id = (Long) templateService.createTemplate(template);
+    	System.out.println("Saved :: "+id);
     	
     }
     

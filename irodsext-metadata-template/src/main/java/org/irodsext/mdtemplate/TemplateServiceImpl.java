@@ -13,13 +13,14 @@ public class TemplateServiceImpl implements TemplateService {
 	@Autowired
 	private TemplateDao templateDao;
 	
-	public void createTemplate(Template template) {	
+	public Long createTemplate(Template template) {	
+		Long id = (Long) templateDao.save(template);
+		System.out.println("Saved :: "+id);
+		return id;
 		
-		templateDao.save(template);
 	}
 
-	public Template findByName(String templateName) {
-		
+	public Template findByName(String templateName) {		
 		return templateDao.findByName(templateName);
 	}
 
