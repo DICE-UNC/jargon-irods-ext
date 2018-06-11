@@ -31,14 +31,14 @@ public class App
       	         new AnnotationConfigApplicationContext(AppConfig.class);
     	TemplateService templateService = (TemplateService) ctx.getBean("templateService");
   	    App app = new App();
-    	app.addTemplate(templateService);
-    	//app.findTemplate(templateService);
+    	//app.addTemplate(templateService);
+    	app.findTemplate(templateService);
        
     }
     
     public void addTemplate(TemplateService templateService) {
     	Template template =new Template();
-    	template.setTemplateName("template5");
+    	template.setTemplateName("template7");
     	Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
     	template.setCreateTs(timestamp);
     	UUID uuid = UUID.randomUUID();

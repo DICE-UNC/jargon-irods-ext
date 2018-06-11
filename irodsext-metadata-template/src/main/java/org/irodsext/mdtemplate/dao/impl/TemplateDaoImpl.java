@@ -29,8 +29,8 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	
 	public Template findByName(String templateName) {
 		  Query<Template> q = this.sessionFactory.getCurrentSession()
-	                .createQuery("from Template where templateName = (:templateName)")
-	                .setParameter("templateName", templateName);	
+	                .createQuery("from Template where templateName = (:templateName)");
+	      q.setParameter("templateName", templateName);	
 		  return q.uniqueResult();
 	}
 

@@ -3,6 +3,8 @@ package org.irodsext.mdtemplate.dao.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -16,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class GenericDaoImpl<T, id extends Serializable> implements GenericDao<T, id>{
 
-	@Autowired
+	@Resource(name = "sessionFactory")
 	private SessionFactory sessionFactory;
 
 	protected Session getSession() {

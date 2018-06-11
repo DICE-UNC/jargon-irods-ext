@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "template_elements_POC")
+@Table(name = "template_elements_poc")
 public class TemplateElement {
 
 	private final int MAX_ATTR_LENGTH = 100;
@@ -28,8 +28,8 @@ public class TemplateElement {
 	@Column(name = "attribute",nullable = false, length = MAX_ATTR_LENGTH)
 	private String attribute;
 
-	@Column(name = "attribute_value", length = MAX_VAL_LENGTH)
-	private String attributeValue;
+	@Column(name = "defalut_value", length = MAX_VAL_LENGTH)
+	private String defaultValue;
 
 	@Column(name = "attribute_unit", length = MAX_UNT_LENGTH)
 	private String attributeUnit;
@@ -71,11 +71,11 @@ public class TemplateElement {
 	}
 
 	public String getAttributeValue() {
-		return attributeValue;
+		return defaultValue;
 	}
 
 	public void setAttributeValue(String attributeValue) {
-		this.attributeValue = attributeValue;
+		this.defaultValue = attributeValue;
 	}
 
 	public String getAttributeUnit() {

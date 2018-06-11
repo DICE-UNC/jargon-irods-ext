@@ -1,7 +1,5 @@
 package org.irodsext.mdtemplate.entity;
 
-
-import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -16,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "templates_POC")
+@Table(name = "templates_poc")
 public class Template {
 
 	@Id
@@ -43,7 +41,7 @@ public class Template {
 	private String access_type;
 	
 	@Column(name = "owner")
-	private String Owner;
+	private String owner;
 	
 	public Long getId() {
 		return id;
@@ -102,11 +100,11 @@ public class Template {
 	}
 
 	public String getOwner() {
-		return Owner;
+		return owner;
 	}
 
 	public void setOwner(String owner) {
-		Owner = owner;
+		this.owner = owner;
 	}
 	
 	/*@OneToMany(mappedBy = "template", fetch = FetchType.EAGER)
