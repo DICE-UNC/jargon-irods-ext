@@ -1,6 +1,9 @@
 package org.irodsext.mdtemplate;
 
+import java.util.List;
+
 import org.irodsext.mdtemplate.entity.Template;
+import org.irodsext.mdtemplate.entity.TemplateElement;
 
 public interface TemplateService {
 
@@ -15,4 +18,6 @@ public interface TemplateService {
     public Template findByName(String templateName);
     public Template findById(long id);
     public boolean deleteTemplate(long id);
+    public void merge(Template template);
+    public List<TemplateElement> listTemplateFields(Long id);
 }

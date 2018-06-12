@@ -17,6 +17,7 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	@Autowired
 	private SessionFactory sessionFactory;
 
+	@Override
 	public long getTemplateId(String templateName) {
 		Template template = this.findByName(templateName);
 
@@ -27,20 +28,24 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
         return template.getId();
 	}
 	
+	@Override
 	public Template findByName(String templateName) {
 		  Query<Template> q = this.sessionFactory.getCurrentSession()
 	                .createQuery("from Template where templateName = (:templateName)");
 	      q.setParameter("templateName", templateName);	
 		  return q.uniqueResult();
 	}
-
+	
+	
+	@Override
 	public Template findById(long id) {
 		 Query<Template> q = this.sessionFactory.getCurrentSession().createQuery("from Template where id=(:id)");
 	        q.setParameter("id", id);
 
 	        return q.uniqueResult();
 	}
-
+	
+	@Override
 	public boolean deleteById(long id) {
 		Template template = this.findById(id);
 
@@ -52,7 +57,8 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 
         return true;
 	}
-
+	
+	@Override
 	public List<TemplateElement> listTemplateElements(String template) {
 		long id = this.getTemplateId(template);
 
@@ -62,13 +68,25 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 
         return new ArrayList<TemplateElement>();
 	}
-
+	
+	@Override
 	public List<TemplateElement> listTemplateElements(Long id) {
 		 Query q = this.sessionFactory.getCurrentSession()
-	                .createQuery("from Template where template_id = :templateID");
+	                .createQuery("from TemplateElement where template_id = :templateID");
 
 	        q.setParameter("templateID", id);
 
+	        return q.list();
+	}
+
+	@Override
+	public List<Template> findByQueryString(String query) {
+		 Query q = this.sessionFactory.getCurrentSession()
+	                .createQuery("from Template where templateName like :templateName");
+
+	        q.setParameter("templateName", "%" + query + "%");
+
+	        // Returning results
 	        return q.list();
 	}
 	

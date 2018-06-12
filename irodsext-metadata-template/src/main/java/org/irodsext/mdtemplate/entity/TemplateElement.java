@@ -16,22 +16,18 @@ import javax.persistence.Table;
 @Table(name = "template_elements_poc")
 public class TemplateElement {
 
-	private final int MAX_ATTR_LENGTH = 100;
-	private final int MAX_VAL_LENGTH = 100;
-	private final int MAX_UNT_LENGTH = 100;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "element_id", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name = "attribute",nullable = false, length = MAX_ATTR_LENGTH)
+	@Column(name = "attribute",nullable = false, length = 100)
 	private String attribute;
 
-	@Column(name = "defalut_value", length = MAX_VAL_LENGTH)
+	@Column(name = "default_value", length = 100)
 	private String defaultValue;
 
-	@Column(name = "attribute_unit", length = MAX_UNT_LENGTH)
+	@Column(name = "attribute_unit", length = 100)
 	private String attributeUnit;
 	
 	@Column(name = "type")
@@ -57,7 +53,7 @@ public class TemplateElement {
 	private Long parentId;	
 	
 	@Column(name = "cardinality")
-	private UUID cardinality;	
+	private Long cardinality;	
 	
 	
 	
@@ -149,14 +145,41 @@ public class TemplateElement {
 		this.parentId = parentId;
 	}
 
-	public UUID getCardinality() {
+	public Long getCardinality() {
 		return cardinality;
 	}
 
-	public void setCardinality(UUID cardinality) {
+	public void setCardinality(Long cardinality) {
 		this.cardinality = cardinality;
 	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj instanceof TemplateElement) {
+			TemplateElement te = (TemplateElement) obj;
+
+			if (te.getAttribute() == null || te.getDefaultValue() == null) {
+				return false;
+			}
+
+			boolean areAttributesEqual = getAttribute().equals(te.getAttribute());
+			boolean areValuesEqual = getDefaultValue().equals(te.getDefaultValue());
+
+			if (areAttributesEqual && areValuesEqual) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return (getAttribute() + getDefaultValue()).hashCode();
+	}
 	
 }

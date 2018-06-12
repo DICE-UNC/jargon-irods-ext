@@ -25,7 +25,6 @@ public class GenericDaoImpl<T, id extends Serializable> implements GenericDao<T,
 	
 	public id save(T entity) {
 		Session hibernateSession = this.getSession();
-		System.out.println("Hiberate session :: " +hibernateSession);
 		return (id) hibernateSession.save(entity);
 	}
 	

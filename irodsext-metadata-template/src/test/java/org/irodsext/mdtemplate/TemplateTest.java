@@ -2,10 +2,13 @@ package org.irodsext.mdtemplate;
 
 import java.nio.ByteBuffer;
 import java.sql.Timestamp;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import org.irodsext.mdtemplate.config.AppConfig;
 import org.irodsext.mdtemplate.entity.Template;
+import org.irodsext.mdtemplate.entity.TemplateElement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +26,96 @@ public class TemplateTest extends TestCase{
 
 	@Autowired
 	private TemplateService templateService;
-	
 
-	@Test
+	@Autowired
+	private TemplateElementService templateElementService;
+
+/*	@Test
 	public void createTemplate() {
 		Template template =new Template();
-    	template.setTemplateName("template6");
-    	Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
-    	template.setCreateTs(timestamp);
-    	UUID uuid = UUID.randomUUID();
-		long l = ByteBuffer.wrap(uuid.toString().getBytes()).getLong();
-		System.out.println("UUID :: " +UUID.randomUUID().toString());
-    	template.setGuid(UUID.randomUUID());  	
-    	Long id = (Long) templateService.createTemplate(template);
-    	System.out.println("Saved :: "+id);
+		template.setTemplateName("template9");
+		Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
+		template.setCreateTs(timestamp);
+		template.setGuid(UUID.randomUUID());  
+
+
+		Long id = (Long) templateService.createTemplate(template);
+		System.out.println("Saved :: "+id);
+
 	}
+
+	@Test
+	public void createTemplateWithElement() {
+		Template template =new Template();
+		template.setTemplateName("template8");
+		Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
+		template.setCreateTs(timestamp);
+		template.setGuid(UUID.randomUUID());  
+
+
+		Long id = (Long) templateService.createTemplate(template);
+		System.out.println("Saved :: "+id);
+
+		TemplateElement templateElement = new TemplateElement();
+		templateElement.setAttribute("templateAttrTest");
+		templateElement.setDefaultValue("defaultVal");
+		templateElement.setCardinality((long) 3); 
+		templateElement.setTemplate(template);    	
+		templateElement.setGuid(UUID.randomUUID());  
+		templateElement.setParentId(null); 
+		templateElementService.createTemplateElement(templateElement);
+
+	}
+
+	@Test
+	public void addElementForExistingTemplate() {
+		Template template = templateService.findByName("template8");
+
+		System.out.println("template Id :: " + template.getId());
+
+		TemplateElement templateElement = new TemplateElement();
+		templateElement.setAttribute("templateAttrTest1");
+		templateElement.setDefaultValue("defaultVal1");
+		templateElement.setCardinality((long) 2); 
+		templateElement.setTemplate(template);    	
+		templateElement.setGuid(UUID.randomUUID());  
+		templateElement.setParentId(null); 
+		templateElementService.createTemplateElement(templateElement);
+
+	}*/
+
+
+	@Test
+	public void deleteTemplate() {	
+		Template template = templateService.findByName("template8");
+		
+		long dId = template.getId();
+    	templateService.deleteTemplate(dId);
+    	System.out.println("Deleted fir id :: " + dId);
+	}
+
+	/*@Test
+	public void updateTemplate() {	
+		Template template = templateService.findByName("template8");
+		
+	
+		template.setAccess_type("private");
+
+		
+    	templateService.merge(template);
+    	System.out.println("update for id :: " + template.getId());
+	}*/
+	
+	/*@Test
+	public void updateTemplateElement() {
+		
+		TemplateElement templateElement = templateElementService.
+    	templateElement.setAttribute("templateAttrTest_23");
+    	templateElement.setDefaultValue("defaultVal_23");
+    	templateElement.setCardinality((long) 3); 
+    	
+    	templateService.merge(template);
+
+	}*/
+
 }
