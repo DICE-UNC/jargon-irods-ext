@@ -31,9 +31,6 @@ public class Template {
 	@Column(name = "description", length = 512)
 	private String description;
 
-	@OneToMany(mappedBy = "template", fetch = FetchType.EAGER)
-	private Set<TemplateElement> elements;
-
 	@Column(name = "guid")
 	private UUID guid;
 	
@@ -42,6 +39,9 @@ public class Template {
 	
 	@Column(name = "owner")
 	private String owner;
+	
+	@OneToMany(mappedBy = "template", fetch = FetchType.EAGER)
+	private Set<TemplateElement> elements;
 	
 	public Long getId() {
 		return id;

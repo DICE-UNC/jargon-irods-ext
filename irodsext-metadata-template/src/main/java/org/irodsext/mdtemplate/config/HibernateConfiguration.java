@@ -1,4 +1,4 @@
-package org.irodsext.mdtemplate.config;
+/*package org.irodsext.mdtemplate.config;
 
 import java.util.Properties;
 
@@ -61,3 +61,4 @@ public class HibernateConfiguration {
        return txManager;
     }
 }
+*/

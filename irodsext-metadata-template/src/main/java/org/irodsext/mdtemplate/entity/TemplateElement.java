@@ -33,10 +33,6 @@ public class TemplateElement {
 
 	@Column(name = "attribute_unit", length = MAX_UNT_LENGTH)
 	private String attributeUnit;
-
-	@ManyToOne(fetch = FetchType.EAGER, optional = true)
-	@JoinColumn(name = "template_id", nullable = false, updatable = true)
-	private Template template;
 	
 	@Column(name = "type")
 	private String type;
@@ -51,7 +47,18 @@ public class TemplateElement {
 	private String validation_exp;
 	
 	@Column(name = "guid")
-	private UUID guid;
+	private UUID guid;	
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	@JoinColumn(name = "template_id", nullable = false, updatable = true)
+	private Template template;
+	
+	@Column(name = "parent_id")
+	private Long parentId;	
+	
+	@Column(name = "cardinality")
+	private UUID cardinality;	
+	
 	
 	
 	public Long getId() {
@@ -68,14 +75,6 @@ public class TemplateElement {
 
 	public void setAttribute(String attribute) {
 		this.attribute = attribute;
-	}
-
-	public String getAttributeValue() {
-		return defaultValue;
-	}
-
-	public void setAttributeValue(String attributeValue) {
-		this.defaultValue = attributeValue;
 	}
 
 	public String getAttributeUnit() {
@@ -132,6 +131,30 @@ public class TemplateElement {
 
 	public void setGuid(UUID guid) {
 		this.guid = guid;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	public UUID getCardinality() {
+		return cardinality;
+	}
+
+	public void setCardinality(UUID cardinality) {
+		this.cardinality = cardinality;
 	}
 	
 	

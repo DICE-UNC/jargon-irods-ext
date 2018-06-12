@@ -28,7 +28,7 @@ public class TemplateElementDaoImpl extends GenericDaoImpl<TemplateElement , Lon
         }
 
         element.setAttribute(attribute);
-        element.setAttributeValue(value);
+        element.setDefaultValue(value);
         element.setAttributeUnit(unit);
         merge(element);
 

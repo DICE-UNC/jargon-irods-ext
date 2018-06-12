@@ -31,8 +31,8 @@ public class App
       	         new AnnotationConfigApplicationContext(AppConfig.class);
     	TemplateService templateService = (TemplateService) ctx.getBean("templateService");
   	    App app = new App();
-    	//app.addTemplate(templateService);
-    	app.findTemplate(templateService);
+    	app.addTemplate(templateService);
+    	//app.findTemplate(templateService);
        
     }
     
