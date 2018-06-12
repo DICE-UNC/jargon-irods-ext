@@ -45,7 +45,7 @@ public class AppConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "org.irodsext.template" });
+        sessionFactory.setPackagesToScan(new String[] { "org.irodsext.mdtemplate" });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
      }
