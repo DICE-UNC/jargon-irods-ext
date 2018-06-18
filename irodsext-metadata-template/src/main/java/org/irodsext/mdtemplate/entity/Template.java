@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "templates_poc")
@@ -25,9 +27,18 @@ public class Template {
 	@Column(name = "template_name", unique = true, nullable = false, length = 100)
 	private String templateName;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_ts", nullable = false, length = 60, updatable = false)
 	private Date createTs;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "modify_ts", nullable = false, length = 60)
+	private Date modifyTs;
+	
+	@Column(name = "version")
+	private Integer version;
+	
+	
 	@Column(name = "description", length = 512)
 	private String description;
 
