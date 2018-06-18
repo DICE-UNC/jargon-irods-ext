@@ -104,9 +104,6 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 			throw new IllegalArgumentException("null dataTypeResolutionServiceFactory");
 		}
 
-		if (userService == null) {
-			throw new IllegalArgumentException("null dataTypeResolutionServiceFactory");
-		}
 	}
 
 	public FavoritesService getFavoritesService() {
@@ -125,9 +122,36 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 		this.userService = userService;
 	}
 
+	/*
+	 * For some use cases, the {@code UserService} might not be provided. In this
+	 * case, just use a stand in
+	 */
 	private DataGridUser resolveDataGridUser(final IRODSAccount irodsAccount) {
 		log.info("resolveDataGridUser");
-		return userService.findByUsernameAndAdditionalInfo(irodsAccount.getUserName(), irodsAccount.getZone());
+
+		if (userService == null) {
+			log.debug("no user service provisioned, use a stand-in based on the iRODS account");
+			DataGridUser dataGridUser = new DataGridUser();
+			dataGridUser.setUsername(irodsAccount.getUserName());
+			dataGridUser.setPassword(irodsAccount.getPassword());
+			return dataGridUser;
+		} else {
+			return userService.findByUsernameAndAdditionalInfo(irodsAccount.getUserName(), irodsAccount.getZone());
+		}
+
+	}
+
+	@Override
+	public DataProfilerService instanceDataProfilerService(IRODSAccount irodsAccount,
+			DataProfilerSettings overrideDataProfilerSettings) {
+		validateContext();
+		IrodsextDataProfilerService dataProfilerService = new IrodsextDataProfilerService(overrideDataProfilerSettings,
+				irodsAccessObjectFactory, irodsAccount);
+		dataProfilerService.setDataTypeResolutionService(
+				dataTypeResolutionServiceFactory.instanceDataTypeResolutionService(irodsAccount));
+		dataProfilerService.setFavoritesService(getFavoritesService());
+		dataProfilerService.setDataGridUser(resolveDataGridUser(irodsAccount));
+		return dataProfilerService;
 	}
 
 }
