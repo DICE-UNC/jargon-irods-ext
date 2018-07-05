@@ -4,11 +4,10 @@ Jargon Extensions API for irods-ext
 
 # Project: Jargon Extensions API - IRODS-EXT
 ### Date:
-### Release Version: 4.3.0.0-RELEASE
+### Release Version: 4.3.0.1-SNAPSHOT
 ### git tag:
 
 ## News
-
 
 Extended support in Jargon for advanced iRODS mid-tier capabilities using the IRODS-EXT database.  This package is an implementation of the
 original jargon-extensions reference implementation. The prior version was associated with the cloud browser, this follow-on implements the
@@ -16,9 +15,9 @@ same extension interfaces to track MetaLnx, and will attempt to provide a common
 
 ## Requirements
 
-*Jargon depends on Java 1.8+
-*Jargon is built using Apache Maven2, see POM for dependencies
-*Jargon supports iRODS 3.0 through iRODS 3.3.1 community, as well as iRODS 4.2.2 consortium
+* Jargon depends on Java 1.8+
+* Jargon is built using Apache Maven2, see POM for dependencies
+* Jargon supports iRODS 3.0 through iRODS 3.3.1 community, as well as iRODS 4.2.2 consortium
 
 ## Libraries
 

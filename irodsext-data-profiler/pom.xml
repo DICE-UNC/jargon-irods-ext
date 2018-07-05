@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>jargon-irods-ext</artifactId>
 		<groupId>org.irods.jargon</groupId>
-		<version>4.3.0.0-RELEASE</version>
+		<version>4.3.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>irodsext-data-profiler</artifactId>
 	<name>irodsext-data-profiler</name>
