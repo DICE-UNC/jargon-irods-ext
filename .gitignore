@@ -3,6 +3,7 @@
 **/nb-configuration.xml
 **/.springBeans
 **/testing.properties
+**/metalnx.testing.properties
 **/*.eml
 **/Scripts
 .idea
@@ -19,7 +20,7 @@ mvn-repo
 bin
 *.war
 *.log
-*/nbactions.xml  
+*/nbactions.xml
 *.eml
 nbactions.xml
 testing.properties
