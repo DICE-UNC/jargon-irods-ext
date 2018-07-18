@@ -20,14 +20,14 @@ public class TemplateElementDaoImpl extends GenericDaoImpl<TemplateElement , Lon
 		return (TemplateElement)q.uniqueResult();
 	}
 
-	public boolean modifyById(long id, String attribute, String value, String unit) {
+	public boolean modifyById(long id, String name, String value, String unit) {
 		TemplateElement element = findById(id);
 
         if (element == null) {
             return false;
         }
 
-        element.setAttribute(attribute);
+        element.setName(name);
         element.setDefaultValue(value);
         element.setAttributeUnit(unit);
         merge(element);

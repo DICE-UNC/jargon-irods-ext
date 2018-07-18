@@ -6,6 +6,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import org.irods.jargon.metadatatemplate.AbstractMetadataService;
+import org.irods.jargon.metadatatemplate.model.MDTemplate;
+import org.irods.jargon.metadatatemplate.MetadataTemplateException;
+import org.irods.jargon.metadatatemplate.MetadataTemplateNotFoundException;
 import org.irodsext.mdtemplate.config.AppConfig;
 import org.irodsext.mdtemplate.entity.Template;
 import org.irodsext.mdtemplate.entity.TemplateElement;
@@ -24,16 +28,19 @@ import junit.framework.TestCase;
 @ContextConfiguration(classes = {AppConfig.class})
 public class TemplateTest extends TestCase{
 
-	@Autowired
+	/*@Autowired
 	private TemplateService templateService;
-
+	*/
 	@Autowired
-	private TemplateElementService templateElementService;
+	private AbstractMetadataService abstractMetadataService;
 
-/*	@Test
+/*	@Autowired
+	private TemplateElementService templateElementService;
+*/
+	/*@Test
 	public void createTemplate() {
 		Template template =new Template();
-		template.setTemplateName("template9");
+		template.setTemplateName("template2");
 		Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
 		template.setCreateTs(timestamp);
 		template.setGuid(UUID.randomUUID());  
@@ -42,9 +49,17 @@ public class TemplateTest extends TestCase{
 		Long id = (Long) templateService.createTemplate(template);
 		System.out.println("Saved :: "+id);
 
-	}
-
+	}*/
+	
 	@Test
+	public void getTemplateBGuid() throws MetadataTemplateNotFoundException, MetadataTemplateException {	
+		MDTemplate template = abstractMetadataService.findTemplateByUUID(UUID.fromString("9f089439-9665-4464-929b-2704d765b588"));
+		System.out.println("Saved :: "+template.getTemplateName());
+
+	}
+	
+
+	/*@Test
 	public void createTemplateWithElement() {
 		Template template =new Template();
 		template.setTemplateName("template8");
@@ -85,7 +100,7 @@ public class TemplateTest extends TestCase{
 	}*/
 
 
-	@Test
+	/*@Test
 	public void deleteTemplate() {	
 		Template template = templateService.findByName("template8");
 		
@@ -93,7 +108,7 @@ public class TemplateTest extends TestCase{
     	templateService.deleteTemplate(dId);
     	System.out.println("Deleted fir id :: " + dId);
 	}
-
+*/
 	/*@Test
 	public void updateTemplate() {	
 		Template template = templateService.findByName("template8");

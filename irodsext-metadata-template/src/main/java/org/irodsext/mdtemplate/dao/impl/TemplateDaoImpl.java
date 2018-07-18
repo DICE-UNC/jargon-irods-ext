@@ -2,6 +2,7 @@ package org.irodsext.mdtemplate.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -90,6 +91,13 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	        return q.list();
 	}
 	
-	
+	@Override
+	public Template findByGuid(UUID guid) {
+		 Query<Template> q = this.sessionFactory.getCurrentSession().createQuery("from Template where guid=:guid");
+	        q.setParameter("guid", guid);
+
+	        return q.uniqueResult();
+
+	}
 	
 }

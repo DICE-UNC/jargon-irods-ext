@@ -32,7 +32,7 @@ public class Template {
 	private Date createTs;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "modify_ts", nullable = false, length = 60)
+	@Column(name = "modify_ts", length = 60)
 	private Date modifyTs;
 	
 	@Column(name = "version")

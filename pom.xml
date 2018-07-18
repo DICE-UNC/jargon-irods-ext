@@ -8,13 +8,13 @@
 	<parent>
 		<groupId>org.irods</groupId>
 		<artifactId>jargon-pom</artifactId>
-		<version>4.3.0.0-SNAPSHOT</version>
+		<version>4.3.1.0-SNAPSHOT</version>
 	</parent>
 	<properties>
 		<metalnx.version>2.0.0</metalnx.version>
 	</properties>
 	<packaging>pom</packaging>
-	<name>jargon-extensions</name>
+	<name>jargon-irods-ext</name>
 	<description>Jargon Extensions using the irods-ext database used in metalnx</description>
 	<developers>
 		<developer>
@@ -119,10 +119,7 @@
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
+	
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-extensions-if</artifactId>

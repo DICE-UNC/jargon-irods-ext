@@ -21,8 +21,8 @@ public class TemplateElement {
 	@Column(name = "element_id", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name = "attribute",nullable = false, length = 100)
-	private String attribute;
+	@Column(name = "name",nullable = false, length = 100)
+	private String name;
 
 	@Column(name = "default_value", length = 100)
 	private String defaultValue;
@@ -52,8 +52,11 @@ public class TemplateElement {
 	@Column(name = "parent_id")
 	private Long parentId;	
 	
-	@Column(name = "cardinality")
-	private Long cardinality;	
+	@Column(name = "min_cardinality")
+	private Long MINCardinality;	
+	
+	@Column(name = "max_cardinality")
+	private Long MAXCardinality;	
 	
 	
 	
@@ -65,12 +68,12 @@ public class TemplateElement {
 		this.id = id;
 	}
 
-	public String getAttribute() {
-		return attribute;
+	public String getName() {
+		return name;
 	}
 
-	public void setAttribute(String attribute) {
-		this.attribute = attribute;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getAttributeUnit() {
@@ -145,14 +148,22 @@ public class TemplateElement {
 		this.parentId = parentId;
 	}
 
-	public Long getCardinality() {
-		return cardinality;
+	public Long getMINCardinality() {
+		return MINCardinality;
 	}
 
-	public void setCardinality(Long cardinality) {
-		this.cardinality = cardinality;
-	}
+	public void setMINCardinality(Long MINCardinality) {
+		this.MINCardinality = MINCardinality;
+	}	
 	
+	public Long getMAXCardinality() {
+		return MAXCardinality;
+	}
+
+	public void setMAXCardinality(Long mAXCardinality) {
+		MAXCardinality = mAXCardinality;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -162,11 +173,11 @@ public class TemplateElement {
 		if (obj instanceof TemplateElement) {
 			TemplateElement te = (TemplateElement) obj;
 
-			if (te.getAttribute() == null || te.getDefaultValue() == null) {
+			if (te.getName() == null || te.getDefaultValue() == null) {
 				return false;
 			}
 
-			boolean areAttributesEqual = getAttribute().equals(te.getAttribute());
+			boolean areAttributesEqual = getName().equals(te.getName());
 			boolean areValuesEqual = getDefaultValue().equals(te.getDefaultValue());
 
 			if (areAttributesEqual && areValuesEqual) {
@@ -179,7 +190,7 @@ public class TemplateElement {
 
 	@Override
 	public int hashCode() {
-		return (getAttribute() + getDefaultValue()).hashCode();
+		return (getName() + getDefaultValue()).hashCode();
 	}
 	
 }

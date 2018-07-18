@@ -5,10 +5,14 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.irods.jargon.metadatatemplate.AbstractMetadataService;
 import org.irodsext.mdtemplate.TemplateElementService;
 import org.irodsext.mdtemplate.TemplateElementServiceImpl;
 import org.irodsext.mdtemplate.TemplateService;
 import org.irodsext.mdtemplate.TemplateServiceImpl;
+import org.irodsext.mdtemplate.dao.TemplateDao;
+import org.irodsext.mdtemplate.dao.impl.TemplateDaoImpl;
+import org.irodsext.mdtemplate.services.IrodsExtMetadataServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,7 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "org.irodsext.mdtemplate" })
+@ComponentScan({ "org.irodsext.mdtemplate", "org.irods.jargon.metadatatemplate" })
 @PropertySource(value = { "classpath:db.properties" })
 public class AppConfig {
 
@@ -32,10 +36,16 @@ public class AppConfig {
 		return new TemplateServiceImpl();
 	}
 	
-	@Bean(name="TemplateElementService")
+	@Bean(name="templateElementService")
 	public TemplateElementService templateElementService() {
 		return new TemplateElementServiceImpl();
 	}
+	
+	@Bean(name="abstractMetadataService")
+	public AbstractMetadataService abstractMetadataService() {
+		return new IrodsExtMetadataServiceImpl();
+	}
+	
 	
 	@Autowired
     private Environment environment;
