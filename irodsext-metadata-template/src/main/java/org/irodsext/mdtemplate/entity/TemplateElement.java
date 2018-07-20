@@ -60,8 +60,6 @@ public class TemplateElement {
 	@Column(name = "max_cardinality")
 	private Long MAXCardinality;	
 	
-	@OneToMany(mappedBy = "templateElement", fetch = FetchType.EAGER)
-	private Set<TemplateElement> elements;
 	
 	public Long getId() {
 		return id;
@@ -167,14 +165,6 @@ public class TemplateElement {
 		MAXCardinality = mAXCardinality;
 	}
 	
-	public Set<TemplateElement> getElements() {
-		return elements;
-	}
-
-	public void setElements(Set<TemplateElement> elements) {
-		this.elements = elements;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
