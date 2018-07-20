@@ -7,29 +7,27 @@
 		<artifactId>jargon-irods-ext</artifactId>
 		<version>4.3.1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.irods.jargon</groupId>
 	<artifactId>irodsext-metadata-template</artifactId>
 	<name>irodsext-metadata-template</name>
 	<packaging>jar</packaging>
 	<url>http://maven.apache.org</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.core.version>4.2.0.RELEASE</spring.core.version>
-		<hibernate.version>5.3.0.Final</hibernate.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-extensions-if</artifactId>
 			<version>${project.version}</version>
+			<!--  <exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>log4j-over-slf4j</artifactId>
+				</exclusion>
+			</exclusions>-->
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -42,32 +40,27 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring.core.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${spring.core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.core.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${spring.core.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring.core.version}</version>
 		</dependency>
 		<!-- <dependency> <groupId>cglib</groupId> <artifactId>cglib</artifactId> 
 			<version>2.2.2</version> </dependency> -->
@@ -76,12 +69,9 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>postgresql</groupId>
