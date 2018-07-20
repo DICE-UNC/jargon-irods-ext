@@ -8,9 +8,11 @@ import org.irods.jargon.metadatatemplate.model.MDTemplate;
 import org.irodsext.mdtemplate.TemplateService;
 import org.irodsext.mdtemplate.dao.TemplateDao;
 import org.irodsext.mdtemplate.entity.Template;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.threeten.bp.DateTimeUtils;
 
 @Service("abstractMetadataService")
 @Transactional
@@ -53,8 +55,16 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	}
 
 	@Override
-	public UUID saveTemplate(MDTemplate metadataTemplate) throws MetadataTemplateException {
-		// TODO Auto-generated method stub
+	public UUID saveTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
+
+		Template template = new Template();
+		template.setTemplateName(mdTemplate.getTemplateName());
+		template.setDescription(mdTemplate.getDescription());
+		template.setGuid(UUID.fromString(mdTemplate.getGuid()));
+		template.setCreateTs(DateTimeUtils.toDate(mdTemplate.getCreateTs().toZonedDateTime().toInstant()));
+		template.setModifyTs(DateTimeUtils.toDate(mdTemplate.getModifyTs().toZonedDateTime().toInstant()));
+		template.setOwner(mdTemplate.getOwner());
+		UUID guid = (UUID) templateDao.save(template);
 		return null;
 	}
 

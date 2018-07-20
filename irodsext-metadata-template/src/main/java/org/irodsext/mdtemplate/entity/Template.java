@@ -46,7 +46,7 @@ public class Template {
 	private UUID guid;
 	
 	@Column(name = "access_type")
-	private String access_type;
+	private String accessType;
 	
 	@Column(name = "owner")
 	private String owner;
@@ -102,14 +102,6 @@ public class Template {
 		this.guid = guid;
 	}
 
-	public String getAccess_type() {
-		return access_type;
-	}
-
-	public void setAccess_type(String access_type) {
-		this.access_type = access_type;
-	}
-
 	public String getOwner() {
 		return owner;
 	}
@@ -117,6 +109,32 @@ public class Template {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+
+	public Date getModifyTs() {
+		return modifyTs;
+	}
+
+	public void setModifyTs(Date modifyTs) {
+		this.modifyTs = modifyTs;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	public String getAccessType() {
+		return accessType;
+	}
+
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+	
+	
 	
 	/*@OneToMany(mappedBy = "template", fetch = FetchType.EAGER)
 	private String s;*/

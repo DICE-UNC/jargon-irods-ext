@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class GenericDaoImpl<T, id extends Serializable> implements GenericDao<T, id>{
+public class GenericDaoImpl<T, guid extends Serializable> implements GenericDao<T, guid>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -23,9 +23,9 @@ public class GenericDaoImpl<T, id extends Serializable> implements GenericDao<T,
 		return sessionFactory.getCurrentSession();
 	}
 	
-	public id save(T entity) {
+	public guid save(T entity) {
 		Session hibernateSession = this.getSession();
-		return (id) hibernateSession.save(entity);
+		return (guid) hibernateSession.save(entity);
 	}
 	
 	public void merge(T entity) {

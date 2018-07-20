@@ -1,5 +1,6 @@
 package org.irodsext.mdtemplate.entity;
 
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -58,7 +60,8 @@ public class TemplateElement {
 	@Column(name = "max_cardinality")
 	private Long MAXCardinality;	
 	
-	
+	@OneToMany(mappedBy = "templateElement", fetch = FetchType.EAGER)
+	private Set<TemplateElement> elements;
 	
 	public Long getId() {
 		return id;
@@ -162,6 +165,14 @@ public class TemplateElement {
 
 	public void setMAXCardinality(Long mAXCardinality) {
 		MAXCardinality = mAXCardinality;
+	}
+	
+	public Set<TemplateElement> getElements() {
+		return elements;
+	}
+
+	public void setElements(Set<TemplateElement> elements) {
+		this.elements = elements;
 	}
 
 	@Override
