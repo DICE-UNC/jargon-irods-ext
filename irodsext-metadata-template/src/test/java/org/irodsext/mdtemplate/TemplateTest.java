@@ -1,9 +1,5 @@
 package org.irodsext.mdtemplate;
 
-import java.nio.ByteBuffer;
-import java.sql.Timestamp;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.UUID;
 
 import org.irods.jargon.metadatatemplate.AbstractMetadataService;
@@ -11,13 +7,9 @@ import org.irods.jargon.metadatatemplate.model.MDTemplate;
 import org.irods.jargon.metadatatemplate.MetadataTemplateException;
 import org.irods.jargon.metadatatemplate.MetadataTemplateNotFoundException;
 import org.irodsext.mdtemplate.config.AppConfig;
-import org.irodsext.mdtemplate.entity.Template;
-import org.irodsext.mdtemplate.entity.TemplateElement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
