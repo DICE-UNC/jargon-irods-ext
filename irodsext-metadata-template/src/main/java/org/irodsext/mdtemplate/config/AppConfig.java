@@ -26,9 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "org.irodsext.mdtemplate.entity", 
-	"org.irodsext.mdtemplate.services",
-	"org.irodsext.mdtemplate.dao",
+@ComponentScan({ "org.irodsext.mdtemplate",
 	"org.irods.jargon.metadatatemplate" })
 @PropertySource(value = { "classpath:db.properties" })
 public class AppConfig {

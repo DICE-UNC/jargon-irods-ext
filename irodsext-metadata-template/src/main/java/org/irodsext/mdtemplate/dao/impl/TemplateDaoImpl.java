@@ -47,19 +47,6 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	}
 	
 	@Override
-	public boolean deleteById(long id) {
-		Template template = this.findById(id);
-
-        if (template == null) {
-            return false;
-        }
-
-        this.delete(template);
-
-        return true;
-	}
-	
-	@Override
 	public List<TemplateElement> listTemplateElements(String template) {
 		long id = this.getTemplateId(template);
 
@@ -99,5 +86,37 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	        return q.uniqueResult();
 
 	}
-	
+
+	@Override
+	public boolean deleteByName(String uniqueName) {
+		Template template = this.findByName(uniqueName);
+        if (template == null) {
+            return false;
+        }
+        this.delete(template);
+        return true;
+	}
+
+	@Override
+	public boolean deleteByGuid(UUID guid) {
+		Template template = this.findByGuid(guid);
+        if (template == null) {
+            return false;
+        }
+       this.delete(template);
+       return true;
+	}
+
+	@Override
+	public boolean deleteById(long id) {
+		Template template = this.findById(id);
+
+        if (template == null) {
+            return false;
+        }
+
+        this.delete(template);
+
+        return true;
+	}
 }

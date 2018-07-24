@@ -1,5 +1,7 @@
 package org.irodsext.mdtemplate.dao;
 
+import java.util.UUID;
+
 import org.irodsext.mdtemplate.entity.TemplateElement;
 import org.springframework.stereotype.Repository;
 

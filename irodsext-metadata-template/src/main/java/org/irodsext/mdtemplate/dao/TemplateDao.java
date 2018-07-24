@@ -12,7 +12,9 @@ public interface TemplateDao extends GenericDao<Template , Long> {
 	public long getTemplateId(String templateName);
 	public Template findById(long id);
 	public Template findByGuid(UUID guid);
+	boolean deleteByGuid(UUID guid);
 	boolean deleteById(long id);
+	boolean deleteByName(String uniqueName);
 	public List<TemplateElement> listTemplateElements(String template);
 	public List<TemplateElement> listTemplateElements(Long id);
 	public List<Template> findByQueryString(String query);

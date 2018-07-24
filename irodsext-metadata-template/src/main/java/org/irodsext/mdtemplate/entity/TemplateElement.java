@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "template_elements_poc")
-public class TemplateElement {
+public class TemplateElement implements Comparable<TemplateElement> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,14 +51,15 @@ public class TemplateElement {
 	@JoinColumn(name = "template_id", nullable = false, updatable = true)
 	private Template template;
 	
+	
 	@Column(name = "parent_id")
 	private Long parentId;	
 	
 	@Column(name = "min_cardinality")
-	private Long MINCardinality;	
+	private Integer MINCardinality;	
 	
 	@Column(name = "max_cardinality")
-	private Long MAXCardinality;	
+	private Integer MAXCardinality;	
 	
 	
 	public Long getId() {
@@ -85,17 +86,26 @@ public class TemplateElement {
 		this.attributeUnit = attributeUnit;
 	}
 
-	public Template getTemplate() {
+	/*public Template getTemplate() {
 		return template;
 	}
 
 	public void setTemplate(Template template) {
 		this.template = template;
-	}
+	}*/
 
+	
 	public String getType() {
 		return type;
 	}
+
+	/*public Long getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(Long templateId) {
+		this.templateId = templateId;
+	}*/
 
 	public void setType(String type) {
 		this.type = type;
@@ -149,22 +159,30 @@ public class TemplateElement {
 		this.parentId = parentId;
 	}
 
-	public Long getMINCardinality() {
+	public Integer getMINCardinality() {
 		return MINCardinality;
 	}
 
-	public void setMINCardinality(Long MINCardinality) {
+	public void setMINCardinality(Integer MINCardinality) {
 		this.MINCardinality = MINCardinality;
 	}	
 	
-	public Long getMAXCardinality() {
+	public Integer getMAXCardinality() {
 		return MAXCardinality;
 	}
 
-	public void setMAXCardinality(Long mAXCardinality) {
+	public void setMAXCardinality(Integer mAXCardinality) {
 		MAXCardinality = mAXCardinality;
 	}
 	
+	public Template getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(Template template) {
+		this.template = template;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -192,6 +210,11 @@ public class TemplateElement {
 	@Override
 	public int hashCode() {
 		return (getName() + getDefaultValue()).hashCode();
+	}
+
+	@Override
+	public int compareTo(TemplateElement o) {
+		return this.guid.compareTo(o.guid);
 	}
 	
 }

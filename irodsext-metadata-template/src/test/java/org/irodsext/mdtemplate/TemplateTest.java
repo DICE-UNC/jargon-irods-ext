@@ -1,26 +1,23 @@
 package org.irodsext.mdtemplate;
 
-import java.nio.ByteBuffer;
 import java.sql.Timestamp;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.irods.jargon.metadatatemplate.AbstractMetadataService;
 import org.irods.jargon.metadatatemplate.model.MDTemplate;
+import org.irods.jargon.metadatatemplate.model.MDTemplateElement;
 import org.irods.jargon.metadatatemplate.MetadataTemplateException;
-import org.irods.jargon.metadatatemplate.MetadataTemplateNotFoundException;
 import org.irodsext.mdtemplate.config.AppConfig;
-import org.irodsext.mdtemplate.entity.Template;
-import org.irodsext.mdtemplate.entity.TemplateElement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.OffsetDateTime;
 
 import junit.framework.TestCase;
 
@@ -38,19 +35,43 @@ public class TemplateTest extends TestCase{
 /*	@Autowired
 	private TemplateElementService templateElementService;
 */
-	/*@Test
-	public void createTemplate() {
-		Template template =new Template();
-		template.setTemplateName("template2");
-		Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
-		template.setCreateTs(timestamp);
-		template.setGuid(UUID.randomUUID());  
+	@Transactional
+	@Test
+	public void createTemplate() 
+	{
+		MDTemplate mdTemplate = new MDTemplate();
+		mdTemplate.setTemplateName("T1");
+		mdTemplate.setCreateTs(OffsetDateTime.now());
+		mdTemplate.modifyTs(OffsetDateTime.now());
+		mdTemplate.setGuid(UUID.randomUUID().toString());  
+		
+		List<MDTemplateElement> mdTemplateElementList = new ArrayList<>();
+		
+		MDTemplateElement mdtemplateElement1 = new MDTemplateElement();
+		mdtemplateElement1.setName("MiseqTest");
+		mdtemplateElement1.setGuid(UUID.randomUUID().toString());
+		mdtemplateElement1.setOptions("miseq,novaseq,thatseq");
+		mdtemplateElement1.required(false);
+		mdtemplateElement1.setType("String");
+		mdtemplateElement1.setCardinalityMax(1);
+		mdtemplateElement1.setCardinalityMax(3);
+		
+		
+		mdTemplateElementList.add(mdtemplateElement1);
 
+		mdTemplate.setElements(mdTemplateElementList);
+		try {
+			UUID guid = abstractMetadataService.saveTemplate(mdTemplate);
+			System.out.println("GUID is ::" +guid);
+		} catch (MetadataTemplateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 
-		Long id = (Long) templateService.createTemplate(template);
-		System.out.println("Saved :: "+id);
-
-	}*/
+	}
+	/*
 	@Transactional
 	@Test
 	public void getTemplateBGuid() throws MetadataTemplateNotFoundException, MetadataTemplateException {	
@@ -58,7 +79,7 @@ public class TemplateTest extends TestCase{
 		System.out.println("Saved :: "+template.getTemplateName());
 
 	}
-	
+	*/
 
 	/*@Test
 	public void createTemplateWithElement() {

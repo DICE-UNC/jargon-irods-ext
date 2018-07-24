@@ -2,18 +2,24 @@ package org.irodsext.mdtemplate.entity;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 
 @Entity
 @Table(name = "templates_poc")
@@ -36,8 +42,7 @@ public class Template {
 	private Date modifyTs;
 	
 	@Column(name = "version")
-	private Integer version;
-	
+	private Integer version;	
 	
 	@Column(name = "description", length = 512)
 	private String description;
@@ -50,9 +55,9 @@ public class Template {
 	
 	@Column(name = "owner")
 	private String owner;
-	
-	@OneToMany(mappedBy = "template", fetch = FetchType.EAGER)
-	private Set<TemplateElement> elements;
+		
+	@OneToMany(mappedBy = "template", cascade=CascadeType.ALL, orphanRemoval = true)
+	private Set<TemplateElement> elements = new TreeSet<>();
 	
 	public Long getId() {
 		return id;
@@ -85,7 +90,7 @@ public class Template {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 	public Set<TemplateElement> getElements() {
 		return elements;
 	}
