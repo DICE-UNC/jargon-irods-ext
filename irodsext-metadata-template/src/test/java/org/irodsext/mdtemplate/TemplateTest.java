@@ -1,6 +1,7 @@
 package org.irodsext.mdtemplate;
 
-import java.sql.Timestamp;
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.threeten.bp.LocalDate;
 import org.threeten.bp.OffsetDateTime;
 
 import junit.framework.TestCase;

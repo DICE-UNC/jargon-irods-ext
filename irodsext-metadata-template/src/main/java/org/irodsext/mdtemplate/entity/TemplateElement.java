@@ -61,7 +61,6 @@ public class TemplateElement implements Comparable<TemplateElement> {
 	@Column(name = "max_cardinality")
 	private Integer MAXCardinality;	
 	
-	
 	public Long getId() {
 		return id;
 	}
@@ -174,7 +173,7 @@ public class TemplateElement implements Comparable<TemplateElement> {
 	public void setMAXCardinality(Integer mAXCardinality) {
 		MAXCardinality = mAXCardinality;
 	}
-	
+
 	public Template getTemplate() {
 		return template;
 	}
