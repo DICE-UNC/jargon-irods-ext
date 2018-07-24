@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import junit.framework.TestCase;
 
@@ -42,7 +43,7 @@ public class TemplateTest extends TestCase{
 		System.out.println("Saved :: "+id);
 
 	}*/
-	
+	@Transactional
 	@Test
 	public void getTemplateBGuid() throws MetadataTemplateNotFoundException, MetadataTemplateException {	
 		MDTemplate template = abstractMetadataService.findTemplateByUUID(UUID.fromString("9f089439-9665-4464-929b-2704d765b588"));

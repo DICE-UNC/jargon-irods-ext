@@ -63,6 +63,7 @@ public class TemplateElement {
 	@OneToMany(mappedBy = "templateElement", fetch = FetchType.EAGER)
 	private Set<TemplateElement> elements;
 	*/
+
 	public Long getId() {
 		return id;
 	}
