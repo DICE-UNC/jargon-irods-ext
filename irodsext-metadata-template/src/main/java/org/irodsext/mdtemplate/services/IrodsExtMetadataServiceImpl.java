@@ -45,17 +45,6 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		return templateDao.deleteByName(uniqueName);
 	}
 
-	@Override
-	public MDTemplate findTemplateByUUID(UUID uuid)
-			throws MetadataTemplateNotFoundException, MetadataTemplateException {
-		
-		Template template = templateDao.findByGuid(uuid);
-		MDTemplate mdTemplate = new MDTemplate();
-		mdTemplate.setTemplateName(template.getTemplateName());
-		mdTemplate.setGuid(template.getGuid().toString());
-		
-		return mdTemplate;
-	}
 
 	@Override
 	public UUID saveTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
@@ -67,6 +56,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		template.setCreateTs(DateTimeUtils.toDate(mdTemplate.getCreateTs().toZonedDateTime().toInstant()));
 		template.setModifyTs(DateTimeUtils.toDate(mdTemplate.getModifyTs().toZonedDateTime().toInstant()));
 		template.setOwner(mdTemplate.getOwner());
+		template.setAccessType(mdTemplate.getAccessType());
 		
 		Set<TemplateElement> templateElement = new TreeSet<>();
 		
@@ -82,6 +72,8 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			e.setMINCardinality(element.getCardinalityMin());
 			e.setMAXCardinality(element.getCardinalityMax());
 			e.setType(element.getType());
+			e.setValidation_exp(element.getValidationExp());
+			e.setTemplate(template);
 			
 			templateElement.add(e);
 		}
@@ -120,6 +112,33 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	public boolean deleteTemplateByGuid(UUID guid) throws MetadataTemplateException {
 		// TODO Auto-generated method stub
 		return templateDao.deleteByGuid(guid);
+	}
+
+	@Override
+	public MDTemplate findTemplateByGuid(UUID guid)
+			throws MetadataTemplateNotFoundException, MetadataTemplateException {
+		Template template = templateDao.findByGuid(guid);
+		MDTemplate mdTemplate = new MDTemplate();
+		mdTemplate.setTemplateName(template.getTemplateName());
+		mdTemplate.setGuid(template.getGuid().toString());
+		
+		return mdTemplate;
+	}
+
+	
+	@Override
+	public UUID updateTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
+		
+		Template template = new Template();
+		template.setTemplateName(mdTemplate.getTemplateName());
+		template.setDescription(mdTemplate.getDescription());
+		template.setGuid(UUID.fromString(mdTemplate.getGuid()));
+		template.setCreateTs(DateTimeUtils.toDate(mdTemplate.getCreateTs().toZonedDateTime().toInstant()));
+		template.setModifyTs(DateTimeUtils.toDate(mdTemplate.getModifyTs().toZonedDateTime().toInstant()));
+		template.setOwner(mdTemplate.getOwner());
+		
+		templateDao.merge(template);
+		return template.getGuid();
 	}
 
 }

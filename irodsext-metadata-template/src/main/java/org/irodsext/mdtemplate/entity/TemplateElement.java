@@ -1,5 +1,6 @@
 package org.irodsext.mdtemplate.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,7 +17,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "template_elements_poc")
-public class TemplateElement implements Comparable<TemplateElement> {
+public class TemplateElement implements Serializable, Comparable<TemplateElement> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +50,7 @@ public class TemplateElement implements Comparable<TemplateElement> {
 	@Column(name = "validation_exp")
 	private String validation_exp;
 	
-	@Column(name = "guid")
+	@Column(name = "guid", unique = true, nullable = false)
 	private UUID guid;	
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = true)
@@ -191,14 +197,14 @@ public class TemplateElement implements Comparable<TemplateElement> {
 		if (obj instanceof TemplateElement) {
 			TemplateElement te = (TemplateElement) obj;
 
-			if (te.getName() == null || te.getDefaultValue() == null) {
+			if (te.getName() == null || te.getGuid() == null) {
 				return false;
 			}
 
 			boolean areAttributesEqual = getName().equals(te.getName());
-			boolean areValuesEqual = getDefaultValue().equals(te.getDefaultValue());
+			boolean areGuidsEqual = getGuid().equals(te.getGuid());
 
-			if (areAttributesEqual && areValuesEqual) {
+			if (areAttributesEqual && areGuidsEqual) {
 				return true;
 			}
 		}
@@ -208,7 +214,7 @@ public class TemplateElement implements Comparable<TemplateElement> {
 
 	@Override
 	public int hashCode() {
-		return (getName() + getDefaultValue()).hashCode();
+		return (getName() + getGuid()).hashCode();
 	}
 
 	@Override

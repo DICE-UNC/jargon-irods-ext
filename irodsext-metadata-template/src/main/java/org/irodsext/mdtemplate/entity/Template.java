@@ -1,5 +1,6 @@
 package org.irodsext.mdtemplate.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -8,13 +9,9 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,7 +20,12 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "templates_poc")
-public class Template {
+public class Template implements Serializable, Comparable<Template>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +49,7 @@ public class Template {
 	@Column(name = "description", length = 512)
 	private String description;
 
-	@Column(name = "guid")
+	@Column(name = "guid", unique = true, nullable = false)
 	private UUID guid;
 	
 	@Column(name = "access_type")
@@ -138,13 +140,10 @@ public class Template {
 	public void setAccessType(String accessType) {
 		this.accessType = accessType;
 	}
-	
-	
-	
-	/*@OneToMany(mappedBy = "template", fetch = FetchType.EAGER)
-	private String s;*/
 
-
-
+	@Override
+	public int compareTo(Template template) {
+		return templateName.compareTo(template.getTemplateName());
+	}	
 
 }
