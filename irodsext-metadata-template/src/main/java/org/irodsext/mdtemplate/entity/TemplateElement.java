@@ -2,8 +2,10 @@ package org.irodsext.mdtemplate.entity;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -57,15 +59,23 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	@JoinColumn(name = "template_id", nullable = false, updatable = true)
 	private Template template;
 	
-	
-	@Column(name = "parent_id")
+	/*@Column(name = "parent_id")
 	private Long parentId;	
-	
+	*/
 	@Column(name = "min_cardinality")
 	private Integer MINCardinality;	
 	
 	@Column(name = "max_cardinality")
 	private Integer MAXCardinality;	
+	
+	
+	@OneToMany(mappedBy = "templateElement", cascade=CascadeType.ALL, orphanRemoval = true)
+	private Set<TemplateElement> elements = new TreeSet<>();
+	
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	@JoinColumn(name = "parent_id", nullable = false, updatable = true)
+	private TemplateElement templateElement;
+	
 	
 	public Long getId() {
 		return id;
@@ -156,14 +166,14 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 		this.defaultValue = defaultValue;
 	}
 
-	public Long getParentId() {
+	/*public Long getParentId() {
 		return parentId;
 	}
 
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
-
+*/
 	public Integer getMINCardinality() {
 		return MINCardinality;
 	}
@@ -186,6 +196,28 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 
 	public void setTemplate(Template template) {
 		this.template = template;
+	}
+	
+	
+
+	public Set<TemplateElement> getElements() {
+		return elements;
+	}
+
+	public void setElements(Set<TemplateElement> elements) {
+		this.elements = elements;
+	}
+
+	public TemplateElement getTemplateElement() {
+		return templateElement;
+	}
+
+	public void setTemplateElement(TemplateElement templateElement) {
+		this.templateElement = templateElement;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
