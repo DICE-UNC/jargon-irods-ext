@@ -30,10 +30,10 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 	@Autowired
 	private TemplateDao templateDao;
-	
+
 	@Autowired
 	private TemplateElementDao elementDao;
-	
+
 
 	@Override
 	public List<MDTemplate> listPublicTemplates() {
@@ -65,17 +65,17 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	@Override
 	public MDTemplate findTemplateByName(String templateName)
 			throws MetadataTemplateNotFoundException, MetadataTemplateException {
-		
+
 		Template template = templateDao.findByName(templateName);
 		MDTemplate mdTemplate = getTemplateJsonFromEntity(template);
-		
+
 		return mdTemplate;
 	}
 
 	@Override
 	public boolean isTemplateExist(String templateName)
 			throws MetadataTemplateNotFoundException, MetadataTemplateException {
-		
+
 		boolean result = false;
 		Template template = templateDao.findByName(templateName);				
 		if(template != null) {
@@ -93,16 +93,18 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	@Override
 	public MDTemplate findTemplateByGuid(UUID guid)
 			throws MetadataTemplateNotFoundException, MetadataTemplateException {
+		
+		System.out.println("findTemplateByGuid {} starts :: " +guid);
 		Template template = templateDao.findByGuid(guid);
 		MDTemplate mdTemplate = getTemplateJsonFromEntity(template);
-		
+		System.out.println("findTemplateByGuid {} Ends :: ");
 		return mdTemplate;
 	}
 
-	
+
 	@Override
 	public UUID updateTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
-		
+
 		Template template = new Template();
 		template.setTemplateName(mdTemplate.getTemplateName());
 		template.setDescription(mdTemplate.getDescription());
@@ -110,7 +112,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		template.setCreateTs(DateTimeUtils.toDate(mdTemplate.getCreateTs().toZonedDateTime().toInstant()));
 		template.setModifyTs(DateTimeUtils.toDate(mdTemplate.getModifyTs().toZonedDateTime().toInstant()));
 		template.setOwner(mdTemplate.getOwner());
-		
+
 		templateDao.merge(template);
 		return template.getGuid();
 	}
@@ -118,8 +120,8 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	@Override
 	public UUID saveElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
 		// TODO Auto-generated method stub
-		
-		System.out.println("Savinf element in services");
+
+		System.out.println("saveElement{} starts :: " +templateGuid);
 		MDTemplate mdTemplate = findTemplateByGuid(templateGuid);
 		UUID guid = null;
 		if(mdTemplate == null) {
@@ -127,13 +129,14 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			return guid;
 		}else {
 			TemplateElement element = new TemplateElement();			
-			element = getElementEntityFromJson(mdElement);	
-			element.setTemplate(getTemplateEntityFromJson(mdTemplate));
+			element = getElementEntityFromJson(mdElement,mdTemplate);	
+			//element.setTemplate(getTemplateEntityFromJson(mdTemplate));
+			System.out.println("Element :: " +element);
 			elementDao.save(element);
 			guid = element.getGuid();
-			
+
 		}
-	
+		System.out.println("saveElement{} Ends");
 		return guid;
 	}
 
@@ -145,6 +148,8 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 	@Override
 	public boolean deleteElementByGuid(UUID templateGuid, UUID elementGuid) throws MetadataTemplateException {
+		
+		System.out.println("deleteElementByGuid starts{} :: " +templateGuid+ "element guid :: " +elementGuid);
 		MDTemplate template = findTemplateByGuid(templateGuid);
 		boolean isDeleted = false;
 		if(template == null) {
@@ -154,13 +159,14 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		}else {
 			isDeleted = elementDao.deleteByGuid(elementGuid);
 		}
+		System.out.println("deleteElementByGuid starts{} :: ");
 		return isDeleted;
 	}
 
 	@Override
 	public MDTemplateElement findElementByGuid(UUID templateGuid, UUID elementGuid)
 			throws MetadataTemplateNotFoundException, MetadataTemplateException {
-		
+
 		MDTemplate template = findTemplateByGuid(templateGuid);	
 		if(template == null) {
 			//discuss this logic when parent does not exists.
@@ -171,10 +177,13 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			MDTemplateElement mdElement = getElementJsonFromEntity(element);	
 			return mdElement;
 		}
-		
+
 	}
+
+	public TemplateElement getElementEntityFromJson(MDTemplateElement mdElement, MDTemplate mdTemplate) {
 	
-	public TemplateElement getElementEntityFromJson(MDTemplateElement mdElement) {
+		Template template = getTemplateEntityFromJson(mdTemplate);
+		
 		TemplateElement templateElement = new TemplateElement();
 		templateElement.setDefaultValue(mdElement.getDefaultValue());
 		templateElement.setAttributeUnit(mdElement.getUnit());
@@ -186,10 +195,39 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		templateElement.setMINCardinality(mdElement.getCardinalityMin());
 		templateElement.setType(mdElement.getType());
 		templateElement.setValidation_exp(mdElement.getValidationExp());
+		templateElement.setTemplate(template);
+		
+		System.out.println("Adding the parent template to metadata :: " +template.getTemplateName()+" , and id :: " +template.getId());
+		Set<TemplateElement> childElementsSet = new TreeSet<>();
+		for (MDTemplateElement ce : mdElement.getElements()) {
+			TemplateElement childElement = new TemplateElement();
+			childElement.setName(ce.getName());										
+			//e.setGuid(UUID.fromString(element.getGuid()));
+			childElement.setGuid(UUID.randomUUID());
+			childElement.setOptions(ce.getOptions());
+			childElement.setDefaultValue(ce.getDefaultValue());				
+			childElement.setRequired(ce.isRequired());					
+			childElement.setMINCardinality(ce.getCardinalityMin());							
+			childElement.setMAXCardinality(ce.getCardinalityMax());							
+			childElement.setType(ce.getType());							
+			childElement.setValidation_exp(ce.getValidationExp());	
+			System.out.println("Adding the child template to metadata :: " +template.getTemplateName()+" , and id :: " +template.getId());
+			childElement.setTemplate(template);			
+			
+			System.out.println("Adding the child meatdata to metadata :: " +childElement.getName());
+			childElement.setTemplateElement(templateElement);							
+			childElementsSet.add(childElement);
+		}
+		
+		//templateElement.setTemplateElement(templateElement);
+		templateElement.setElements(childElementsSet);
+		
+		//templateElementSet.add(element);
 		return templateElement;
 	}
-	
+
 	public MDTemplateElement getElementJsonFromEntity(TemplateElement element) {
+		
 		MDTemplateElement mdElement = new MDTemplateElement();
 		mdElement.setDefaultValue(element.getDefaultValue());
 		mdElement.setUnit(element.getAttributeUnit());
@@ -201,9 +239,27 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		mdElement.setCardinalityMin(element.getMINCardinality());
 		mdElement.setType(element.getType());
 		mdElement.setValidationExp(element.getValidation_exp());
+		
+		List<MDTemplateElement> childElementsList = new ArrayList<>();
+		for (TemplateElement ce : element.getElements()) {
+			MDTemplateElement mdChildElement = new MDTemplateElement();
+			mdChildElement.setName(ce.getName());										
+			//e.setGuid(UUID.fromString(element.getGuid()));
+			mdChildElement.setGuid(ce.getGuid().toString());
+			mdChildElement.setOptions(ce.getOptions());
+			mdChildElement.setDefaultValue(ce.getDefaultValue());				
+			mdChildElement.setRequired(ce.isRequired());					
+			mdChildElement.setCardinalityMin(ce.getMINCardinality());							
+			mdChildElement.setCardinalityMax(ce.getMAXCardinality());							
+			mdChildElement.setType(ce.getType());							
+			mdChildElement.setValidationExp(ce.getValidation_exp());										
+			//mdChildElement.setTemplate(template);								
+			childElementsList.add(mdChildElement);
+		}		
+		mdElement.setElements(childElementsList);		
 		return mdElement;
 	}
-	
+
 	public Template getTemplateEntityFromJson(MDTemplate mdTemplate) {			
 		Template template = new Template();
 		template.setTemplateName(mdTemplate.getTemplateName());
@@ -213,55 +269,55 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		template.setModifyTs(DateTimeUtils.toDate(mdTemplate.getModifyTs().toZonedDateTime().toInstant()));
 		template.setOwner(mdTemplate.getOwner());
 		template.setAccessType(mdTemplate.getAccessType());
+		template.setId(mdTemplate.getId());
 		
-		Set<TemplateElement> templateElement = new TreeSet<>();
-		
-		for (MDTemplateElement element : mdTemplate.getElements()){			
-			TemplateElement e = new TemplateElement();
-			e.setName(element.getName());
-			//e.setGuid(UUID.fromString(element.getGuid()));
-			e.setGuid(UUID.randomUUID());
-			e.setOptions(element.getOptions());
-			e.setDefaultValue(element.getDefaultValue());
-			e.setRequired(element.isRequired());
-			e.setMINCardinality(element.getCardinalityMin());
-			e.setMAXCardinality(element.getCardinalityMax());
-			e.setType(element.getType());
-			e.setValidation_exp(element.getValidationExp());
-			e.setTemplate(template);
-					
-			Set<TemplateElement> childElements = new TreeSet<>();
-			for (MDTemplateElement subElements : element.getElements()) {
-				
-				TemplateElement childElement = new TemplateElement();
-				childElement.setName(subElements.getName());
+		Set<TemplateElement> templateElementSet = new TreeSet<>();
+		if(mdTemplate.getElements()!=null) {
+			for (MDTemplateElement e : mdTemplate.getElements()){			
+				TemplateElement element = new TemplateElement();
+				element.setName(e.getName());
 				//e.setGuid(UUID.fromString(element.getGuid()));
-				childElement.setGuid(UUID.randomUUID());
-				childElement.setOptions(subElements.getOptions());
-				childElement.setDefaultValue(subElements.getDefaultValue());
-				childElement.setRequired(subElements.isRequired());
-				childElement.setMINCardinality(subElements.getCardinalityMin());
-				childElement.setMAXCardinality(subElements.getCardinalityMax());
-				childElement.setType(subElements.getType());
-				childElement.setValidation_exp(subElements.getValidationExp());
-				childElement.setTemplate(template);
-				childElement.setTemplateElement(e);
-				
-				childElements.add(childElement);
-				
+				element.setGuid(UUID.randomUUID());
+				element.setOptions(e.getOptions());
+				element.setDefaultValue(e.getDefaultValue());
+				element.setRequired(e.isRequired());
+				element.setMINCardinality(e.getCardinalityMin());
+				element.setMAXCardinality(e.getCardinalityMax());
+				element.setType(e.getType());
+				element.setValidation_exp(e.getValidationExp());
+				element.setTemplate(template);
+
+				Set<TemplateElement> childElementsSet = new TreeSet<>();
+				if(element.getElements() != null) {
+					for (MDTemplateElement ce : e.getElements()) {
+						TemplateElement childElement = new TemplateElement();
+						childElement.setName(ce.getName());										
+						//e.setGuid(UUID.fromString(element.getGuid()));
+						childElement.setGuid(UUID.randomUUID());
+						childElement.setOptions(ce.getOptions());
+						childElement.setDefaultValue(ce.getDefaultValue());				
+						childElement.setRequired(ce.isRequired());					
+						childElement.setMINCardinality(ce.getCardinalityMin());							
+						childElement.setMAXCardinality(ce.getCardinalityMax());							
+						childElement.setType(ce.getType());							
+						childElement.setValidation_exp(ce.getValidationExp());							
+						childElement.setTemplate(template);					
+						childElement.setTemplateElement(element);							
+						childElementsSet.add(childElement);
+					}
+				}
+				element.setElements(childElementsSet);
+				templateElementSet.add(element);
 			}
-			e.setElements(childElements);
-			templateElement.add(e);
 		}
-		
-		template.setElements(templateElement);
-		
+		template.setElements(templateElementSet);
+
 		return template;		
 	}
-	
+
 	public MDTemplate getTemplateJsonFromEntity(Template template) {
 		MDTemplate mdTemplate = new MDTemplate();
-		
+
 		mdTemplate.setId(template.getId());
 		mdTemplate.setTemplateName(template.getTemplateName());
 		mdTemplate.setGuid(template.getGuid().toString());		
@@ -272,7 +328,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		mdTemplate.setAccessType(template.getAccessType());
 		mdTemplate.setDescription(template.getDescription());
 		mdTemplate.setOwner(template.getOwner());
-				
+		
 		List<MDTemplateElement> elementsList = new ArrayList<>();		
 		for(TemplateElement element : template.getElements()) {
 			MDTemplateElement mdElement = new MDTemplateElement();
@@ -288,12 +344,32 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			mdElement.setUnit(element.getAttributeUnit());
 			mdElement.setValidationExp(element.getValidation_exp());
 			
+			List<MDTemplateElement> childElementsList = new ArrayList<>();
+			if(element.getElements() != null) {
+				for (TemplateElement ce : element.getElements()) {			
+					MDTemplateElement mdChildElement = new MDTemplateElement();
+					mdChildElement.setName(ce.getName());										
+					//e.setGuid(UUID.fromString(element.getGuid()));
+					mdChildElement.setGuid(ce.getGuid().toString());
+					mdChildElement.setOptions(ce.getOptions());
+					mdChildElement.setDefaultValue(ce.getDefaultValue());				
+					mdChildElement.setRequired(ce.isRequired());					
+					mdChildElement.setCardinalityMin(ce.getMINCardinality());							
+					mdChildElement.setCardinalityMax(ce.getMAXCardinality());							
+					mdChildElement.setType(ce.getType());							
+					mdChildElement.setValidationExp(ce.getValidation_exp());							
+					
+					//mdChildElement.setTemplate(template);										
+					childElementsList.add(mdChildElement);
+				}				
+				mdElement.setElements(childElementsList);
+			}			
 			elementsList.add(mdElement);
 		}
-		
+
 		mdTemplate.setElements(elementsList);
 		return mdTemplate;
 	}
 
-	
+
 }

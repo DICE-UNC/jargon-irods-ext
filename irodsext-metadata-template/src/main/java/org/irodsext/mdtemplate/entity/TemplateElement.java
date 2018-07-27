@@ -55,7 +55,7 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	@Column(name = "guid", unique = true, nullable = false)
 	private UUID guid;	
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "template_id", nullable = false, updatable = true)
 	private Template template;
 	
@@ -72,8 +72,8 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	@OneToMany(mappedBy = "templateElement", cascade=CascadeType.ALL, orphanRemoval = true)
 	private Set<TemplateElement> elements = new TreeSet<>();
 	
-	@ManyToOne(fetch = FetchType.EAGER, optional = true)
-	@JoinColumn(name = "parent_id", nullable = false, updatable = true)
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "parent_id", updatable = true)
 	private TemplateElement templateElement;
 	
 	
