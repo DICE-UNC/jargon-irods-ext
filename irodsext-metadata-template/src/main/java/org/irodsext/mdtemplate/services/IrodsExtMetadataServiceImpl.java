@@ -105,14 +105,9 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	@Override
 	public UUID updateTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
 
-		Template template = new Template();
-		template.setTemplateName(mdTemplate.getTemplateName());
-		template.setDescription(mdTemplate.getDescription());
-		template.setGuid(UUID.fromString(mdTemplate.getGuid()));
-		template.setCreateTs(DateTimeUtils.toDate(mdTemplate.getCreateTs().toZonedDateTime().toInstant()));
-		template.setModifyTs(DateTimeUtils.toDate(mdTemplate.getModifyTs().toZonedDateTime().toInstant()));
-		template.setOwner(mdTemplate.getOwner());
-
+		System.out.println("Updating template for id :: " +mdTemplate.getId());
+		Template template = getTemplateEntityFromJson(mdTemplate);
+		template.setId(mdTemplate.getId());
 		templateDao.merge(template);
 		return template.getGuid();
 	}
