@@ -1,6 +1,8 @@
 package org.irodsext.mdtemplate.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -18,7 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "template_elements_poc")
+@Table(name = "md_template_elements")
 public class TemplateElement implements Serializable, Comparable<TemplateElement> {
 
 	/**
@@ -33,6 +35,15 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 
 	@Column(name = "name",nullable = false, length = 100)
 	private String name;
+	
+	@Column(name = "description", length = 512)
+	private String description;
+	
+	@Column(name = "i18n_name", length = 80)
+	private String i18nName;
+
+	@Column(name = "i18n_description", length = 80)
+	private String i18nDescription;
 
 	@Column(name = "default_value", length = 100)
 	private String defaultValue;
@@ -252,6 +263,85 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	@Override
 	public int compareTo(TemplateElement o) {
 		return this.guid.compareTo(o.guid);
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getI18nName() {
+		return i18nName;
+	}
+
+	public void setI18nName(String i18nName) {
+		this.i18nName = i18nName;
+	}
+
+	public String getI18nDescription() {
+		return i18nDescription;
+	}
+
+	public void setI18nDescription(String i18nDescription) {
+		this.i18nDescription = i18nDescription;
+	}
+
+	@Override
+	public String toString() {
+		final int maxLen = 10;
+		StringBuilder builder = new StringBuilder();
+		builder.append("TemplateElement [");
+		if (id != null)
+			builder.append("id=").append(id).append(", ");
+		if (name != null)
+			builder.append("name=").append(name).append(", ");
+		if (description != null)
+			builder.append("description=").append(description).append(", ");
+		if (i18nName != null)
+			builder.append("i18nName=").append(i18nName).append(", ");
+		if (i18nDescription != null)
+			builder.append("i18nDescription=").append(i18nDescription).append(", ");
+		if (defaultValue != null)
+			builder.append("defaultValue=").append(defaultValue).append(", ");
+		if (attributeUnit != null)
+			builder.append("attributeUnit=").append(attributeUnit).append(", ");
+		if (type != null)
+			builder.append("type=").append(type).append(", ");
+		builder.append("required=").append(required).append(", ");
+		if (options != null)
+			builder.append("options=").append(options).append(", ");
+		if (validation_exp != null)
+			builder.append("validation_exp=").append(validation_exp).append(", ");
+		if (guid != null)
+			builder.append("guid=").append(guid).append(", ");
+		if (template != null)
+			builder.append("template=").append(template).append(", ");
+		if (MINCardinality != null)
+			builder.append("MINCardinality=").append(MINCardinality).append(", ");
+		if (MAXCardinality != null)
+			builder.append("MAXCardinality=").append(MAXCardinality).append(", ");
+		if (elements != null)
+			builder.append("elements=").append(toString(elements, maxLen)).append(", ");
+		if (templateElement != null)
+			builder.append("templateElement=").append(templateElement);
+		builder.append("]");
+		return builder.toString();
+	}
+
+	private String toString(Collection<?> collection, int maxLen) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("[");
+		int i = 0;
+		for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+			if (i > 0)
+				builder.append(", ");
+			builder.append(iterator.next());
+		}
+		builder.append("]");
+		return builder.toString();
 	}
 	
 }

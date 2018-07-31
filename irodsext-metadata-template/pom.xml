@@ -93,7 +93,7 @@
 			</exclusions>
 		</dependency>
 
-		<!-- <dependency> <groupId>cglib</groupId> <artifactId>cglib</artifactId> 
+		<!-- <dependency> <groupId>cglib</groupId> <artifactId>cglib</artifactId>
 			<version>2.2.2</version> </dependency> -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -128,21 +128,23 @@
 			</exclusions>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.github.joschi.jackson/jackson-datatype-threetenbp -->
 		<dependency>
 			<groupId>com.github.joschi.jackson</groupId>
 			<artifactId>jackson-datatype-threetenbp</artifactId>
-			</dependency>
+			<version>2.6.4</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-tools -->
-		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-tools</artifactId> 
-			<version>${hibernate.version}</version> </dependency> <dependency> <groupId>org.hibernate</groupId> 
-			<artifactId>hibernate-validator</artifactId> <version>${hibernate.version}</version> 
-			</dependency> <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-envers</artifactId> 
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-tools</artifactId>
+			<version>${hibernate.version}</version> </dependency> <dependency> <groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId> <version>${hibernate.version}</version>
+			</dependency> <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-envers</artifactId>
 			<version>${hibernate.version}</version> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
-		<!-- <dependency> <groupId>javax.annotation</groupId> <artifactId>javax.annotation-api</artifactId> 
-			<version>1.2</version> </dependency> <dependency> <groupId>javax.transaction</groupId> 
-			<artifactId>jta</artifactId> <version>1.1</version> </dependency> <dependency> 
-			<groupId>javax.el</groupId> <artifactId>javax.el-api</artifactId> <version>2.2.4</version> 
+		<!-- <dependency> <groupId>javax.annotation</groupId> <artifactId>javax.annotation-api</artifactId>
+			<version>1.2</version> </dependency> <dependency> <groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId> <version>1.1</version> </dependency> <dependency>
+			<groupId>javax.el</groupId> <artifactId>javax.el-api</artifactId> <version>2.2.4</version>
 			</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
