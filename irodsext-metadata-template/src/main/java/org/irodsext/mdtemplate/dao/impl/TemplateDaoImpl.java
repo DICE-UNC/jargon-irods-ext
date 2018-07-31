@@ -7,12 +7,12 @@ import java.util.UUID;
 import javax.lang.model.element.Element;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
-import org.hibernate.query.Query;
 import org.irodsext.mdtemplate.dao.TemplateDao;
 import org.irodsext.mdtemplate.entity.Template;
 import org.irodsext.mdtemplate.entity.TemplateElement;
@@ -38,19 +38,19 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	
 	@Override
 	public Template findByName(String templateName) {
-		  Query<Template> q = this.sessionFactory.getCurrentSession()
+		  Query q = this.sessionFactory.getCurrentSession()
 	                .createQuery("from Template where templateName = (:templateName)");
 	      q.setParameter("templateName", templateName);	
-		  return q.uniqueResult();
+		  return (Template) q.uniqueResult();
 	}
 	
 	
 	@Override
 	public Template findById(long id) {
-		 Query<Template> q = this.sessionFactory.getCurrentSession().createQuery("from Template where id=(:id)");
+		 Query q = this.sessionFactory.getCurrentSession().createQuery("from Template where id=(:id)");
 	        q.setParameter("id", id);
 
-	        return q.uniqueResult();
+	        return (Template) q.uniqueResult();
 	}
 	
 	@Override
@@ -87,7 +87,7 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	
 	@Override
 	public Template findByGuid(UUID guid) {
-		 Query<Template> q = this.sessionFactory.getCurrentSession().createQuery("from Template where guid=:guid and element.parent");
+		 Query q = this.sessionFactory.getCurrentSession().createQuery("from Template where guid=:guid and element.parent");
 		 
 		 Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Template.class,"template")
 				 .createAlias("element", "element")

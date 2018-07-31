@@ -3,9 +3,9 @@ package org.irodsext.mdtemplate.dao.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.irodsext.mdtemplate.dao.GenericDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
