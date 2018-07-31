@@ -18,10 +18,10 @@ public class TemplateElementDaoImpl extends GenericDaoImpl<TemplateElement , Lon
 	private SessionFactory sessionFactory;
 	
 	public TemplateElement findById(long id) {
-		Query<TemplateElement> q = sessionFactory.getCurrentSession().createQuery("from TemplateElement where element_id=(:id)");
+		Query q = sessionFactory.getCurrentSession().createQuery("from TemplateElement where element_id=(:id)");
 		q.setParameter("id", id);
 		
-		return (TemplateElement)q.uniqueResult();
+		return (TemplateElement) q.uniqueResult();
 	}
 
 	public boolean modifyById(long id, String name, String value, String unit) {
@@ -51,11 +51,11 @@ public class TemplateElementDaoImpl extends GenericDaoImpl<TemplateElement , Lon
 
 	@Override
 	public TemplateElement findByGuid(UUID guid) {
-		 Query<TemplateElement> q = this.sessionFactory.getCurrentSession().
+		 Query q = this.sessionFactory.getCurrentSession().
 				 createQuery("from TemplateElement where guid=:guid");
 	        q.setParameter("guid", guid);
 
-	        return q.uniqueResult();
+	        return (TemplateElement) q.uniqueResult();
 
 	}
 	
