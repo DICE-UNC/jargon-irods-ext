@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.lang.model.element.Element;
+
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.query.Query;
 import org.irodsext.mdtemplate.dao.TemplateDao;
 import org.irodsext.mdtemplate.entity.Template;
@@ -80,10 +87,24 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	
 	@Override
 	public Template findByGuid(UUID guid) {
-		 Query<Template> q = this.sessionFactory.getCurrentSession().createQuery("from Template where guid=:guid");
-	        q.setParameter("guid", guid);
+		 Query<Template> q = this.sessionFactory.getCurrentSession().createQuery("from Template where guid=:guid and element.parent");
+		 
+		 Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Template.class,"template")
+				 .createAlias("element", "element")
+	                .add(Restrictions.eq("template.guid", guid))
+	                .add(Restrictions.isNull("element.parent_id"));
 
-	        return q.uniqueResult();
+		
+		 
+		/* select * from templates_poc template
+		 join template_elements_poc elmt on elmt.template_id = template.template_id
+		 where elmt.parent_id is null*/
+		 
+		
+	        return (Template) criteria.uniqueResult();     
+	      // q.setParameter("guid", guid);
+
+	       // return q.uniqueResult();
 
 	}
 

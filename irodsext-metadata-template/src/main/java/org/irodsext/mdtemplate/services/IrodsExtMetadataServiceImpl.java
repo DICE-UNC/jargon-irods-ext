@@ -136,9 +136,25 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	}
 
 	@Override
-	public UUID updateElement(UUID templateGuid, MDTemplateElement metadataTemplate) throws MetadataTemplateException {
-		// TODO Auto-generated method stub
-		return null;
+	public UUID updateElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
+		System.out.println("saveElement{} starts :: " +templateGuid);
+		MDTemplate mdTemplate = findTemplateByGuid(templateGuid);
+		UUID guid = null;
+		if(mdTemplate == null) {
+			//discuss this logic when parent does not exists
+			return guid;
+		}else {
+			TemplateElement element = new TemplateElement();			
+			element = getElementEntityFromJson(mdElement,mdTemplate);	
+			// need to set elment id here // element.setId(mdElement.geti);
+			//element.setTemplate(getTemplateEntityFromJson(mdTemplate));
+			System.out.println("Element :: " +element);
+			elementDao.save(element);
+			guid = element.getGuid();
+
+		}
+		System.out.println("saveElement{} Ends");
+		return guid;
 	}
 
 	@Override

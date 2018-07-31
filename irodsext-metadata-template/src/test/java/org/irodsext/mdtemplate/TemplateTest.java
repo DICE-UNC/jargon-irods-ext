@@ -35,7 +35,7 @@ public class TemplateTest extends TestCase{
 /*	@Autowired
 	private TemplateElementService templateElementService;
 */
-	@Transactional
+/*	@Transactional
 	@Test
 	public void createTemplate() 
 	{
@@ -70,16 +70,16 @@ public class TemplateTest extends TestCase{
 		
 		
 
-	}
-	/*
+	}*/
+	
 	@Transactional
 	@Test
-	public void getTemplateBGuid() throws MetadataTemplateNotFoundException, MetadataTemplateException {	
-		MDTemplate template = abstractMetadataService.findTemplateByUUID(UUID.fromString("9f089439-9665-4464-929b-2704d765b588"));
-		System.out.println("Saved :: "+template.getTemplateName());
+	public void getTemplateBGuid() throws MetadataTemplateException {	
+		MDTemplate template = abstractMetadataService.findTemplateByGuid(UUID.fromString("6e201f58-8b83-4ed0-a04a-487a448afe8a"));
+		System.out.println("Found  :: "+template);
 
 	}
-	*/
+	
 
 	/*@Test
 	public void createTemplateWithElement() {
