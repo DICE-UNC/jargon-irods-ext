@@ -87,7 +87,7 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	
 	@Override
 	public Template findByGuid(UUID guid) {
-		 Query q = this.sessionFactory.getCurrentSession().createQuery("from Template where guid=:guid and element.parent");
+		// Query q = this.sessionFactory.getCurrentSession().createQuery("from Template where guid=:guid and element.parent");
 
 		 
 		 Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Template.class,"template")
