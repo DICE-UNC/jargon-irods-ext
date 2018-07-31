@@ -42,7 +42,7 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	@Column(name = "i18n_name", length = 80)
 	private String i18nName;
 
-	@Column(name = "i18n_description", length = 80)
+	@Column(name = "i18n_description")
 	private String i18nDescription;
 
 	@Column(name = "default_value", length = 100)
@@ -61,7 +61,7 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	private String options;
 	
 	@Column(name = "validation_exp")
-	private String validation_exp;
+	private String validationExp;
 	
 	@Column(name = "guid", unique = true, nullable = false)
 	private UUID guid;	
@@ -153,12 +153,12 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 		this.options = options;
 	}
 
-	public String getValidation_exp() {
-		return validation_exp;
+	public String getValidationExp() {
+		return validationExp;
 	}
 
-	public void setValidation_exp(String validation_exp) {
-		this.validation_exp = validation_exp;
+	public void setValidationExp(String validationExp) {
+		this.validationExp = validationExp;
 	}
 
 	public UUID getGuid() {
@@ -313,8 +313,8 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 		builder.append("required=").append(required).append(", ");
 		if (options != null)
 			builder.append("options=").append(options).append(", ");
-		if (validation_exp != null)
-			builder.append("validation_exp=").append(validation_exp).append(", ");
+		if (validationExp != null)
+			builder.append("validation_exp=").append(validationExp).append(", ");
 		if (guid != null)
 			builder.append("guid=").append(guid).append(", ");
 		if (template != null)

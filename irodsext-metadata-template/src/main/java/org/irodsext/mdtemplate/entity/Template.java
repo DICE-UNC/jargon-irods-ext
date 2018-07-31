@@ -54,7 +54,7 @@ public class Template implements Serializable, Comparable<Template>{
 	@Column(name = "i18n_name", length = 80)
 	private String i18nName;
 
-	@Column(name = "i18n_description", length = 80)
+	@Column(name = "i18n_description")
 	private String i18nDescription;
 
 	@Column(name = "guid", unique = true, nullable = false)

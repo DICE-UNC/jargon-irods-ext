@@ -35,7 +35,7 @@ public class TemplateTest extends TestCase{
 /*	@Autowired
 	private TemplateElementService templateElementService;
 */
-/*	@Transactional
+	@Transactional
 	@Test
 	public void createTemplate() 
 	{
@@ -49,7 +49,7 @@ public class TemplateTest extends TestCase{
 		
 		MDTemplateElement mdtemplateElement1 = new MDTemplateElement();
 		mdtemplateElement1.setName("MiseqTest");
-		mdtemplateElement1.setGuid(UUID.randomUUID().toString());
+		//mdtemplateElement1.setGuid(UUID.randomUUID().toString());
 		mdtemplateElement1.setOptions("miseq,novaseq,thatseq");
 		mdtemplateElement1.required(false);
 		mdtemplateElement1.setType("String");
@@ -70,15 +70,15 @@ public class TemplateTest extends TestCase{
 		
 		
 
-	}*/
+	}
 	
-	@Transactional
+	/*@Transactional
 	@Test
 	public void getTemplateBGuid() throws MetadataTemplateException {	
 		MDTemplate template = abstractMetadataService.findTemplateByGuid(UUID.fromString("6e201f58-8b83-4ed0-a04a-487a448afe8a"));
 		System.out.println("Found  :: "+template);
 
-	}
+	}*/
 	
 
 	/*@Test

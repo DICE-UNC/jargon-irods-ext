@@ -204,7 +204,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		templateElement.setMAXCardinality(mdElement.getCardinalityMax());
 		templateElement.setMINCardinality(mdElement.getCardinalityMin());
 		templateElement.setType(mdElement.getType());
-		templateElement.setValidation_exp(mdElement.getValidationExp());
+		templateElement.setValidationExp(mdElement.getValidationExp());
 		templateElement.setTemplate(template);
 		
 		System.out.println("Adding the parent template to metadata :: " +template.getTemplateName()+" , and id :: " +template.getId());
@@ -220,7 +220,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			childElement.setMINCardinality(ce.getCardinalityMin());							
 			childElement.setMAXCardinality(ce.getCardinalityMax());							
 			childElement.setType(ce.getType());							
-			childElement.setValidation_exp(ce.getValidationExp());	
+			childElement.setValidationExp(ce.getValidationExp());	
 			System.out.println("Adding the child template to metadata :: " +template.getTemplateName()+" , and id :: " +template.getId());
 			childElement.setTemplate(template);			
 			
@@ -248,7 +248,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		mdElement.setCardinalityMax(element.getMAXCardinality());
 		mdElement.setCardinalityMin(element.getMINCardinality());
 		mdElement.setType(element.getType());
-		mdElement.setValidationExp(element.getValidation_exp());
+		mdElement.setValidationExp(element.getValidationExp());
 		
 		List<MDTemplateElement> childElementsList = new ArrayList<>();
 		for (TemplateElement ce : element.getElements()) {
@@ -262,7 +262,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			mdChildElement.setCardinalityMin(ce.getMINCardinality());							
 			mdChildElement.setCardinalityMax(ce.getMAXCardinality());							
 			mdChildElement.setType(ce.getType());							
-			mdChildElement.setValidationExp(ce.getValidation_exp());										
+			mdChildElement.setValidationExp(ce.getValidationExp());										
 			//mdChildElement.setTemplate(template);								
 			childElementsList.add(mdChildElement);
 		}		
@@ -281,7 +281,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		template.setAccessType(mdTemplate.getAccessType());
 		
 		Set<TemplateElement> templateElementSet = new TreeSet<>();
-		if(mdTemplate.getElements()!=null) {
+		if(mdTemplate.getElements()!=null && !mdTemplate.getElements().isEmpty()) {
 			for (MDTemplateElement e : mdTemplate.getElements()){			
 				TemplateElement element = new TemplateElement();
 				element.setName(e.getName());
@@ -293,11 +293,11 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 				element.setMINCardinality(e.getCardinalityMin());
 				element.setMAXCardinality(e.getCardinalityMax());
 				element.setType(e.getType());
-				element.setValidation_exp(e.getValidationExp());
+				element.setValidationExp(e.getValidationExp());
 				element.setTemplate(template);
 
 				Set<TemplateElement> childElementsSet = new TreeSet<>();
-				if(element.getElements() != null) {
+				if(element.getElements() != null && !element.getElements().isEmpty()) {
 					for (MDTemplateElement ce : e.getElements()) {
 						TemplateElement childElement = new TemplateElement();
 						childElement.setName(ce.getName());										
@@ -309,7 +309,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 						childElement.setMINCardinality(ce.getCardinalityMin());							
 						childElement.setMAXCardinality(ce.getCardinalityMax());							
 						childElement.setType(ce.getType());							
-						childElement.setValidation_exp(ce.getValidationExp());							
+						childElement.setValidationExp(ce.getValidationExp());							
 						childElement.setTemplate(template);					
 						childElement.setTemplateElement(element);							
 						childElementsSet.add(childElement);
@@ -350,10 +350,10 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			mdElement.setRequired(element.isRequired());
 			mdElement.setType(element.getType());
 			mdElement.setUnit(element.getAttributeUnit());
-			mdElement.setValidationExp(element.getValidation_exp());
+			mdElement.setValidationExp(element.getValidationExp());
 			
 			List<MDTemplateElement> childElementsList = new ArrayList<>();
-			if(element.getElements() != null) {
+			if(element.getElements() != null && !element.getElements().isEmpty()) {
 				for (TemplateElement ce : element.getElements()) {			
 					MDTemplateElement mdChildElement = new MDTemplateElement();
 					mdChildElement.setName(ce.getName());										
@@ -365,7 +365,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 					mdChildElement.setCardinalityMin(ce.getMINCardinality());							
 					mdChildElement.setCardinalityMax(ce.getMAXCardinality());							
 					mdChildElement.setType(ce.getType());							
-					mdChildElement.setValidationExp(ce.getValidation_exp());							
+					mdChildElement.setValidationExp(ce.getValidationExp());							
 					
 					//mdChildElement.setTemplate(template);										
 					childElementsList.add(mdChildElement);
