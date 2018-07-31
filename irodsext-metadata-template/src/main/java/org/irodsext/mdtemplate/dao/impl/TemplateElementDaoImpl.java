@@ -21,7 +21,7 @@ public class TemplateElementDaoImpl extends GenericDaoImpl<TemplateElement , Lon
 		Query q = sessionFactory.getCurrentSession().createQuery("from TemplateElement where element_id=(:id)");
 		q.setParameter("id", id);
 		
-		return (TemplateElement)q.uniqueResult();
+		return (TemplateElement) q.uniqueResult();
 	}
 
 	public boolean modifyById(long id, String name, String value, String unit) {

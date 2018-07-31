@@ -88,13 +88,23 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 	@Override
 	public Template findByGuid(UUID guid) {
 		 Query q = this.sessionFactory.getCurrentSession().createQuery("from Template where guid=:guid and element.parent");
+
 		 
 		 Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Template.class,"template")
 				 .createAlias("element", "element")
-	                .add(Restrictions.eq("template.guid", guid))
-	                .add(Restrictions.isNull("element.parent_id"));
+	                .add(Restrictions.eq("template.guid", guid));
+	               // .add(Restrictions.isNull("element.parent_id"));
 
-		
+		 
+			/*Criteria criteria = session.createCriteria(YourClass.class);
+			 YourObject yourObject = criteria.add(Restrictions.eq("yourField", yourFieldValue))
+			                              .uniqueResult(); 
+			 no if you get the template in hibernate it will find the elements 
+			 you just need to get the template in the hib session per above 
+			  */
+			
+			  
+
 		 
 		/* select * from templates_poc template
 		 join template_elements_poc elmt on elmt.template_id = template.template_id
