@@ -105,9 +105,8 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	@Override
 	public UUID updateTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
 
-		System.out.println("Updating template for id :: " +mdTemplate.getId());
+		System.out.println("Updating template for id :: " +mdTemplate.getGuid());
 		Template template = getTemplateEntityFromJson(mdTemplate);
-		template.setId(mdTemplate.getId());
 		templateDao.merge(template);
 		return template.getGuid();
 	}
@@ -280,7 +279,6 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		template.setModifyTs(DateTimeUtils.toDate(mdTemplate.getModifyTs().toZonedDateTime().toInstant()));
 		template.setOwner(mdTemplate.getOwner());
 		template.setAccessType(mdTemplate.getAccessType());
-		template.setId(mdTemplate.getId());
 		
 		Set<TemplateElement> templateElementSet = new TreeSet<>();
 		if(mdTemplate.getElements()!=null) {
@@ -329,7 +327,6 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	public MDTemplate getTemplateJsonFromEntity(Template template) {
 		MDTemplate mdTemplate = new MDTemplate();
 
-		mdTemplate.setId(template.getId());
 		mdTemplate.setTemplateName(template.getTemplateName());
 		mdTemplate.setGuid(template.getGuid().toString());		
 		//**************THis dates needs to be changed*****************
