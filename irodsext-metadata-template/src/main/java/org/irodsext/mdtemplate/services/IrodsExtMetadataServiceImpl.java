@@ -55,11 +55,10 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 
 	@Override
-	public UUID saveTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
+	public void saveTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
 
 		Template template = getTemplateEntityFromJson(mdTemplate);
 		Long id = (Long) templateDao.save(template);
-		return template.getGuid();
 	}
 
 	@Override
@@ -103,16 +102,15 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 
 	@Override
-	public UUID updateTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
+	public void updateTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
 
 		System.out.println("Updating template for id :: " +mdTemplate.getGuid());
 		Template template = getTemplateEntityFromJson(mdTemplate);
 		templateDao.merge(template);
-		return template.getGuid();
 	}
 
 	@Override
-	public UUID saveElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
+	public void saveElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
 		// TODO Auto-generated method stub
 
 		System.out.println("saveElement{} starts :: " +templateGuid);
@@ -120,28 +118,24 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		UUID guid = null;
 		if(mdTemplate == null) {
 			//discuss this logic when parent does not exists
-			return guid;
 		}else {
 			TemplateElement element = new TemplateElement();			
 			element = getElementEntityFromJson(mdElement,mdTemplate);	
 			//element.setTemplate(getTemplateEntityFromJson(mdTemplate));
 			System.out.println("Element :: " +element);
 			elementDao.save(element);
-			guid = element.getGuid();
 
 		}
 		System.out.println("saveElement{} Ends");
-		return guid;
 	}
 
 	@Override
-	public UUID updateElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
+	public void updateElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
 		System.out.println("saveElement{} starts :: " +templateGuid);
 		MDTemplate mdTemplate = findTemplateByGuid(templateGuid);
 		UUID guid = null;
 		if(mdTemplate == null) {
 			//discuss this logic when parent does not exists
-			return guid;
 		}else {
 			TemplateElement element = new TemplateElement();			
 			element = getElementEntityFromJson(mdElement,mdTemplate);	
@@ -149,11 +143,9 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			//element.setTemplate(getTemplateEntityFromJson(mdTemplate));
 			System.out.println("Element :: " +element);
 			elementDao.save(element);
-			guid = element.getGuid();
 
 		}
 		System.out.println("saveElement{} Ends");
-		return guid;
 	}
 
 	@Override
@@ -198,7 +190,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		templateElement.setDefaultValue(mdElement.getDefaultValue());
 		templateElement.setAttributeUnit(mdElement.getUnit());
 		templateElement.setName(mdElement.getName());
-		templateElement.setGuid(UUID.fromString(mdElement.getGuid()));
+		templateElement.setGuid(mdElement.getGuid());
 		templateElement.setOptions(mdElement.getOptions());
 		templateElement.setRequired(mdElement.isRequired());
 		templateElement.setMAXCardinality(mdElement.getCardinalityMax());
@@ -213,7 +205,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			TemplateElement childElement = new TemplateElement();
 			childElement.setName(ce.getName());										
 			//e.setGuid(UUID.fromString(element.getGuid()));
-			childElement.setGuid(UUID.randomUUID());
+			childElement.setGuid(UUID.randomUUID().toString());
 			childElement.setOptions(ce.getOptions());
 			childElement.setDefaultValue(ce.getDefaultValue());				
 			childElement.setRequired(ce.isRequired());					
@@ -274,7 +266,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		Template template = new Template();
 		template.setTemplateName(mdTemplate.getTemplateName());
 		template.setDescription(mdTemplate.getDescription());
-		template.setGuid(UUID.fromString(mdTemplate.getGuid()));
+		template.setGuid(mdTemplate.getGuid());
 		template.setCreateTs(DateTimeUtils.toDate(mdTemplate.getCreateTs().toZonedDateTime().toInstant()));
 		template.setModifyTs(DateTimeUtils.toDate(mdTemplate.getModifyTs().toZonedDateTime().toInstant()));
 		template.setOwner(mdTemplate.getOwner());
@@ -286,7 +278,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 				TemplateElement element = new TemplateElement();
 				element.setName(e.getName());
 				//e.setGuid(UUID.fromString(element.getGuid()));
-				element.setGuid(UUID.randomUUID());
+				element.setGuid(UUID.randomUUID().toString());
 				element.setOptions(e.getOptions());
 				element.setDefaultValue(e.getDefaultValue());
 				element.setRequired(e.isRequired());
@@ -302,7 +294,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 						TemplateElement childElement = new TemplateElement();
 						childElement.setName(ce.getName());										
 						//e.setGuid(UUID.fromString(element.getGuid()));
-						childElement.setGuid(UUID.randomUUID());
+						childElement.setGuid(UUID.randomUUID().toString());
 						childElement.setOptions(ce.getOptions());
 						childElement.setDefaultValue(ce.getDefaultValue());				
 						childElement.setRequired(ce.isRequired());					

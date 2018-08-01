@@ -39,10 +39,10 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	@Column(name = "description", length = 512)
 	private String description;
 	
-	@Column(name = "i18n_name", length = 80)
+	@Column(name = "i18name", length = 80)
 	private String i18nName;
 
-	@Column(name = "i18n_description")
+	@Column(name = "i18description")
 	private String i18nDescription;
 
 	@Column(name = "default_value", length = 100)
@@ -64,7 +64,7 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	private String validationExp;
 	
 	@Column(name = "guid", unique = true, nullable = false)
-	private UUID guid;	
+	private String guid;	
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "template_id", nullable = false, updatable = true)
@@ -161,11 +161,11 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 		this.validationExp = validationExp;
 	}
 
-	public UUID getGuid() {
+	public String getGuid() {
 		return guid;
 	}
 
-	public void setGuid(UUID guid) {
+	public void setGuid(String guid) {
 		this.guid = guid;
 	}
 

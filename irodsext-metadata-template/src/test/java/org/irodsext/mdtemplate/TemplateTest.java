@@ -61,8 +61,7 @@ public class TemplateTest extends TestCase{
 
 		mdTemplate.setElements(mdTemplateElementList);
 		try {
-			UUID guid = abstractMetadataService.saveTemplate(mdTemplate);
-			System.out.println("GUID is ::" +guid);
+			abstractMetadataService.saveTemplate(mdTemplate);
 		} catch (MetadataTemplateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

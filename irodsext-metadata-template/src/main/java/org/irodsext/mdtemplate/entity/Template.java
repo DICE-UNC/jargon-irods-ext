@@ -51,14 +51,14 @@ public class Template implements Serializable, Comparable<Template>{
 	@Column(name = "description", length = 512)
 	private String description;
 	
-	@Column(name = "i18n_name", length = 80)
+	@Column(name = "i18name", length = 80)
 	private String i18nName;
 
-	@Column(name = "i18n_description")
+	@Column(name = "i18description")
 	private String i18nDescription;
 
 	@Column(name = "guid", unique = true, nullable = false)
-	private UUID guid;
+	private String guid;
 	
 	@Column(name = "access_type")
 	private String accessType;
@@ -125,11 +125,11 @@ public class Template implements Serializable, Comparable<Template>{
 		this.elements = fields;
 	}
 
-	public UUID getGuid() {
+	public String getGuid() {
 		return guid;
 	}
 
-	public void setGuid(UUID guid) {
+	public void setGuid(String guid) {
 		this.guid = guid;
 	}
 
