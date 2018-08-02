@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.irodsext.mdtemplate.dao.TemplateElementDao;
-import org.irodsext.mdtemplate.entity.Template;
 import org.irodsext.mdtemplate.entity.TemplateElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -53,7 +52,7 @@ public class TemplateElementDaoImpl extends GenericDaoImpl<TemplateElement , Lon
 	public TemplateElement findByGuid(UUID guid) {
 		 Query q = this.sessionFactory.getCurrentSession().
 				 createQuery("from TemplateElement where guid=:guid");
-	        q.setParameter("guid", guid);
+	        q.setParameter("guid", guid.toString());
 
 	        return (TemplateElement) q.uniqueResult();
 

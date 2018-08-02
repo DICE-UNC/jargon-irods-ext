@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
+
+import org.apache.catalina.valves.rewrite.Substitution.SubstitutionElement;
 import org.irods.jargon.metadatatemplate.AbstractMetadataService;
 import org.irods.jargon.metadatatemplate.MetadataTemplateException;
 import org.irods.jargon.metadatatemplate.MetadataTemplateNotFoundException;
@@ -15,6 +17,8 @@ import org.irodsext.mdtemplate.dao.TemplateDao;
 import org.irodsext.mdtemplate.dao.TemplateElementDao;
 import org.irodsext.mdtemplate.entity.Template;
 import org.irodsext.mdtemplate.entity.TemplateElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +32,8 @@ import org.threeten.bp.OffsetDateTime;
 @Transactional
 public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
+	private static final Logger logger = LoggerFactory.getLogger(IrodsExtMetadataServiceImpl.class);
+	
 	@Autowired
 	private TemplateDao templateDao;
 
@@ -56,9 +62,19 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 	@Override
 	public void saveTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
-
+		logger.info("saveTemplate () starts");
 		Template template = getTemplateEntityFromJson(mdTemplate);
+		Set<TemplateElement> element = template.getElements();
+		for(TemplateElement e : element) {
+			logger.info("element :: " +e);
+			
+			Set<TemplateElement> subelement = e.getElements();
+			for(TemplateElement subElm : subelement) {
+				logger.info("sub elments :: " +subElm);
+			}
+		}
 		Long id = (Long) templateDao.save(template);
+		logger.info("saveTemplate () Ends");
 	}
 
 	@Override
@@ -93,76 +109,77 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	public MDTemplate findTemplateByGuid(UUID guid)
 			throws MetadataTemplateNotFoundException, MetadataTemplateException {
 		
-		System.out.println("findTemplateByGuid {} starts :: " +guid);
+		logger.info("findTemplateByGuid () starts :: " +guid);
 		Template template = templateDao.findByGuid(guid);
 		MDTemplate mdTemplate = getTemplateJsonFromEntity(template);
-		System.out.println("findTemplateByGuid {} Ends :: ");
+		logger.info("findTemplateByGuid () Ends :: ");
 		return mdTemplate;
 	}
 
 
 	@Override
 	public void updateTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
-
-		System.out.println("Updating template for id :: " +mdTemplate.getGuid());
-		Template template = getTemplateEntityFromJson(mdTemplate);
-		templateDao.merge(template);
+		logger.info("updateTemplate() starts :: " +mdTemplate.getGuid());
+		Template templateByGuid = templateDao.findByGuid(UUID.fromString(mdTemplate.getGuid()));
+		if(templateByGuid == null) {
+			logger.info("template does not exist");
+		}else {
+			Template template = getTemplateEntityFromJson(mdTemplate);
+			logger.info("Updating template for id :: " +templateByGuid.getId());
+			template.setId(templateByGuid.getId());
+			templateDao.merge(template);
+		}
+		logger.info("updateTemplate() Ends.");
 	}
 
 	@Override
 	public void saveElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
 		// TODO Auto-generated method stub
 
-		System.out.println("saveElement{} starts :: " +templateGuid);
+		logger.info("saveElement() starts :: " +templateGuid);
 		MDTemplate mdTemplate = findTemplateByGuid(templateGuid);
-		UUID guid = null;
+		Template template = templateDao.findByGuid(templateGuid);
 		if(mdTemplate == null) {
-			//discuss this logic when parent does not exists
+			logger.info("Template does not exist :: " +templateGuid);
 		}else {
 			TemplateElement element = new TemplateElement();			
-			element = getElementEntityFromJson(mdElement,mdTemplate);	
-			//element.setTemplate(getTemplateEntityFromJson(mdTemplate));
-			System.out.println("Element :: " +element);
+			element = getElementEntityFromJson(mdElement,template);	
+			
+			logger.info("Element :: " +element);
 			elementDao.save(element);
 
 		}
-		System.out.println("saveElement{} Ends");
+		logger.info("saveElement() Ends.");
 	}
 
 	@Override
 	public void updateElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
-		System.out.println("saveElement{} starts :: " +templateGuid);
-		MDTemplate mdTemplate = findTemplateByGuid(templateGuid);
-		UUID guid = null;
-		if(mdTemplate == null) {
-			//discuss this logic when parent does not exists
+		logger.info("saveElement() starts :: " +templateGuid);
+		Template template = templateDao.findByGuid(templateGuid);
+		
+		if(template == null) {
+			logger.info("Template does not exist :: " +templateGuid);
 		}else {
-			TemplateElement element = new TemplateElement();			
-			element = getElementEntityFromJson(mdElement,mdTemplate);	
-			// need to set elment id here // element.setId(mdElement.geti);
-			//element.setTemplate(getTemplateEntityFromJson(mdTemplate));
-			System.out.println("Element :: " +element);
-			elementDao.save(element);
-
+			TemplateElement element = getElementEntityFromJson(mdElement,template);		
+			TemplateElement elementByGuid = elementDao.findByGuid(UUID.fromString(mdElement.getGuid()));
+			if(elementByGuid == null) {
+				logger.info("element does not exist :: " +mdElement.getGuid());
+			}else {
+				element.setId(elementByGuid.getId());
+				logger.info("Updating element for id :: " +elementByGuid.getId());
+				logger.info("Element :: " +element);
+				elementDao.merge(element);
+			}			
 		}
-		System.out.println("saveElement{} Ends");
+		System.out.println("saveElement() Ends");
 	}
 
 	@Override
 	public boolean deleteElementByGuid(UUID templateGuid, UUID elementGuid) throws MetadataTemplateException {
 		
-		System.out.println("deleteElementByGuid starts{} :: " +templateGuid+ "element guid :: " +elementGuid);
-		MDTemplate template = findTemplateByGuid(templateGuid);
-		boolean isDeleted = false;
-		if(template == null) {
-			//discuss this logic when parent does not exists.
-			//do we need to pass template guid here. since element to template has no hard dependency.
-			return isDeleted;
-		}else {
-			isDeleted = elementDao.deleteByGuid(elementGuid);
-		}
-		System.out.println("deleteElementByGuid starts{} :: ");
-		return isDeleted;
+		logger.info("deleteElementByGuid starts() :: " +templateGuid+ "element guid :: " +elementGuid);
+		//why do we need template id here??
+		return elementDao.deleteByGuid(elementGuid);
 	}
 
 	@Override
@@ -173,6 +190,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		if(template == null) {
 			//discuss this logic when parent does not exists.
 			//do we need to pass template guid here. since element to template has no hard dependency.
+			logger.info("Template does not exist :: " +templateGuid);
 			return null;
 		}else {
 			TemplateElement element = elementDao.findByGuid(elementGuid);
@@ -182,10 +200,11 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 	}
 
-	public TemplateElement getElementEntityFromJson(MDTemplateElement mdElement, MDTemplate mdTemplate) {
+	public TemplateElement getElementEntityFromJson(MDTemplateElement mdElement, Template template) {
 	
-		Template template = getTemplateEntityFromJson(mdTemplate);
+		logger.info("Element for Template :: " +template.getTemplateName()+ " , id :: " +template.getId() );
 		
+		logger.info("Element :: " + mdElement.getName());
 		TemplateElement templateElement = new TemplateElement();
 		templateElement.setDefaultValue(mdElement.getDefaultValue());
 		templateElement.setAttributeUnit(mdElement.getUnit());
@@ -199,13 +218,15 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		templateElement.setValidationExp(mdElement.getValidationExp());
 		templateElement.setTemplate(template);
 		
-		System.out.println("Adding the parent template to metadata :: " +template.getTemplateName()+" , and id :: " +template.getId());
+		
 		Set<TemplateElement> childElementsSet = new TreeSet<>();
 		for (MDTemplateElement ce : mdElement.getElements()) {
+			logger.info("Sub Element :: " +ce.getName());
 			TemplateElement childElement = new TemplateElement();
 			childElement.setName(ce.getName());										
 			//e.setGuid(UUID.fromString(element.getGuid()));
-			childElement.setGuid(UUID.randomUUID().toString());
+			String guid = ce.getGuid() !=null ? ce.getGuid() : UUID.randomUUID().toString();
+			childElement.setGuid(guid);
 			childElement.setOptions(ce.getOptions());
 			childElement.setDefaultValue(ce.getDefaultValue());				
 			childElement.setRequired(ce.isRequired());					
@@ -213,10 +234,9 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			childElement.setMAXCardinality(ce.getCardinalityMax());							
 			childElement.setType(ce.getType());							
 			childElement.setValidationExp(ce.getValidationExp());	
-			System.out.println("Adding the child template to metadata :: " +template.getTemplateName()+" , and id :: " +template.getId());
-			childElement.setTemplate(template);			
-			
-			System.out.println("Adding the child meatdata to metadata :: " +childElement.getName());
+			//logger.info("Adding the child template to metadata :: " +template.getTemplateName()+" , and id :: " +template.getId());
+			childElement.setTemplate(template);						
+			//logger.info("Adding the child meatdata to metadata :: " +childElement.getName());
 			childElement.setTemplateElement(templateElement);							
 			childElementsSet.add(childElement);
 		}
@@ -264,6 +284,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 	public Template getTemplateEntityFromJson(MDTemplate mdTemplate) {			
 		Template template = new Template();
+		logger.info("Template :: " +mdTemplate.getTemplateName());
 		template.setTemplateName(mdTemplate.getTemplateName());
 		template.setDescription(mdTemplate.getDescription());
 		template.setGuid(mdTemplate.getGuid());
@@ -274,11 +295,12 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		
 		Set<TemplateElement> templateElementSet = new TreeSet<>();
 		if(mdTemplate.getElements()!=null && !mdTemplate.getElements().isEmpty()) {
-			for (MDTemplateElement e : mdTemplate.getElements()){			
+			for (MDTemplateElement e : mdTemplate.getElements()){		
+				logger.info("Element :: " +e.getName());
 				TemplateElement element = new TemplateElement();
 				element.setName(e.getName());
-				//e.setGuid(UUID.fromString(element.getGuid()));
-				element.setGuid(UUID.randomUUID().toString());
+				String guid = e.getGuid() != null ? e.getGuid() : UUID.randomUUID().toString();
+				element.setGuid(guid);
 				element.setOptions(e.getOptions());
 				element.setDefaultValue(e.getDefaultValue());
 				element.setRequired(e.isRequired());
@@ -289,12 +311,13 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 				element.setTemplate(template);
 
 				Set<TemplateElement> childElementsSet = new TreeSet<>();
-				if(element.getElements() != null && !element.getElements().isEmpty()) {
+				if(e.getElements() != null && !e.getElements().isEmpty()) {
 					for (MDTemplateElement ce : e.getElements()) {
+						logger.info("Sub element :: " +ce.getName());
 						TemplateElement childElement = new TemplateElement();
 						childElement.setName(ce.getName());										
-						//e.setGuid(UUID.fromString(element.getGuid()));
-						childElement.setGuid(UUID.randomUUID().toString());
+						String ceGuid = ce.getGuid() != null ? ce.getGuid() : UUID.randomUUID().toString();
+						childElement.setGuid(ceGuid);
 						childElement.setOptions(ce.getOptions());
 						childElement.setDefaultValue(ce.getDefaultValue());				
 						childElement.setRequired(ce.isRequired());					
@@ -311,6 +334,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 				templateElementSet.add(element);
 			}
 		}
+		
 		template.setElements(templateElementSet);
 
 		return template;		

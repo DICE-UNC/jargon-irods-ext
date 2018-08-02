@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.UUID;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -174,12 +172,32 @@ public class Template implements Serializable, Comparable<Template>{
 	public String toString() {
 		final int maxLen = 10;
 		StringBuilder builder = new StringBuilder();
-		builder.append("Template [id=").append(id).append(", templateName=").append(templateName).append(", createTs=")
-				.append(createTs).append(", modifyTs=").append(modifyTs).append(", version=").append(version)
-				.append(", description=").append(description).append(", i18nName=").append(i18nName)
-				.append(", i18nDescription=").append(i18nDescription).append(", guid=").append(guid)
-				.append(", accessType=").append(accessType).append(", owner=").append(owner).append(", elements=")
-				.append(elements != null ? toString(elements, maxLen) : null).append("]");
+		builder.append("Template [");
+		if (id != null)
+			builder.append("id=").append(id).append(", ");
+		if (templateName != null)
+			builder.append(", templateName=").append(templateName).append(", ");;
+		if (createTs != null)
+				builder.append(", createTs=").append(createTs).append(", ");;
+		if (modifyTs != null)
+				builder.append(", modifyTs=").append(modifyTs).append(", ");;
+		if (version != null)
+				builder.append(", version=").append(version).append(", ");;
+		if (description != null)
+				builder.append(", description=").append(description).append(", ");;
+		if (i18nName != null)
+				builder.append(", i18nName=").append(i18nName).append(", ");;
+		if (i18nDescription != null)
+				builder.append(", i18nDescription=").append(i18nDescription).append(", ");;
+		if (guid != null)
+				builder.append(", guid=").append(guid).append(", ");;
+		if (accessType != null)
+				builder.append(", accessType=").append(accessType).append(", ");;
+		if (owner != null)
+				builder.append(", owner=").append(owner).append(", ");;
+		if (elements != null)
+				builder.append(", elements=").append(toString(elements, maxLen)).append(", ");;
+		builder.append("]");
 		return builder.toString();
 	}
 

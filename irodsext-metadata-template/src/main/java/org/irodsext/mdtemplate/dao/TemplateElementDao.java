@@ -13,4 +13,5 @@ public interface TemplateElementDao extends GenericDao<TemplateElement , Long>{
 	boolean modifyById(long id, String attribute, String value, String unit);
 	boolean deleteByGuid(UUID guid);
 	public TemplateElement findByGuid(UUID guid);
+	
 }

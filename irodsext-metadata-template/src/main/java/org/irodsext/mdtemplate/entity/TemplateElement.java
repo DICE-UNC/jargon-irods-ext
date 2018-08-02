@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.UUID;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -70,9 +68,6 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	@JoinColumn(name = "template_id", nullable = false, updatable = true)
 	private Template template;
 	
-	/*@Column(name = "parent_id")
-	private Long parentId;	
-	*/
 	@Column(name = "min_cardinality")
 	private Integer MINCardinality;	
 	
@@ -297,36 +292,32 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 		if (id != null)
 			builder.append("id=").append(id).append(", ");
 		if (name != null)
-			builder.append("name=").append(name).append(", ");
+			builder.append(", name=").append(name).append(", ");
 		if (description != null)
-			builder.append("description=").append(description).append(", ");
+			builder.append(", description=").append(description).append(", ");
 		if (i18nName != null)
-			builder.append("i18nName=").append(i18nName).append(", ");
+			builder.append(", i18nName=").append(i18nName).append(", ");
 		if (i18nDescription != null)
-			builder.append("i18nDescription=").append(i18nDescription).append(", ");
+			builder.append(", i18nDescription=").append(i18nDescription).append(", ");
 		if (defaultValue != null)
-			builder.append("defaultValue=").append(defaultValue).append(", ");
+			builder.append(", defaultValue=").append(defaultValue).append(", ");
 		if (attributeUnit != null)
-			builder.append("attributeUnit=").append(attributeUnit).append(", ");
+			builder.append(", attributeUnit=").append(attributeUnit).append(", ");
 		if (type != null)
-			builder.append("type=").append(type).append(", ");
-		builder.append("required=").append(required).append(", ");
+			builder.append(", type=").append(type).append(", ");
 		if (options != null)
-			builder.append("options=").append(options).append(", ");
+			builder.append(", options=").append(options).append(", ");
 		if (validationExp != null)
-			builder.append("validation_exp=").append(validationExp).append(", ");
+			builder.append(", validationExp=").append(validationExp).append(", ");
 		if (guid != null)
-			builder.append("guid=").append(guid).append(", ");
-		if (template != null)
-			builder.append("template=").append(template).append(", ");
+			builder.append(", guid=").append(guid).append(", ");
 		if (MINCardinality != null)
-			builder.append("MINCardinality=").append(MINCardinality).append(", ");
+			builder.append(", MINCardinality=").append(MINCardinality).append(", ");
 		if (MAXCardinality != null)
-			builder.append("MAXCardinality=").append(MAXCardinality).append(", ");
+			builder.append(", MAXCardinality=").append(MAXCardinality).append(", ");
 		if (elements != null)
-			builder.append("elements=").append(toString(elements, maxLen)).append(", ");
-		if (templateElement != null)
-			builder.append("templateElement=").append(templateElement);
+			builder.append(", elements=").append(toString(elements, maxLen)).append(", ");
+		
 		builder.append("]");
 		return builder.toString();
 	}

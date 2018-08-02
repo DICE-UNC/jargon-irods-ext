@@ -11,6 +11,7 @@ import org.irods.jargon.metadatatemplate.model.MDTemplate;
 import org.irods.jargon.metadatatemplate.model.MDTemplateElement;
 import org.irods.jargon.metadatatemplate.MetadataTemplateException;
 import org.irodsext.mdtemplate.config.AppConfig;
+import org.irodsext.mdtemplate.entity.TemplateElement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class TemplateTest extends TestCase{
 	public void createTemplate() 
 	{
 		MDTemplate mdTemplate = new MDTemplate();
-		mdTemplate.setTemplateName("T1");
+		mdTemplate.setTemplateName("T1emplate");
 		mdTemplate.setCreateTs(OffsetDateTime.now());
 		mdTemplate.modifyTs(OffsetDateTime.now());
 		mdTemplate.setGuid(UUID.randomUUID().toString());  
@@ -48,16 +49,42 @@ public class TemplateTest extends TestCase{
 		List<MDTemplateElement> mdTemplateElementList = new ArrayList<>();
 		
 		MDTemplateElement mdtemplateElement1 = new MDTemplateElement();
-		mdtemplateElement1.setName("MiseqTest");
+		mdtemplateElement1.setName("Pets");
 		//mdtemplateElement1.setGuid(UUID.randomUUID().toString());
-		mdtemplateElement1.setOptions("miseq,novaseq,thatseq");
+		mdtemplateElement1.setOptions("Dog,Cat");
 		mdtemplateElement1.required(false);
 		mdtemplateElement1.setType("String");
 		mdtemplateElement1.setCardinalityMax(1);
 		mdtemplateElement1.setCardinalityMax(3);
+		mdtemplateElement1.defaultValue("Dog");
+		
+		List<MDTemplateElement> subElementsList = new ArrayList<>();
+		MDTemplateElement subElement = new MDTemplateElement();
+		subElement.setName("Dog Breed");
+		//mdtemplateElement1.setGuid(UUID.randomUUID().toString());
+		subElement.setOptions("Lebrador,German Shephard,poodle");
+		subElement.required(false);
+		subElement.setType("String");
+		subElement.setCardinalityMax(1);
+		subElement.setCardinalityMax(3);
+		subElement.defaultValue("poodle");
+		subElementsList.add(subElement);
+		
+		mdtemplateElement1.setElements(subElementsList);
+		
+		MDTemplateElement mdtemplateElement2 = new MDTemplateElement();
+		mdtemplateElement1.setName("wilds");
+		//mdtemplateElement1.setGuid(UUID.randomUUID().toString());
+		mdtemplateElement1.setOptions("Tiger,Lion,Bear");
+		mdtemplateElement1.required(false);
+		mdtemplateElement1.setType("String");
+		mdtemplateElement1.setCardinalityMax(1);
+		mdtemplateElement1.setCardinalityMax(3);
+		mdtemplateElement1.defaultValue("Bear");
 		
 		
 		mdTemplateElementList.add(mdtemplateElement1);
+		mdTemplateElementList.add(mdtemplateElement2);
 
 		mdTemplate.setElements(mdTemplateElementList);
 		try {
