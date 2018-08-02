@@ -293,13 +293,15 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		template.setOwner(mdTemplate.getOwner());
 		template.setAccessType(mdTemplate.getAccessType());
 		
-		Set<TemplateElement> templateElementSet = new TreeSet<>();
+		
 		if(mdTemplate.getElements()!=null && !mdTemplate.getElements().isEmpty()) {
+			Set<TemplateElement> templateElementSet = new TreeSet<>();
 			for (MDTemplateElement e : mdTemplate.getElements()){		
 				logger.info("Element :: " +e.getName());
 				TemplateElement element = new TemplateElement();
 				element.setName(e.getName());
-				String guid = e.getGuid() != null ? e.getGuid() : UUID.randomUUID().toString();
+				String guid = e.getGuid().isEmpty() ?UUID.randomUUID().toString() : e.getGuid();
+				logger.info("Element Guid is :: " +guid);
 				element.setGuid(guid);
 				element.setOptions(e.getOptions());
 				element.setDefaultValue(e.getDefaultValue());
@@ -315,9 +317,10 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 					for (MDTemplateElement ce : e.getElements()) {
 						logger.info("Sub element :: " +ce.getName());
 						TemplateElement childElement = new TemplateElement();
-						childElement.setName(ce.getName());										
-						String ceGuid = ce.getGuid() != null ? ce.getGuid() : UUID.randomUUID().toString();
-						childElement.setGuid(ceGuid);
+						childElement.setName(ce.getName());		
+						String subGuid = ce.getGuid().isEmpty() ?UUID.randomUUID().toString() : ce.getGuid();
+						logger.info("sub element Guid is :: " +subGuid);
+						childElement.setGuid(subGuid);
 						childElement.setOptions(ce.getOptions());
 						childElement.setDefaultValue(ce.getDefaultValue());				
 						childElement.setRequired(ce.isRequired());					
@@ -331,11 +334,14 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 					}
 				}
 				element.setElements(childElementsSet);
+				logger.info("adding element to the templateElementSet :: " +element.getName());
 				templateElementSet.add(element);
+				logger.info("element set size inside :: " +templateElementSet.size());
 			}
+			logger.info("element set size :: " +templateElementSet.size());
+			template.setElements(templateElementSet);
 		}
 		
-		template.setElements(templateElementSet);
 
 		return template;		
 	}

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -157,7 +159,10 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	}
 
 	public String getGuid() {
-		return guid;
+		if(guid.isEmpty())
+			return UUID.randomUUID().toString();
+		else
+			return guid;
 	}
 
 	public void setGuid(String guid) {

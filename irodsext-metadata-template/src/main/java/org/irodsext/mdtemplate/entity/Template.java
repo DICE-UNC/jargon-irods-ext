@@ -119,8 +119,8 @@ public class Template implements Serializable, Comparable<Template>{
 		return elements;
 	}
 
-	public void setElements(Set<TemplateElement> fields) {
-		this.elements = fields;
+	public void setElements(Set<TemplateElement> elements) {
+		this.elements = elements;
 	}
 
 	public String getGuid() {
