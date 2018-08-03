@@ -74,8 +74,9 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			}
 		}
 		Long id = (Long) templateDao.save(template);
+		MDTemplate resTemplate = getTemplateJsonFromEntity(template);
 		logger.info("saveTemplate () Ends");
-		return mdTemplate;
+		return resTemplate;
 	}
 
 	@Override
@@ -129,10 +130,11 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			Template template = getTemplateEntityFromJson(mdTemplate);
 			logger.info("Updating template for id :: " +templateByGuid.getId());
 			template.setId(templateByGuid.getId());
-			templateDao.merge(template);
+			templateDao.merge(template);		
+			MDTemplate resTemplate = getTemplateJsonFromEntity(template);
+			return resTemplate;
 		}
-		logger.info("updateTemplate() Ends.");
-		return mdTemplate;
+			
 	}
 
 	@Override
@@ -151,10 +153,12 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			
 			logger.info("Element :: " +element);
 			elementDao.save(element);
-
+			MDTemplateElement resElement = getElementJsonFromEntity(element);
+			logger.info("saveElement() Ends ");
+			return resElement;
 		}
-		logger.info("saveElement() Ends.");
-		return mdElement;
+		
+		
 	}
 
 	@Override
@@ -176,10 +180,12 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 				logger.info("Updating element for id :: " +elementByGuid.getId());
 				logger.info("Element :: " +element);
 				elementDao.merge(element);
+				MDTemplateElement resElement = getElementJsonFromEntity(element);
+				System.out.println("saveElement() Ends");
+				return resElement;
 			}			
 		}
-		System.out.println("saveElement() Ends");
-		return mdElement;
+		
 	}
 
 	@Override
