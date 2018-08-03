@@ -264,6 +264,9 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		
 		List<MDTemplateElement> childElementsList = new ArrayList<>();
 		for (TemplateElement ce : element.getElements()) {
+			if (ce.getGuid() == null) {
+				ce.setGuid("");
+			}
 			MDTemplateElement mdChildElement = new MDTemplateElement();
 			mdChildElement.setName(ce.getName());										
 			//e.setGuid(UUID.fromString(element.getGuid()));
@@ -296,13 +299,14 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		
 		if(mdTemplate.getElements()!=null && !mdTemplate.getElements().isEmpty()) {
 			Set<TemplateElement> templateElementSet = new TreeSet<>();
-			for (MDTemplateElement e : mdTemplate.getElements()){		
+			for (MDTemplateElement e : mdTemplate.getElements()){	
+				if (e.getGuid() == null) {
+					e.setGuid("");
+				}
 				logger.info("Element :: " +e.getName());
 				TemplateElement element = new TemplateElement();
 				element.setName(e.getName());
-				String guid = e.getGuid().isEmpty() ?UUID.randomUUID().toString() : e.getGuid();
-				logger.info("Element Guid is :: " +guid);
-				element.setGuid(guid);
+				element.setGuid(e.getGuid());
 				element.setOptions(e.getOptions());
 				element.setDefaultValue(e.getDefaultValue());
 				element.setRequired(e.isRequired());
@@ -314,13 +318,17 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 				Set<TemplateElement> childElementsSet = new TreeSet<>();
 				if(e.getElements() != null && !e.getElements().isEmpty()) {
+					if (e.getGuid() == null) {
+						e.setGuid("");
+					}
 					for (MDTemplateElement ce : e.getElements()) {
 						logger.info("Sub element :: " +ce.getName());
 						TemplateElement childElement = new TemplateElement();
+						if (ce.getGuid() == null) {
+							ce.setGuid("");
+						}
 						childElement.setName(ce.getName());		
-						String subGuid = ce.getGuid().isEmpty() ?UUID.randomUUID().toString() : ce.getGuid();
-						logger.info("sub element Guid is :: " +subGuid);
-						childElement.setGuid(subGuid);
+						childElement.setGuid(ce.getGuid());
 						childElement.setOptions(ce.getOptions());
 						childElement.setDefaultValue(ce.getDefaultValue());				
 						childElement.setRequired(ce.isRequired());					

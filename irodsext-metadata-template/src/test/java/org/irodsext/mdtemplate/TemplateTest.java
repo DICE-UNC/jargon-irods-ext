@@ -11,7 +11,6 @@ import org.irods.jargon.metadatatemplate.model.MDTemplate;
 import org.irods.jargon.metadatatemplate.model.MDTemplateElement;
 import org.irods.jargon.metadatatemplate.MetadataTemplateException;
 import org.irodsext.mdtemplate.config.AppConfig;
-import org.irodsext.mdtemplate.entity.TemplateElement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
