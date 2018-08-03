@@ -61,7 +61,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 
 	@Override
-	public void saveTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
+	public MDTemplate saveTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
 		logger.info("saveTemplate () starts");
 		Template template = getTemplateEntityFromJson(mdTemplate);
 		Set<TemplateElement> element = template.getElements();
@@ -75,6 +75,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		}
 		Long id = (Long) templateDao.save(template);
 		logger.info("saveTemplate () Ends");
+		return mdTemplate;
 	}
 
 	@Override
@@ -118,11 +119,12 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 
 	@Override
-	public void updateTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
+	public MDTemplate updateTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
 		logger.info("updateTemplate() starts :: " +mdTemplate.getGuid());
 		Template templateByGuid = templateDao.findByGuid(UUID.fromString(mdTemplate.getGuid()));
 		if(templateByGuid == null) {
 			logger.info("template does not exist");
+			throw new MetadataTemplateException("Template your trying to update does not exists");
 		}else {
 			Template template = getTemplateEntityFromJson(mdTemplate);
 			logger.info("Updating template for id :: " +templateByGuid.getId());
@@ -130,10 +132,11 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			templateDao.merge(template);
 		}
 		logger.info("updateTemplate() Ends.");
+		return mdTemplate;
 	}
 
 	@Override
-	public void saveElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
+	public MDTemplateElement saveElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
 		// TODO Auto-generated method stub
 
 		logger.info("saveElement() starts :: " +templateGuid);
@@ -141,6 +144,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		Template template = templateDao.findByGuid(templateGuid);
 		if(mdTemplate == null) {
 			logger.info("Template does not exist :: " +templateGuid);
+			throw new MetadataTemplateException("Template for this element does not exists");
 		}else {
 			TemplateElement element = new TemplateElement();			
 			element = getElementEntityFromJson(mdElement,template);	
@@ -150,20 +154,23 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 		}
 		logger.info("saveElement() Ends.");
+		return mdElement;
 	}
 
 	@Override
-	public void updateElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
+	public MDTemplateElement updateElement(UUID templateGuid, MDTemplateElement mdElement) throws MetadataTemplateException {
 		logger.info("saveElement() starts :: " +templateGuid);
 		Template template = templateDao.findByGuid(templateGuid);
 		
 		if(template == null) {
 			logger.info("Template does not exist :: " +templateGuid);
+			throw new MetadataTemplateException("Template for this Element does not exists");
 		}else {
 			TemplateElement element = getElementEntityFromJson(mdElement,template);		
 			TemplateElement elementByGuid = elementDao.findByGuid(UUID.fromString(mdElement.getGuid()));
 			if(elementByGuid == null) {
 				logger.info("element does not exist :: " +mdElement.getGuid());
+				throw new MetadataTemplateException("This Element does not exists");
 			}else {
 				element.setId(elementByGuid.getId());
 				logger.info("Updating element for id :: " +elementByGuid.getId());
@@ -172,6 +179,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			}			
 		}
 		System.out.println("saveElement() Ends");
+		return mdElement;
 	}
 
 	@Override
@@ -191,7 +199,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			//discuss this logic when parent does not exists.
 			//do we need to pass template guid here. since element to template has no hard dependency.
 			logger.info("Template does not exist :: " +templateGuid);
-			return null;
+			throw new MetadataTemplateException("Template for this element does not exists");
 		}else {
 			TemplateElement element = elementDao.findByGuid(elementGuid);
 			MDTemplateElement mdElement = getElementJsonFromEntity(element);	
