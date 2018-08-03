@@ -308,9 +308,13 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 				logger.info("Element :: " +e.getName());
 				TemplateElement element = new TemplateElement();
 				element.setName(e.getName());
-				String guid = e.getGuid().isEmpty() ?UUID.randomUUID().toString() : e.getGuid();
-				logger.info("Element Guid is :: " +guid);
-				element.setGuid(guid);
+				
+				if(e.getGuid() !=null && e.getGuid().isEmpty()) {
+					element.setGuid(e.getGuid().toString());
+				}else {
+					element.setGuid(UUID.randomUUID().toString());
+				}
+				
 				element.setOptions(e.getOptions());
 				element.setDefaultValue(e.getDefaultValue());
 				element.setRequired(e.isRequired());
@@ -326,9 +330,12 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 						logger.info("Sub element :: " +ce.getName());
 						TemplateElement childElement = new TemplateElement();
 						childElement.setName(ce.getName());		
-						String subGuid = ce.getGuid().isEmpty() ?UUID.randomUUID().toString() : ce.getGuid();
-						logger.info("sub element Guid is :: " +subGuid);
-						childElement.setGuid(subGuid);
+						if(ce.getGuid() !=null && ce.getGuid().isEmpty()) {
+							childElement.setGuid(ce.getGuid().toString());
+						}else {
+							childElement.setGuid(UUID.randomUUID().toString());
+						}
+						
 						childElement.setOptions(ce.getOptions());
 						childElement.setDefaultValue(ce.getDefaultValue());				
 						childElement.setRequired(ce.isRequired());					
