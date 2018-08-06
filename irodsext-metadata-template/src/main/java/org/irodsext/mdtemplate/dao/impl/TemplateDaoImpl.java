@@ -91,9 +91,8 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 
 		 
 		 Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Template.class,"template")
-				 	.createAlias("template.elements","element")
-	                .add(Restrictions.eq("template.guid", guid.toString()))
-	                .add(Restrictions.isNull("element.templateElement"));
+	                .add(Restrictions.eq("template.guid", guid.toString()));
+	          
 		 
 	    
 	        return (Template) criteria.uniqueResult();     

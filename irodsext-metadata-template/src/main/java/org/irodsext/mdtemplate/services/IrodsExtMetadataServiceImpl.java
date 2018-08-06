@@ -315,7 +315,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 				TemplateElement element = new TemplateElement();
 				element.setName(e.getName());
 				
-				if(e.getGuid() !=null && e.getGuid().isEmpty()) {
+				if(e.getGuid() != null && !e.getGuid().isEmpty()) {
 					element.setGuid(e.getGuid().toString());
 				}else {
 					element.setGuid(UUID.randomUUID().toString());
@@ -336,7 +336,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 						logger.info("Sub element :: " +ce.getName());
 						TemplateElement childElement = new TemplateElement();
 						childElement.setName(ce.getName());		
-						if(ce.getGuid() !=null && ce.getGuid().isEmpty()) {
+						if(ce.getGuid() != null && !ce.getGuid().isEmpty()) {
 							childElement.setGuid(ce.getGuid().toString());
 						}else {
 							childElement.setGuid(UUID.randomUUID().toString());
