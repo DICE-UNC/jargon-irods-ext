@@ -14,12 +14,11 @@
 Servers
 .settings
 .classpath
-target
 mvn-repo
 bin
 *.war
 *.log
-*/nbactions.xml  
+*/nbactions.xml
 *.eml
 nbactions.xml
 testing.properties
@@ -29,6 +28,6 @@ JargonVersion.java
 **/*.*~
 *.*~
 .dbeaver*
-test.metalnx.properties
+test.*.properties
 **/target
 target
