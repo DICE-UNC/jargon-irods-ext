@@ -1,3 +1,4 @@
+
 package org.irodsext.mdtemplate.config;
 
 import java.util.Properties;
@@ -28,7 +29,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScan({ "org.irodsext.mdtemplate",
 	"org.irods.jargon.metadatatemplate" })
-@PropertySource(value = { "classpath:db.properties" })
+//@PropertySource(value = { "classpath:db.properties" })
 public class AppConfig {
 
 	
