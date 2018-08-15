@@ -395,6 +395,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			mdElement.setUnit(element.getAttributeUnit());
 			mdElement.setValidationExp(element.getValidationExp());
 			
+			
 			List<MDTemplateElement> childElementsList = new ArrayList<>();
 			if(element.getElements() != null && !element.getElements().isEmpty()) {
 				for (TemplateElement ce : element.getElements()) {			
@@ -414,8 +415,12 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 					childElementsList.add(mdChildElement);
 				}				
 				mdElement.setElements(childElementsList);
-			}			
-			elementsList.add(mdElement);
+			}	
+			if(element.getTemplateElement() == null) {
+				logger.info("This element has subelement  ::" +element.getName());
+				elementsList.add(mdElement);
+			}
+			
 		}
 
 		mdTemplate.setElements(elementsList);
