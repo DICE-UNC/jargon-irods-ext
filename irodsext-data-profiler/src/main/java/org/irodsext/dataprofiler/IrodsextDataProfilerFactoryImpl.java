@@ -23,7 +23,7 @@ import com.emc.metalnx.services.interfaces.UserService;
  * @author Mike Conway - NIEHS
  *
  */
-public abstract class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
+public  class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 
 	public static final Logger log = LoggerFactory.getLogger(IrodsextDataProfilerFactoryImpl.class);
 
