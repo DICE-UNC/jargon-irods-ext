@@ -63,6 +63,8 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 	@Override
 	public MDTemplate saveTemplate(MDTemplate mdTemplate) throws MetadataTemplateException {
 		logger.info("saveTemplate () starts");
+		mdTemplate.setCreateTs(OffsetDateTime.now());
+		mdTemplate.setModifyTs(OffsetDateTime.now());
 		Template template = getTemplateEntityFromJson(mdTemplate);
 		Set<TemplateElement> element = template.getElements();
 		for(TemplateElement e : element) {
@@ -127,6 +129,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 			logger.info("template does not exist");
 			throw new MetadataTemplateException("Template your trying to update does not exists");
 		}else {
+			mdTemplate.setModifyTs(OffsetDateTime.now());
 			Template template = getTemplateEntityFromJson(mdTemplate);
 			logger.info("Updating template for id :: " +templateByGuid.getId());
 			template.setId(templateByGuid.getId());

@@ -76,14 +76,12 @@ public class TemplateElement implements Serializable, Comparable<TemplateElement
 	@Column(name = "max_cardinality")
 	private Integer MAXCardinality;	
 	
-	
 	@OneToMany(mappedBy = "templateElement", cascade=CascadeType.ALL, orphanRemoval = true)
 	private Set<TemplateElement> elements = new TreeSet<>();
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "parent_id", updatable = true)
 	private TemplateElement templateElement;
-	
 	
 	public Long getId() {
 		return id;
