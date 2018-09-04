@@ -18,6 +18,7 @@ public interface TemplateDao extends GenericDao<Template , Long> {
 	public List<TemplateElement> listTemplateElements(String template);
 	public List<TemplateElement> listTemplateElements(Long id);
 	public List<Template> findByQueryString(String query);
+	public List<Template> getAllTemplates();
 	
 
 }

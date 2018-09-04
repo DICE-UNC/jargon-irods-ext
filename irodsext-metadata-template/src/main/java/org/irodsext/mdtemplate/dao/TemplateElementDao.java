@@ -1,5 +1,6 @@
 package org.irodsext.mdtemplate.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.irodsext.mdtemplate.entity.Template;
@@ -13,5 +14,6 @@ public interface TemplateElementDao extends GenericDao<TemplateElement , Long>{
 	boolean modifyById(long id, String attribute, String value, String unit);
 	boolean deleteByGuid(UUID guid);
 	public TemplateElement findByGuid(UUID guid);
+	public List<TemplateElement> getAllElements(UUID templateGuid);
 	
 }

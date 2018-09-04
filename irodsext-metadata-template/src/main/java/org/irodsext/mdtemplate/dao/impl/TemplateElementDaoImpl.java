@@ -1,5 +1,6 @@
 package org.irodsext.mdtemplate.dao.impl;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.Query;
@@ -56,6 +57,15 @@ public class TemplateElementDaoImpl extends GenericDaoImpl<TemplateElement , Lon
 
 	        return (TemplateElement) q.uniqueResult();
 
+	}
+
+	@Override
+	public List<TemplateElement> getAllElements(UUID templateGuid) {
+		
+		List<TemplateElement> elements  = (List<TemplateElement>) 
+				sessionFactory.getCurrentSession().createQuery("from TemplateElement").list();
+		
+		return elements;
 	}
 	
 

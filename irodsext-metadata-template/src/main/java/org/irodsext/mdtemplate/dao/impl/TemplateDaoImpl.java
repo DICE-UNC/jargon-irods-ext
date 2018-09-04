@@ -134,4 +134,14 @@ public class TemplateDaoImpl extends GenericDaoImpl<Template , Long> implements 
 
         return true;
 	}
+
+	@Override
+	public List<Template> getAllTemplates() {
+		
+		  Query q =  this.sessionFactory.getCurrentSession()
+	                .createQuery("from Template");
+		 
+		  List<Template> list = q.list();
+		  return list;
+	}
 }

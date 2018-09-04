@@ -217,6 +217,31 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 
 	}
 
+	@Override
+	public List<MDTemplate> listAllTemplates() {
+		List<Template> template = templateDao.getAllTemplates();
+		List<MDTemplate> mdtemplateList = new ArrayList<>();
+		for(Template templateObj : template) {
+			MDTemplate mdTemplateObj = getTemplateJsonFromEntity(templateObj);
+			mdtemplateList.add(mdTemplateObj);
+		}
+		return mdtemplateList;
+	}
+
+	@Override
+	public List<MDTemplateElement> listAllElements(UUID templateGuid) {
+		// TODO Auto-generated method stub
+		List<TemplateElement> element = elementDao.getAllElements(templateGuid);
+		List<MDTemplateElement> mdElementList = new ArrayList<>();
+		for(TemplateElement elementObj : element) {
+			MDTemplateElement mdElementObj = getElementJsonFromEntity(elementObj);
+			mdElementList.add(mdElementObj);
+		}
+		return mdElementList;
+	}
+
+
+	
 	public TemplateElement getElementEntityFromJson(MDTemplateElement mdElement, Template template) {
 	
 		logger.info("Element for Template :: " +template.getTemplateName()+ " , id :: " +template.getId() );
@@ -430,5 +455,5 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		return mdTemplate;
 	}
 
-
+	
 }
