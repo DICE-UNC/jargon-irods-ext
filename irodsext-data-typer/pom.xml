@@ -8,7 +8,6 @@
 		<groupId>org.irods.jargon</groupId>
 		<version>4.3.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>org.irods.jargon</groupId>
 	<artifactId>irodsext-data-typer</artifactId>
 	<name>irodsext-data-typer</name>
 	<dependencies>
