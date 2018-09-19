@@ -1,5 +1,6 @@
 package org.irodsext.mdtemplate.services;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -262,7 +263,7 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		
 		
 		Set<TemplateElement> childElementsSet = new TreeSet<>();
-		for (MDTemplateElement ce : mdElement.getElements()) {
+		for (MDTemplateElement ce : emptyIfNull(mdElement.getElements())) {
 			logger.info("Sub Element :: " +ce.getName());
 			TemplateElement childElement = new TemplateElement();
 			childElement.setName(ce.getName());										
@@ -290,6 +291,10 @@ public class IrodsExtMetadataServiceImpl extends AbstractMetadataService {
 		return templateElement;
 	}
 
+	public static <T> Iterable<T> emptyIfNull(Iterable<T> iterable) {
+	    return iterable == null ? Collections.<T>emptySet() : iterable;
+	}
+	
 	public MDTemplateElement getElementJsonFromEntity(TemplateElement element) {
 		
 		MDTemplateElement mdElement = new MDTemplateElement();
