@@ -12,11 +12,11 @@ import org.irods.jargon.core.pub.domain.DataObject;
 import org.irods.jargon.extensions.dataprofiler.DataProfile;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
+import org.irodsext.dataprofiler.favorites.FavoritesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.emc.metalnx.core.domain.entity.DataGridUser;
-import com.emc.metalnx.services.interfaces.FavoritesService;
 
 /**
  * IRODS-EXT base implementation of a data profiler that can summarize a data

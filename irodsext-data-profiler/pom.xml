@@ -27,31 +27,16 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.emc.metalnx</groupId>
-			<artifactId>emc-metalnx-services</artifactId>
+			<groupId>org.irods.jargon</groupId>
+			<artifactId>irodsext-data-typer</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.emc.metalnx</groupId>
+			<groupId>org.irods.jargon</groupId>
 			<artifactId>emc-metalnx-core</artifactId>
-			<exclusions>
-				<exclusion>  <!-- declare the exclusion here -->
-					<groupId>org.hibernate</groupId>
-					<artifactId>hibernate-envers</artifactId>
-				</exclusion>
-				<exclusion>  <!-- declare the exclusion here -->
-					<groupId>org.springframework.security</groupId>
-					<artifactId>spring-security-web</artifactId>
-				</exclusion>
-				<exclusion>  <!-- declare the exclusion here -->
-					<groupId>org.springframework.security</groupId>
-					<artifactId>spring-security-config</artifactId>
-				</exclusion>
-				<exclusion>  <!-- declare the exclusion here -->
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>${project.version}</version>
 		</dependency>
+	
 	</dependencies>
 	<description>Represents a high-level summary of a data object or collection, gathering metadata, ACL information, and other facets of a data object or collection, suitable for presentation in an interface.  This includes awareness of applicable special metadata types as well as any rules or operations associated with a collection or file</description>
 	<build>

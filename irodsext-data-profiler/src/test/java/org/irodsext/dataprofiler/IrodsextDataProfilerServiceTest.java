@@ -23,6 +23,7 @@ import org.irods.jargon.testutils.IRODSTestSetupUtilities;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.irods.jargon.testutils.filemanip.FileGenerator;
 import org.irods.jargon.testutils.filemanip.ScratchFileUtils;
+import org.irodsext.dataprofiler.favorites.FavoritesService;
 import org.irodsext.datatyper.IrodsextDataTypeResolutionService;
 import org.irodsext.datatyper.IrodsextDataTypeResolutionServiceFactoryImpl;
 import org.junit.After;
@@ -34,7 +35,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.emc.metalnx.core.domain.entity.DataGridUser;
-import com.emc.metalnx.services.interfaces.FavoritesService;
 
 /**
  * @author Mike Conway - NIEHS
