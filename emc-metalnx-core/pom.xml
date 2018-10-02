@@ -1,6 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><!-- Copyright (c) 2018, University of North Carolina at Chapel Hill -->
+<?xml version="1.0" encoding="UTF-8"?><!-- Copyright (c) 2018, University 
+	of North Carolina at Chapel Hill -->
 <!-- Copyright (c) 2015-2017, Dell EMC -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -24,6 +26,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -34,6 +42,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-envers</artifactId>
 			<version>${hibernate.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -78,6 +92,11 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -96,7 +115,8 @@
 				</executions>
 				<configuration>
 					<!-- The name of your generated source package -->
-					<arguments>-extension -npa -b "${project.basedir}/src/main/xsd/global.xjb"</arguments>
+					<arguments>-extension -npa -b
+						"${project.basedir}/src/main/xsd/global.xjb"</arguments>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -108,10 +128,13 @@
 						<phase>validate</phase>
 						<configuration>
 							<tasks>
-								<delete file="${basedir}/src/test/resources/testing.properties" />
-								<touch file="${basedir}/src/test/resources/testing.properties"
+								<delete
+									file="${basedir}/src/test/resources/testing.properties" />
+								<touch
+									file="${basedir}/src/test/resources/testing.properties"
 									mkdirs="true" />
-								<echo file="${basedir}/src/test/resources/testing.properties"
+								<echo
+									file="${basedir}/src/test/resources/testing.properties"
 									append="true">
 									test.data.directory=${jargon.test.data.directory}
 									test.irods.admin=${jargon.test.irods.admin}
@@ -179,10 +202,13 @@
 						<phase>validate</phase>
 						<configuration>
 							<tasks>
-								<delete file="${basedir}/src/test/resources/test.metalnx.properties" />
-								<touch file="${basedir}/src/test/resources/test.metalnx.properties"
+								<delete
+									file="${basedir}/src/test/resources/test.metalnx.properties" />
+								<touch
+									file="${basedir}/src/test/resources/test.metalnx.properties"
 									mkdirs="true" />
-								<echo file="${basedir}/src/test/resources/test.metalnx.properties"
+								<echo
+									file="${basedir}/src/test/resources/test.metalnx.properties"
 									append="true">
 									irods.host=${jargon.test.irods.host}
 									irods.port=${jargon.test.irods.port}
