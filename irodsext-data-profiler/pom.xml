@@ -42,6 +42,18 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.irods.jargon</groupId>
+			<artifactId>emc-metalnx-services</artifactId>
+			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	
 	</dependencies>
 	<description>Represents a high-level summary of a data object or collection, gathering metadata, ACL information, and other facets of a data object or collection, suitable for presentation in an interface.  This includes awareness of applicable special metadata types as well as any rules or operations associated with a collection or file</description>
