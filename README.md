@@ -4,8 +4,8 @@ Jargon Extensions API for irods-ext
 
 # Project: Jargon Extensions API - IRODS-EXT
 ### Date: 07/05/2018
-### Release Version: 4.3.0.1-SNAPSHOT
-### git tag: 
+### Release Version: 4.3.0.1-RELEASE
+### git tag:
 
 ## News
 
@@ -17,7 +17,7 @@ same extension interfaces to track MetaLnx, and will attempt to provide a common
 
 * Jargon depends on Java 1.8+
 * Jargon is built using Apache Maven2, see POM for dependencies
-* Jargon supports iRODS 3.0 through iRODS 3.3.1 community, as well as iRODS 4.2.2 consortium
+* Jargon supports iRODS 3.0 through iRODS 3.3.1 community, as well as iRODS 4.3 consortium
 
 ## Libraries
 
@@ -26,3 +26,5 @@ Jargon-core uses Maven for dependency management.  See the pom.xml file for refe
 Note that the following bug and feature requests are logged in GitHub with related commit information [[https://github.com/DICE-UNC/jargon/issues]]
 
 ## Changes
+
+#### Update of misc dependencies via jargon-pom dependencies
