@@ -56,7 +56,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
-		
+
 	</dependencies>
 	<description>Represents a high-level summary of a data object or collection, gathering metadata, ACL information, and other facets of a data object or collection, suitable for presentation in an interface.  This includes awareness of applicable special metadata types as well as any rules or operations associated with a collection or file</description>
 	<build>

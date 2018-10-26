@@ -17,7 +17,7 @@ same extension interfaces to track MetaLnx, and will attempt to provide a common
 
 * Jargon depends on Java 1.8+
 * Jargon is built using Apache Maven2, see POM for dependencies
-* Jargon supports iRODS 3.0 through iRODS 3.3.1 community, as well as iRODS 4.2.2 consortium
+* Jargon supports iRODS 3.0 through iRODS 3.3.1 community, as well as iRODS 4.3 consortium
 
 ## Libraries
 
