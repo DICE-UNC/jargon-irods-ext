@@ -1,7 +1,5 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.services.configuration;
 
@@ -77,6 +75,9 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@Value("${access.proxy}")
 	private boolean handleNoAccessViaProxy;
+
+	@Value("${irods.auth.scheme}")
+	private String defaultIrodsAuthScheme;
 
 	@Override
 	public GlobalConfig getGlobalConfig() {
@@ -174,43 +175,45 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@Override
 	public String toString() {
+		final int maxLen = 10;
 		StringBuilder builder = new StringBuilder();
-		builder.append("ConfigServiceImpl [");
-		if (msiAPIVersionSupported != null) {
-			builder.append("msiAPIVersionSupported=").append(msiAPIVersionSupported).append(", ");
-		}
-		if (mlxMSIsExpected != null) {
-			builder.append("mlxMSIsExpected=").append(mlxMSIsExpected).append(", ");
-		}
-		if (irods41MSIsExpected != null) {
-			builder.append("irods41MSIsExpected=").append(irods41MSIsExpected).append(", ");
-		}
-		if (irods42MSIsExpected != null) {
-			builder.append("irods42MSIsExpected=").append(irods42MSIsExpected).append(", ");
-		}
-		if (otherMSIsExpected != null) {
-			builder.append("otherMSIsExpected=").append(otherMSIsExpected).append(", ");
-		}
-		if (irodsHost != null) {
-			builder.append("irodsHost=").append(irodsHost).append(", ");
-		}
-		if (irodsPort != null) {
-			builder.append("irodsPort=").append(irodsPort).append(", ");
-		}
-		if (irodsZone != null) {
-			builder.append("irodsZone=").append(irodsZone).append(", ");
-		}
-		if (irodsJobUser != null) {
-			builder.append("irodsJobUser=").append(irodsJobUser).append(", ");
-		}
-
-		if (irodsAuthScheme != null) {
-			builder.append("irodsAuthScheme=").append(irodsAuthScheme).append(", ");
-		}
-		builder.append("populateMsiEnabled=").append(populateMsiEnabled).append(", ticketsEnabled=")
+		builder.append("ConfigServiceImpl [msiAPIVersionSupported=").append(msiAPIVersionSupported)
+				.append(", mlxMSIsExpected=").append(mlxMSIsExpected).append(", irods41MSIsExpected=")
+				.append(irods41MSIsExpected).append(", irods42MSIsExpected=").append(irods42MSIsExpected)
+				.append(", otherMSIsExpected=").append(otherMSIsExpected).append(", irodsHost=").append(irodsHost)
+				.append(", irodsPort=").append(irodsPort).append(", irodsZone=").append(irodsZone)
+				.append(", irodsJobUser=").append(irodsJobUser).append(", irodsAuthScheme=").append(irodsAuthScheme)
+				.append(", populateMsiEnabled=").append(populateMsiEnabled).append(", ticketsEnabled=")
 				.append(ticketsEnabled).append(", uploadRulesEnabled=").append(uploadRulesEnabled)
 				.append(", downloadLimit=").append(downloadLimit).append(", handleNoAccessViaProxy=")
-				.append(handleNoAccessViaProxy).append("]");
+				.append(handleNoAccessViaProxy).append(", defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme)
+				.append(", getGlobalConfig()=").append(getGlobalConfig()).append(", getMsiAPIVersionSupported()=")
+				.append(getMsiAPIVersionSupported()).append(", getMlxMSIsExpected()=")
+				.append(getMlxMSIsExpected() != null
+						? getMlxMSIsExpected().subList(0, Math.min(getMlxMSIsExpected().size(), maxLen))
+						: null)
+				.append(", getIrods41MSIsExpected()=")
+				.append(getIrods41MSIsExpected() != null
+						? getIrods41MSIsExpected().subList(0, Math.min(getIrods41MSIsExpected().size(), maxLen))
+						: null)
+				.append(", getIrods42MSIsExpected()=")
+				.append(getIrods42MSIsExpected() != null
+						? getIrods42MSIsExpected().subList(0, Math.min(getIrods42MSIsExpected().size(), maxLen))
+						: null)
+				.append(", getOtherMSIsExpected()=")
+				.append(getOtherMSIsExpected() != null
+						? getOtherMSIsExpected().subList(0, Math.min(getOtherMSIsExpected().size(), maxLen))
+						: null)
+				.append(", getIrodsHost()=").append(getIrodsHost()).append(", getIrodsPort()=").append(getIrodsPort())
+				.append(", getIrodsZone()=").append(getIrodsZone()).append(", getIrodsJobUser()=")
+				.append(getIrodsJobUser()).append(", getIrodsJobPassword()=").append(getIrodsJobPassword())
+				.append(", getIrodsAuthScheme()=").append(getIrodsAuthScheme()).append(", getDownloadLimit()=")
+				.append(getDownloadLimit()).append(", isPopulateMsiEnabled()=").append(isPopulateMsiEnabled())
+				.append(", isTicketsEnabled()=").append(isTicketsEnabled()).append(", isUploadRulesEnabled()=")
+				.append(isUploadRulesEnabled()).append(", isHandleNoAccessViaProxy()=")
+				.append(isHandleNoAccessViaProxy()).append(", getDefaultIrodsAuthScheme()=")
+				.append(getDefaultIrodsAuthScheme()).append(", getClass()=").append(getClass()).append(", hashCode()=")
+				.append(hashCode()).append(", toString()=").append(super.toString()).append("]");
 		return builder.toString();
 	}
 
@@ -229,5 +232,14 @@ public class ConfigServiceImpl implements ConfigService {
 
 	public void setHandleNoAccessViaProxy(boolean handleNoAccessViaProxy) {
 		this.handleNoAccessViaProxy = handleNoAccessViaProxy;
+	}
+
+	@Override
+	public String getDefaultIrodsAuthScheme() {
+		return defaultIrodsAuthScheme;
+	}
+
+	public void setDefaultIrodsAuthScheme(String defaultIrodsAuthScheme) {
+		this.defaultIrodsAuthScheme = defaultIrodsAuthScheme;
 	}
 }

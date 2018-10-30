@@ -1,7 +1,5 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.services.interfaces;
 
@@ -293,9 +291,14 @@ public interface CollectionService {
 	 * Update the inheritance options on collections
 	 *
 	 * @param toAdd
+	 *            {@code Map} with the inheritance paths and options to add
 	 * @param toRemove
-	 * @return confirmation
+	 *            {@code Map} with the inheritance paths and options to remove
+	 * @param zoneName
+	 *            {@code String} (blank if default} for which the operation is done
+	 * @return confirmation {@code boolean} with the confirmation
 	 * @throws DataGridConnectionRefusedException
+	 *             {@link DataGridConnectionRefusedException}
 	 */
 	boolean updateInheritanceOptions(Map<String, Boolean> toAdd, Map<String, Boolean> toRemove, String zoneName)
 			throws DataGridConnectionRefusedException;
@@ -305,6 +308,7 @@ public interface CollectionService {
 	 *
 	 * @return the number of existing collections
 	 * @throws DataGridConnectionRefusedException
+	 *             {@link DataGridConnectionRefusedException}
 	 */
 	int countAll() throws DataGridConnectionRefusedException;
 
@@ -313,10 +317,14 @@ public interface CollectionService {
 	 * recursively for the given group.
 	 *
 	 * @param path
+	 *            {@code String} with the path to list permissions for
 	 * @param groupName
-	 * @return
+	 *            {@code String} with the group name
+	 * @return {@code Set} of {@code String}
 	 * @throws DataGridConnectionRefusedException
+	 *             {@link DataGridConnectionRefusedException}
 	 * @throws JargonException
+	 *             {@link JargonException}
 	 */
 	Set<String> listWritePermissionsForPathAndGroupRecursive(String path, String groupName)
 			throws DataGridConnectionRefusedException, JargonException;
@@ -327,9 +335,10 @@ public interface CollectionService {
 	 * @param paths
 	 *            array of strings that represent all paths that will be downloaded
 	 * @return Path to the compressed file, if any. Empty string, otherwise.
-	 * @throws IOException
 	 * @throws DataGridException
+	 *             {@link DataGridException}
 	 * @throws JargonException
+	 *             {@link JargonException}
 	 */
 	String prepareFilesForDownload(String[] paths) throws IOException, DataGridException, JargonException;
 
@@ -346,7 +355,9 @@ public interface CollectionService {
 	 * @throws DataGridException
 	 *             {@link DataGridException}
 	 * @throws ZipServiceException
+	 *             {@link ZipServiceException}
 	 * @throws JargonException
+	 *             {@link JargonException}
 	 * 
 	 */
 	String prepareFilesForDownload(List<String> sourcePaths)
@@ -358,7 +369,9 @@ public interface CollectionService {
 	 * @param collPath
 	 * @return the boolean
 	 * @throws DataGridConnectionRefusedException
+	 *             {@link DataGridConnectionRefusedException}
 	 * @throws JargonException
+	 *             {@link JargonException}
 	 */
 	boolean getInheritanceOptionForCollection(String collPath)
 			throws DataGridConnectionRefusedException, JargonException;
@@ -370,6 +383,7 @@ public interface CollectionService {
 	 *            path to the collection/object
 	 * @return int with the replica number 0, if path does not exist
 	 * @throws DataGridConnectionRefusedException
+	 *             {@link DataGridConnectionRefusedException}
 	 */
 	int getReplicationNumber(String path) throws DataGridConnectionRefusedException;
 
@@ -380,6 +394,7 @@ public interface CollectionService {
 	 *            path to the collection/object in the grid
 	 * @return String with the checksum
 	 * @throws DataGridConnectionRefusedException
+	 *             {@link DataGridConnectionRefusedException}
 	 */
 	String getChecksum(String path) throws DataGridConnectionRefusedException;
 
@@ -400,7 +415,7 @@ public interface CollectionService {
 	 *
 	 * @param entry
 	 *            CollectionAndDataObjectListingEntry objects to map
-	 * @return instance of DataGridCollectionAndDataObject
+	 * @return instance of {@link DataGridCollectionAndDataObject}
 	 */
 	DataGridCollectionAndDataObject mapListingEntryToDataGridCollectionAndDataObject(
 			CollectionAndDataObjectListingEntry entry);
@@ -408,7 +423,7 @@ public interface CollectionService {
 	/**
 	 * Gets the public directory
 	 *
-	 * @return string with the path to the the public directory
+	 * @return {@code Stringa] with the path to the the public directory
 	 */
 	String getHomeDirectyForPublic();
 
@@ -416,8 +431,10 @@ public interface CollectionService {
 	 * Retrieve only the collections under a parent collection
 	 *
 	 * @param parent
-	 * @return
+	 *            {@code String} with the parent path
+	 * @return {@code List} of {@link DataGridCollectionAndDataObject}
 	 * @throws DataGridConnectionRefusedException
+	 *             {@link DataGridConnectionRefusedException}
 	 */
 	List<DataGridCollectionAndDataObject> getSubCollectionsUnderPath(String parent)
 			throws DataGridConnectionRefusedException;
@@ -426,8 +443,8 @@ public interface CollectionService {
 	 * Get trash path related to the current path
 	 * 
 	 * @param path
-	 *            {@code String} with the iRODS path
-	 * @return corresponding trash for given path
+	 *            {@code String} with the path
+	 * @return correspondent trash for given path
 	 */
 	String getTrashForPath(String path);
 
@@ -441,20 +458,26 @@ public interface CollectionService {
 	 * @return {@link DataProfile}
 	 * @throws DataGridException
 	 *             {@link DataGridException}
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException
+	 *             {@link FileNotFoundException}
 	 */
-	DataProfile<IRODSDomainObject> getCollectionDataProfile(String path) throws FileNotFoundException, DataGridException;
+	DataProfile<IRODSDomainObject> getCollectionDataProfile(String path)
+			throws DataGridException, FileNotFoundException;
 
 	/**
-	 * Retrieve a data profile for the path
+	 * Update the collection inheritance value
 	 * 
 	 * @param path
-	 *            {@code String} with the path
-	 * @return {@link DataProfile}
+	 *            {@code String} with the collection path
+	 * @param inheritOption
+	 *            {@code boolean} with the inheritance setting
+	 * @param recursive
+	 *            {@code boolean} indicating whether to apply the setting
+	 *            recursively
 	 * @throws DataGridException
 	 *             {@link DataGridException}
 	 */
-	DataProfile<IRODSDomainObject> getCollectionDataProfileAsProxyAdmin(String path) throws FileNotFoundException , DataGridException;
+	void modifyInheritance(String path, boolean inheritOption, boolean recursive) throws DataGridException;
 
 	/**
 	 * Handy method probes user access to a path
@@ -466,5 +489,18 @@ public interface CollectionService {
 	 *             {@link DataGridException}
 	 */
 	boolean canUserAccessThisPath(String path) throws DataGridException;
+
+	/**
+	 * Retrieve a data profile for the path using the admin account to serve as a
+	 * metadata only proxy
+	 * 
+	 * @param path
+	 *            {@code String} with the path
+	 * @return {@link DataProfile}
+	 * @throws DataGridException
+	 *             {@link DataGridException}
+	 */
+	DataProfile<IRODSDomainObject> getCollectionDataProfileAsProxyAdmin(String path)
+			throws FileNotFoundException, DataGridException;
 
 }

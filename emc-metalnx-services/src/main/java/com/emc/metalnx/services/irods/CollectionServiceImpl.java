@@ -1,7 +1,5 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.services.irods;
 
@@ -173,6 +171,68 @@ public class CollectionServiceImpl implements CollectionService {
 	}
 
 	@Override
+	public boolean canUserAccessThisPath(String path) throws DataGridException {
+		logger.info("canUserAccessThisPath()");
+		if (path == null || path.isEmpty()) {
+			throw new IllegalArgumentException("null or empty path");
+		}
+		logger.info("path:{}", path);
+		CollectionAndDataObjectListAndSearchAO lister = irodsServices.getCollectionAndDataObjectListAndSearchAO();
+		try {
+			lister.retrieveObjectStatForPath(path);
+			return true;
+		} catch (FileNotFoundException fnf) {
+			logger.warn("no access to file");
+			return false;
+		} catch (JargonException e) {
+			logger.error("exception obtaining objStat", e);
+			throw new DataGridException(e);
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public DataProfile<IRODSDomainObject> getCollectionDataProfileAsProxyAdmin(String path)
+			throws FileNotFoundException, DataGridException {
+
+		logger.info("getCollectionDataProfileAsProxyAdmin()");
+		IRODSAccount irodsAccount = irodsServices.getIrodsAdminAccount();
+
+		if (path == null) {
+			throw new IllegalArgumentException("null path");
+		}
+
+		logger.info("path:{}", path);
+
+		DataProfilerSettings dataProfilerSettings = new DataProfilerSettings();
+		dataProfilerSettings.setDetectMimeAndInfoType(true);
+		dataProfilerSettings.setRetrieveAcls(false);
+		dataProfilerSettings.setRetrieveMetadata(true);
+		dataProfilerSettings.setRetrieveReplicas(false);
+		dataProfilerSettings.setRetrieveShared(false);
+		dataProfilerSettings.setRetrieveStarred(false);
+		dataProfilerSettings.setRetrieveTickets(false);
+
+		DataProfilerService dataProfilerService = dataProfilerFactory.instanceDataProfilerService(irodsAccount,
+				dataProfilerSettings);
+
+		try {
+			@SuppressWarnings("rawtypes")
+			DataProfile dataProfile = dataProfilerService.retrieveDataProfile(path);
+			logger.info("------CollectionInfoController getTestCollectionInfo() ends !!");
+			logger.info("data profile retrieved:{}", dataProfile);
+			return dataProfile;
+		} catch (FileNotFoundException fnf) {
+			logger.warn("file not found for path:{}", path);
+			throw fnf;
+		} catch (JargonException e) {
+			logger.error("Could not retrieve collection/dataobject from path: {}", path, e);
+			throw new DataGridException(e.getMessage());
+		}
+
+	}
+
+	@Override
 	public List<DataGridCollectionAndDataObject> getSubCollectionsAndDataObjectsUnderPathThatMatchSearchTextPaginated(
 			String parentPath, String searchText, int pageNum, int pageSize, int orderColumn, String orderDir,
 			DataGridPageContext pageContext)
@@ -239,26 +299,6 @@ public class CollectionServiceImpl implements CollectionService {
 			throw new DataGridQueryException(e.getMessage());
 		}
 		return dataGridCollectionAndDataObjects;
-	}
-
-	@Override
-	public boolean canUserAccessThisPath(String path) throws DataGridException {
-		logger.info("canUserAccessThisPath()");
-		if (path == null || path.isEmpty()) {
-			throw new IllegalArgumentException("null or empty path");
-		}
-		logger.info("path:{}", path);
-		CollectionAndDataObjectListAndSearchAO lister = irodsServices.getCollectionAndDataObjectListAndSearchAO();
-		try {
-			lister.retrieveObjectStatForPath(path);
-			return true;
-		} catch (FileNotFoundException fnf) {
-			logger.warn("no access to file");
-			return false;
-		} catch (JargonException e) {
-			logger.error("exception obtaining objStat", e);
-			throw new DataGridException(e);
-		}
 	}
 
 	@Override
@@ -498,6 +538,58 @@ public class CollectionServiceImpl implements CollectionService {
 		}
 
 		return dataGridCollectionAndDataObject;
+	}
+
+	@Override
+	public void modifyInheritance(String path, boolean inheritOption, boolean recursive) throws DataGridException {
+		logger.info("modifyInheritance()");
+		if (path == null || path.isEmpty()) {
+			logger.error("null or empty path:{}");
+			throw new IllegalArgumentException("null or empty path");
+		}
+
+		logger.info("path:{}", path);
+		logger.info("inheritOption:{}", inheritOption);
+		logger.info("recursive:{}", recursive);
+
+		// if role is admin, use the admin option for this operation
+		boolean asAdmin = this.getIrodsServices().isActingAsAdmin();
+		logger.info("acting as an admin");
+		CollectionAO collectionAO = irodsServices.getCollectionAO();
+		IRODSFileSystemAO irodsFileSystemAO = irodsServices.getIRODSFileSystemAO();
+
+		try {
+
+			String zoneName = irodsFileSystemAO.getIRODSServerProperties().getRodsZone();
+
+			if (!asAdmin) {
+				logger.info("acting as an normal user");
+				if (inheritOption) {
+					logger.debug("Setting inheritance option on {}", path);
+					collectionAO.setAccessPermissionInherit(zoneName, path, recursive);
+				}
+				// disable inheritance for this collection
+				else {
+					logger.debug("Removing inheritance setting on {}", path);
+					collectionAO.setAccessPermissionToNotInherit(zoneName, path, recursive);
+				}
+			} else {
+				logger.info("acting as a administrator");
+				if (inheritOption) {
+					logger.debug("Setting inheritance option on {}", path);
+					collectionAO.setAccessPermissionInheritAsAdmin(zoneName, path, recursive);
+				}
+				// disable inheritance for this collection
+				else {
+					logger.debug("Removing inheritance setting on {}", path);
+					collectionAO.setAccessPermissionToNotInheritInAdminMode(zoneName, path, recursive);
+				}
+
+			}
+		} catch (JargonException je) {
+			throw new DataGridException(je);
+		}
+
 	}
 
 	@Override
@@ -1424,7 +1516,8 @@ public class CollectionServiceImpl implements CollectionService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DataProfile<IRODSDomainObject> getCollectionDataProfile(String path) throws FileNotFoundException , DataGridException {
+	public DataProfile<IRODSDomainObject> getCollectionDataProfile(String path)
+			throws FileNotFoundException, DataGridException {
 		IRODSAccount irodsAccount = irodsServices.getUserAO().getIRODSAccount();
 
 		logger.info("path:{}", path);
@@ -1439,47 +1532,6 @@ public class CollectionServiceImpl implements CollectionService {
 			logger.info("data profile retrieved:{}", dataProfile);
 			return dataProfile;
 
-		} catch (JargonException e) {
-			logger.error("Could not retrieve collection/dataobject from path: {}", path, e);
-			throw new DataGridException(e.getMessage());
-		}
-
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public DataProfile<IRODSDomainObject> getCollectionDataProfileAsProxyAdmin(String path) throws FileNotFoundException, DataGridException {
-
-		logger.info("getCollectionDataProfileAsProxyAdmin()");
-		IRODSAccount irodsAccount = irodsServices.getIrodsAdminAccount();
-
-		if (path == null) {
-			throw new IllegalArgumentException("null path");
-		}
-
-		logger.info("path:{}", path);
-
-		DataProfilerSettings dataProfilerSettings = new DataProfilerSettings();
-		dataProfilerSettings.setDetectMimeAndInfoType(true);
-		dataProfilerSettings.setRetrieveAcls(false);
-		dataProfilerSettings.setRetrieveMetadata(true);
-		dataProfilerSettings.setRetrieveReplicas(false);
-		dataProfilerSettings.setRetrieveShared(false);
-		dataProfilerSettings.setRetrieveStarred(false);
-		dataProfilerSettings.setRetrieveTickets(false);
-
-		DataProfilerService dataProfilerService = dataProfilerFactory.instanceDataProfilerService(irodsAccount,
-				dataProfilerSettings);
-
-		try {
-			@SuppressWarnings("rawtypes")
-			DataProfile dataProfile = dataProfilerService.retrieveDataProfile(path);
-			logger.info("------CollectionInfoController getTestCollectionInfo() ends !!");
-			logger.info("data profile retrieved:{}", dataProfile);
-			return dataProfile;
-		} catch (FileNotFoundException fnf) {
-			logger.warn("file not found for path:{}", path);
-			throw fnf;
 		} catch (JargonException e) {
 			logger.error("Could not retrieve collection/dataobject from path: {}", path, e);
 			throw new DataGridException(e.getMessage());
