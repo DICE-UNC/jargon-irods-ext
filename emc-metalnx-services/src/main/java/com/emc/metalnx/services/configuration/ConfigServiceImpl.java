@@ -178,53 +178,6 @@ public class ConfigServiceImpl implements ConfigService {
 	}
 
 	@Override
-	public String toString() {
-		final int maxLen = 10;
-		StringBuilder builder = new StringBuilder();
-		builder.append("ConfigServiceImpl [msiAPIVersionSupported=").append(msiAPIVersionSupported)
-				.append(", mlxMSIsExpected=").append(mlxMSIsExpected).append(", irods41MSIsExpected=")
-				.append(irods41MSIsExpected).append(", irods42MSIsExpected=").append(irods42MSIsExpected)
-				.append(", otherMSIsExpected=").append(otherMSIsExpected).append(", irodsHost=").append(irodsHost)
-				.append(", irodsPort=").append(irodsPort).append(", irodsZone=").append(irodsZone)
-				.append(", irodsJobUser=").append(irodsJobUser).append(", irodsAuthScheme=").append(irodsAuthScheme)
-				.append(", populateMsiEnabled=").append(populateMsiEnabled).append(", ticketsEnabled=")
-				if (defaultIrodsAuthScheme != null) {
-			builder.append("defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme).append(", ");
-		}
-				.append(ticketsEnabled).append(", uploadRulesEnabled=").append(uploadRulesEnabled)
-				.append(", downloadLimit=").append(downloadLimit).append(", handleNoAccessViaProxy=")
-				.append(handleNoAccessViaProxy).append(", defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme)
-				.append(", getGlobalConfig()=").append(getGlobalConfig()).append(", getMsiAPIVersionSupported()=")
-				.append(getMsiAPIVersionSupported()).append(", getMlxMSIsExpected()=")
-				.append(getMlxMSIsExpected() != null
-						? getMlxMSIsExpected().subList(0, Math.min(getMlxMSIsExpected().size(), maxLen))
-						: null)
-				.append(", getIrods41MSIsExpected()=")
-				.append(getIrods41MSIsExpected() != null
-						? getIrods41MSIsExpected().subList(0, Math.min(getIrods41MSIsExpected().size(), maxLen))
-						: null)
-				.append(", getIrods42MSIsExpected()=")
-				.append(getIrods42MSIsExpected() != null
-						? getIrods42MSIsExpected().subList(0, Math.min(getIrods42MSIsExpected().size(), maxLen))
-						: null)
-				.append(", getOtherMSIsExpected()=")
-				.append(getOtherMSIsExpected() != null
-						? getOtherMSIsExpected().subList(0, Math.min(getOtherMSIsExpected().size(), maxLen))
-						: null)
-				.append(", getIrodsHost()=").append(getIrodsHost()).append(", getIrodsPort()=").append(getIrodsPort())
-				.append(", getIrodsZone()=").append(getIrodsZone()).append(", getIrodsJobUser()=")
-				.append(getIrodsJobUser()).append(", getIrodsJobPassword()=").append(getIrodsJobPassword())
-				.append(", getIrodsAuthScheme()=").append(getIrodsAuthScheme()).append(", getDownloadLimit()=")
-				.append(getDownloadLimit()).append(", isPopulateMsiEnabled()=").append(isPopulateMsiEnabled())
-				.append(", isTicketsEnabled()=").append(isTicketsEnabled()).append(", isUploadRulesEnabled()=")
-				.append(isUploadRulesEnabled()).append(", isHandleNoAccessViaProxy()=")
-				.append(isHandleNoAccessViaProxy()).append(", getDefaultIrodsAuthScheme()=")
-				.append(getDefaultIrodsAuthScheme()).append(", getClass()=").append(getClass()).append(", hashCode()=")
-				.append(hashCode()).append(", toString()=").append(super.toString()).append("]");
-		return builder.toString();
-	}
-
-	@Override
 	public boolean isUploadRulesEnabled() {
 		return uploadRulesEnabled;
 	}
@@ -257,5 +210,23 @@ public class ConfigServiceImpl implements ConfigService {
 
 	public void setDashboardEnabled(boolean dashboardEnabled) {
 		this.dashboardEnabled = dashboardEnabled;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ConfigServiceImpl [msiAPIVersionSupported=").append(msiAPIVersionSupported)
+				.append(", mlxMSIsExpected=").append(mlxMSIsExpected).append(", irods41MSIsExpected=")
+				.append(irods41MSIsExpected).append(", irods42MSIsExpected=").append(irods42MSIsExpected)
+				.append(", otherMSIsExpected=").append(otherMSIsExpected).append(", irodsHost=").append(irodsHost)
+				.append(", irodsPort=").append(irodsPort).append(", irodsZone=").append(irodsZone)
+				.append(", irodsJobUser=").append(irodsJobUser).append(", irodsJobPassword=").append(irodsJobPassword)
+				.append(", irodsAuthScheme=").append(irodsAuthScheme).append(", populateMsiEnabled=")
+				.append(populateMsiEnabled).append(", ticketsEnabled=").append(ticketsEnabled)
+				.append(", uploadRulesEnabled=").append(uploadRulesEnabled).append(", downloadLimit=")
+				.append(downloadLimit).append(", handleNoAccessViaProxy=").append(handleNoAccessViaProxy)
+				.append(", defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme).append(", dashboardEnabled=")
+				.append(dashboardEnabled).append("]");
+		return builder.toString();
 	}
 }
