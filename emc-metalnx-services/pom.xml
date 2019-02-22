@@ -280,6 +280,7 @@
 									metalnx.enable.upload.rules=${metalnx.enable.upload.rules}
 									metalnx.download.limit=${metalnx.download.limit}
 									access.proxy=true
+									metalnx.enable.dashboard=true 
 
 
 									irodsext.dataprofiler.retrieve.tickets=false

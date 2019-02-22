@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.emc.metalnx.services.configuration;
 
@@ -8,7 +8,7 @@ import com.emc.metalnx.services.interfaces.ConfigService;
 /**
  * DTO from {@link ConfigService} that can pass global config information to
  * pages and controller
- * 
+ *
  * @author Mike Conway - NIEHS
  *
  */
@@ -25,9 +25,14 @@ public class GlobalConfig {
 	private boolean uploadRulesEnabled = false;
 
 	/**
+	 * Turn the dashboard admin view on and off
+	 */
+	private boolean dashboardEnabled = false;
+
+	/**
 	 * Turn on or off the ability to generate no-access pages for files and
 	 * collections
-	 * 
+	 *
 	 * @return {@code boolean} of {@code true} if no-access pages are enabled
 	 */
 	private boolean handleNoAccessViaProxy = false;
@@ -63,6 +68,21 @@ public class GlobalConfig {
 
 	public void setHandleNoAccessViaProxy(boolean handleNoAccessViaProxy) {
 		this.handleNoAccessViaProxy = handleNoAccessViaProxy;
+	}
+
+	/**
+	 * @return the dashboardEnabled
+	 */
+	public boolean isDashboardEnabled() {
+		return dashboardEnabled;
+	}
+
+	/**
+	 * @param dashboardEnabled
+	 *            the dashboardEnabled to set
+	 */
+	public void setDashboardEnabled(boolean dashboardEnabled) {
+		this.dashboardEnabled = dashboardEnabled;
 	}
 
 }

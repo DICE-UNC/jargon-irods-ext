@@ -79,6 +79,9 @@ public class ConfigServiceImpl implements ConfigService {
 	@Value("${irods.auth.scheme}")
 	private String defaultIrodsAuthScheme;
 
+	@Value("${metalnx.enable.dashboard}")
+	private boolean dashboardEnabled;
+
 	@Override
 	public GlobalConfig getGlobalConfig() {
 		logger.info("getGlobalConfig()");
@@ -86,6 +89,7 @@ public class ConfigServiceImpl implements ConfigService {
 		globalConfig.setTicketsEnabled(this.isTicketsEnabled());
 		globalConfig.setUploadRulesEnabled(isUploadRulesEnabled());
 		globalConfig.setHandleNoAccessViaProxy(handleNoAccessViaProxy);
+		globalConfig.setDashboardEnabled(dashboardEnabled);
 		logger.debug("globalConfig:{}", globalConfig);
 		return globalConfig;
 	}
@@ -184,6 +188,9 @@ public class ConfigServiceImpl implements ConfigService {
 				.append(", irodsPort=").append(irodsPort).append(", irodsZone=").append(irodsZone)
 				.append(", irodsJobUser=").append(irodsJobUser).append(", irodsAuthScheme=").append(irodsAuthScheme)
 				.append(", populateMsiEnabled=").append(populateMsiEnabled).append(", ticketsEnabled=")
+				if (defaultIrodsAuthScheme != null) {
+			builder.append("defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme).append(", ");
+		}
 				.append(ticketsEnabled).append(", uploadRulesEnabled=").append(uploadRulesEnabled)
 				.append(", downloadLimit=").append(downloadLimit).append(", handleNoAccessViaProxy=")
 				.append(handleNoAccessViaProxy).append(", defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme)
@@ -241,5 +248,14 @@ public class ConfigServiceImpl implements ConfigService {
 
 	public void setDefaultIrodsAuthScheme(String defaultIrodsAuthScheme) {
 		this.defaultIrodsAuthScheme = defaultIrodsAuthScheme;
+	}
+
+	@Override
+	public boolean isDashboardEnabled() {
+		return dashboardEnabled;
+	}
+
+	public void setDashboardEnabled(boolean dashboardEnabled) {
+		this.dashboardEnabled = dashboardEnabled;
 	}
 }
