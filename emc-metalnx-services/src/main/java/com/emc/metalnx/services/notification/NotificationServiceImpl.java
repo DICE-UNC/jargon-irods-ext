@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.datacommons.api.NotificationsApi;
 import org.datacommons.client.ApiException;
 import org.datacommons.model.Notification;
+import org.datacommons.model.UuidList;
 import org.irods.jargon.core.exception.JargonRuntimeException;
 import org.irods.jargon.extensions.notification.NotificationService;
 import org.slf4j.Logger;
@@ -19,12 +21,10 @@ public class NotificationServiceImpl implements NotificationService {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
-	// @Autowired
 	NotificationsApi apiInstance = new NotificationsApi();
 
 	@Override
 	public List<Notification> getAllNotification(String userId) {
-		// TODO Auto-generated method stub
 		List<Notification> result = new ArrayList<>();
 		try {
 			result = apiInstance.getNotification(userId);
@@ -56,21 +56,50 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public void deleteNotifications(List<String> uuids) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void markToSeen(List<String> uuids) {
+	public Map<String, Integer> deleteNotifications(List<String> uuids) {
 		/*
 		 * NOTE - Conversion should be kept in the services-- this should be the list of
 		 * String/UUIDs. and the services should convert to any supported or desired
 		 * format.
 		 */
+		Map<String, Integer> result = new HashMap<>();
+		try {
+			UuidList uuidList = new UuidList();
+
+			for (String uuid : uuids) {
+				UUID temp = UUID.fromString(uuid);
+				uuidList.addUuidsItem(temp);
+			}
+			result = apiInstance.deleteNotification(uuidList);
+		} catch (ApiException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+
+	}
+
+	@Override
+	public Map<String, Integer> markToSeen(List<String> uuids) {
 		/*
-		 * try { apiInstance.markSeen(uuids); } catch (ApiException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
+		 * NOTE - Conversion should be kept in the services-- this should be the list of
+		 * String/UUIDs. and the services should convert to any supported or desired
+		 * format.
 		 */
+		Map<String, Integer> result = new HashMap<>();
+		try {
+			UuidList uuidList = new UuidList();
+
+			for (String uuid : uuids) {
+				UUID temp = UUID.fromString(uuid);
+				uuidList.addUuidsItem(temp);
+			}
+			result = apiInstance.markSeen(uuidList);
+		} catch (
+
+		ApiException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }
