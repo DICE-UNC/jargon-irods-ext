@@ -37,12 +37,6 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public List<Notification> getNotificationById(String userId, String notificationId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Map<String, Integer> getUnseenCounts(String userId) {
 		Map<String, Integer> result = new HashMap<>();
 		try {
@@ -51,32 +45,7 @@ public class NotificationServiceImpl implements NotificationService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return result;
-	}
-
-	@Override
-	public Map<String, Integer> deleteNotifications(List<String> uuids) {
-		/*
-		 * NOTE - Conversion should be kept in the services-- this should be the list of
-		 * String/UUIDs. and the services should convert to any supported or desired
-		 * format.
-		 */
-		Map<String, Integer> result = new HashMap<>();
-		try {
-			UuidList uuidList = new UuidList();
-
-			for (String uuid : uuids) {
-				UUID temp = UUID.fromString(uuid);
-				uuidList.addUuidsItem(temp);
-			}
-			result = apiInstance.deleteNotification(uuidList);
-		} catch (ApiException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-
 	}
 
 	@Override
@@ -101,5 +70,35 @@ public class NotificationServiceImpl implements NotificationService {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	@Override
+	public Map<String, Integer> deleteNotifications(List<String> uuids) {
+		/*
+		 * NOTE - Conversion should be kept in the services-- this should be the list of
+		 * String/UUIDs. and the services should convert to any supported or desired
+		 * format.
+		 */
+		Map<String, Integer> result = new HashMap<>();
+		try {
+			UuidList uuidList = new UuidList();
+
+			for (String uuid : uuids) {
+				UUID temp = UUID.fromString(uuid);
+				uuidList.addUuidsItem(temp);
+			}
+			result = apiInstance.deleteNotification(uuidList);
+		} catch (ApiException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public List<Notification> getNotificationById(String userId, String notificationId) {
+		// TODO Auto-generated method stub
+		// To be used if needed
+		return null;
 	}
 }
