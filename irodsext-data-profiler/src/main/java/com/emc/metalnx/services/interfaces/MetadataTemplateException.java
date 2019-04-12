@@ -1,4 +1,4 @@
-package com.emc.metalnx.services.irods;
+package com.emc.metalnx.services.interfaces;
 
 import org.irods.jargon.core.exception.JargonException;
 

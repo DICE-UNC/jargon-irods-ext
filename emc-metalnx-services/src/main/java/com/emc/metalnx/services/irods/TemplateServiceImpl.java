@@ -25,6 +25,7 @@ import com.emc.metalnx.core.domain.dao.TemplateFieldDao;
 import com.emc.metalnx.core.domain.entity.DataGridTemplate;
 import com.emc.metalnx.core.domain.entity.DataGridTemplateField;
 import com.emc.metalnx.core.domain.exceptions.DataGridException;
+import com.emc.metalnx.services.interfaces.MetadataTemplateException;
 import com.emc.metalnx.services.interfaces.TemplateService;
 import com.emc.metalnx.services.irods.template.SerializedMetadataTemplate;
 import com.emc.metalnx.services.irods.template.SerializedTemplateField;

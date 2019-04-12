@@ -11,7 +11,6 @@ import org.irods.jargon.core.exception.DataNotFoundException;
 import com.emc.metalnx.core.domain.entity.DataGridTemplate;
 import com.emc.metalnx.core.domain.entity.DataGridTemplateField;
 import com.emc.metalnx.core.domain.exceptions.DataGridException;
-import com.emc.metalnx.services.irods.MetadataTemplateException;
 
 public interface TemplateService {
 
