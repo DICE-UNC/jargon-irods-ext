@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.irods.jargon.core.connection.AuthScheme;
 
+import com.emc.metalnx.services.configuration.AuthTypeMapping;
 import com.emc.metalnx.services.configuration.GlobalConfig;
 
 /**
@@ -140,4 +141,13 @@ public interface ConfigService {
 	 *         {@link AuthScheme}
 	 */
 	String getDefaultIrodsAuthScheme();
+
+
+	/**
+	 * List the {@link AuthTypeMapping} values used to display user login auth type
+	 * prompts as configured in the properties
+	 * 
+	 * @return {@code List} of {@link AuthTypeMapping}
+	 */
+	List<AuthTypeMapping> listAuthTypeMappings();
 }

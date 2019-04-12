@@ -82,6 +82,15 @@ public class ConfigServiceImpl implements ConfigService {
 	@Value("${metalnx.enable.dashboard}")
 	private boolean dashboardEnabled;
 
+	/**
+	 * This is a string representation of AuthType mappings in the form
+	 * iRODType:userFriendlyType| (bar delimited) This is parsed from the
+	 * metalnx.properties and can be accessed as a parsed mapping via
+	 * {@code ConfigService.listAuthTypeMappings()}
+	 */
+	@Value("${metalnx.authtype.mappings}")
+	private String authtypeMappings;
+
 	@Override
 	public GlobalConfig getGlobalConfig() {
 		logger.info("getGlobalConfig()");
@@ -228,5 +237,37 @@ public class ConfigServiceImpl implements ConfigService {
 				.append(", defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme).append(", dashboardEnabled=")
 				.append(dashboardEnabled).append("]");
 		return builder.toString();
+	}
+
+	@Override
+	public List<AuthTypeMapping> listAuthTypeMappings() {
+		List<AuthTypeMapping> authTypeList = new ArrayList<AuthTypeMapping>();
+		if (this.getAuthtypeMappings() == null || this.getAuthtypeMappings().isEmpty()
+				|| this.getAuthtypeMappings().equals("${metalnx.authtype.mappings}")) {
+			for (String scheme : AuthScheme.getAuthSchemeList()) {
+				authTypeList.add(new AuthTypeMapping(scheme, scheme));
+			}
+		} else {
+			String[] entries;
+			// parse and create a custom auth type list
+			entries = this.getAuthtypeMappings().split("\\|");
+			for (String entry : entries) {
+				String[] parsedEntry = entry.split(":");
+				if (parsedEntry.length != 2) {
+					throw new IllegalArgumentException("unparsable authTypeMapping");
+				}
+				authTypeList.add(new AuthTypeMapping(parsedEntry[0], parsedEntry[1]));
+			}
+
+		}
+		return authTypeList;
+	}
+
+	public String getAuthtypeMappings() {
+		return authtypeMappings;
+	}
+
+	public void setAuthtypeMappings(String authtypeMappings) {
+		this.authtypeMappings = authtypeMappings;
 	}
 }

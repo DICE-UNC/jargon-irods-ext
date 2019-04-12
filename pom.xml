@@ -24,7 +24,10 @@
 		<el.version>2.2</el.version>
 		<!-- Mockito version -->
 		<mockito.version>1.10.19</mockito.version>
-		<maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
+		<maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
+		<!-- xml apis version -->
+		<!-- https://mvnrepository.com/artifact/xml-apis/xml-apis -->
+   		<xml.apis.version>2.0.2</xml.apis.version>
 	</properties>
 	<packaging>pom</packaging>
 	<name>jargon-extensions</name>
@@ -90,6 +93,12 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-expression</artifactId>
 				<version>${spring.core.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/xml-apis/xml-apis -->
+			<dependency>
+			    <groupId>xml-apis</groupId>
+			    <artifactId>xml-apis</artifactId>
+			    <version>${xml.apis.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
