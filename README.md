@@ -3,9 +3,9 @@ Jargon Extensions API for irods-ext
 
 
 # Project: Jargon Extensions API - IRODS-EXT
-### Date:
-### Release Version: 4.3.0.2-SNAPSHOT
-### git tag:
+### Date: 04/15/2019
+### Release Version: 4.3.0.2-RELEASE
+### git tag: 4.3.0.2-RELEASE
 
 ## News
 
