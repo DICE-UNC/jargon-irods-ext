@@ -31,3 +31,4 @@ JargonVersion.java
 *.*~
 .dbeaver*
 test.metalnx.properties
+**/.vscode/

@@ -1,16 +1,16 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.services.tests.configuration;
 
 import com.emc.metalnx.core.domain.exceptions.DataGridConnectionRefusedException;
 import com.emc.metalnx.core.domain.exceptions.DataGridException;
+import com.emc.metalnx.services.configuration.AuthTypeMapping;
 import com.emc.metalnx.services.configuration.ConfigServiceImpl;
 import com.emc.metalnx.services.interfaces.ConfigService;
 import com.emc.metalnx.services.tests.msi.MSIUtils;
 import org.irods.jargon.core.exception.JargonException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -127,4 +127,27 @@ public class TestConfigService {
         ReflectionTestUtils.setField(configService, "msiAPIVersionSupported", msiVersion);
         assertEquals(msiVersion, configService.getMsiAPIVersionSupported());
     }
+
+    @Test
+	public void testListAuthSchemesNoProp() throws Exception {
+		ConfigService configService = new ConfigServiceImpl();
+		List<AuthTypeMapping> actual = configService.listAuthTypeMappings();
+		Assert.assertNotNull("no authtype mappings", actual);
+		Assert.assertFalse("empty mappings when going with irods default", actual.isEmpty());
+	}
+
+	@Test
+	public void testListAuthSchemesViaPropertyMapping() throws Exception {
+		ConfigServiceImpl configService = new ConfigServiceImpl();
+		configService.setAuthtypeMappings("foo:bar|zip:zap");
+		List<AuthTypeMapping> actual = configService.listAuthTypeMappings();
+		Assert.assertNotNull("no authtype mappings", actual);
+		Assert.assertFalse("empty mappings when going with properties default", actual.isEmpty());
+		Assert.assertTrue("should be 2 mappings", actual.size() == 2);
+		AuthTypeMapping expected1 = new AuthTypeMapping("foo", "bar");
+		Assert.assertEquals("irods auth type mismatch", expected1.getIrodsAuthType(), actual.get(0).getIrodsAuthType());
+		Assert.assertEquals("user auth type mismatch", expected1.getUserAuthType(), actual.get(0).getUserAuthType());
+
+	}
+
 }
