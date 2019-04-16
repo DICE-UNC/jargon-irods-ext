@@ -4,8 +4,8 @@ Jargon Extensions API for irods-ext
 
 # Project: Jargon Extensions API - IRODS-EXT
 ### Date: 04/15/2019
-### Release Version: 4.3.0.2-RELEASE
-### git tag: 4.3.0.2-RELEASE
+### Release Version: 4.3.0.3-SNAPSHOT
+### git tag: 
 
 ## News
 
@@ -24,7 +24,3 @@ same extension interfaces to track MetaLnx, and will attempt to provide a common
 Jargon-core uses Maven for dependency management.  See the pom.xml file for references to various dependencies.
 
 Note that the following bug and feature requests are logged in GitHub with related commit information [[https://github.com/DICE-UNC/jargon/issues]]
-
-## Changes
-
-#### Update of misc dependencies via jargon-pom dependencies
