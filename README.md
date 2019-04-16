@@ -25,6 +25,3 @@ Jargon-core uses Maven for dependency management.  See the pom.xml file for refe
 
 Note that the following bug and feature requests are logged in GitHub with related commit information [[https://github.com/DICE-UNC/jargon/issues]]
 
-## Changes
-
-Refer to CHANGELOG.md
