@@ -11,7 +11,7 @@
 		<version>4.3.0.3-SNAPSHOT</version>
 	</parent>
 	<properties>
-		<metalnx.version>2.0.0-RELEASE</metalnx.version>
+		<metalnx.version>2.0.1-SNAPSHOT</metalnx.version>
 	</properties>
 	<packaging>pom</packaging>
 	<name>jargon-extensions</name>
