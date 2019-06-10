@@ -38,11 +38,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
-			<artifactId>irodsext-data-typer</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.irods.jargon</groupId>
 			<artifactId>emc-metalnx-core</artifactId>
 			<version>${project.version}</version>
 			<exclusions>

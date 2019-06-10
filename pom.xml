@@ -26,7 +26,7 @@
 		<maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
 		<!-- xml apis version -->
 		<!-- https://mvnrepository.com/artifact/xml-apis/xml-apis -->
-   		<xml.apis.version>2.0.2</xml.apis.version>
+   	<xml.apis.version>2.0.2</xml.apis.version>
 	</properties>
 	<packaging>pom</packaging>
 	<name>jargon-extensions</name>
