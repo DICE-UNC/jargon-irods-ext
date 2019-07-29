@@ -4,7 +4,6 @@
 package com.emc.metalnx.services.irods;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -152,47 +151,23 @@ public class PermissionsServiceImpl implements PermissionsService {
 
 		// Maps from data grid ID to DataGridGroupPermission object for retrieving the
 		// group names
-		HashMap<String, DataGridGroupPermission> idGroupsPermissions = new HashMap<String, DataGridGroupPermission>();
+		List<DataGridGroupPermission> groupPermissions = new ArrayList<>();
 
 		for (DataGridFilePermission ufp : ufps) {
 
 			// Getting only the groups, ignoring users
 			if (ufp.getUserType().compareTo(RODS_GROUP) == 0) {
+				DataGridGroupPermission groupPermission = new DataGridGroupPermission();
+				groupPermission.setDataGridId(0);
+				groupPermission.setGroupName(ufp.getUsername());
+				groupPermission.setPermission(ufp.getPermission());
+				groupPermissions.add(groupPermission);
 
-				String groupDataGridId = ufp.getUserId();
-				if (groupDataGridId.isEmpty()) {
-					groupDataGridId = "0";
-				}
-
-				// If the ID is not known yet, we need to create a new entry for it
-				if (!idGroupsPermissions.containsKey(groupDataGridId)) {
-					DataGridGroupPermission dggp = new DataGridGroupPermission();
-					dggp.setDataGridId(Integer.parseInt(groupDataGridId));
-					dggp.setPermission(ufp.getPermission());
-
-					// Creating new entry for group
-					idGroupsPermissions.put(groupDataGridId, dggp);
-				}
 			}
 		}
 
-		// Making sure we have groups to query for
-		if (idGroupsPermissions.size() > 0) {
+		return groupPermissions;
 
-			// Getting list of unique IDs on an array
-			String[] groupIds = idGroupsPermissions.keySet().toArray(new String[idGroupsPermissions.size()]);
-
-			// One single DB query to get group names
-			List<DataGridGroup> groupObjects = groupDao.findByDataGridIdList(groupIds);
-
-			// Setting group names to the elements on the hash map
-			for (DataGridGroup group : groupObjects) {
-				idGroupsPermissions.get(String.valueOf(group.getDataGridId())).setGroupName(group.getGroupname());
-			}
-		}
-
-		// Casting hash map values list to array list and returning
-		return new ArrayList<DataGridGroupPermission>(idGroupsPermissions.values());
 	}
 
 	/***********************************************************************************/
@@ -492,6 +467,7 @@ public class PermissionsServiceImpl implements PermissionsService {
 			DataGridFilePermission dgfp = mapToDataGridFilePermission(ufp);
 			dgFilePermissionList.add(dgfp);
 		}
+		logger.debug("mapped permission list:{}", dgFilePermissionList);
 		return dgFilePermissionList;
 	}
 }
