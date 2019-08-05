@@ -85,6 +85,25 @@ public class ConfigServiceImpl implements ConfigService {
 	private boolean dashboardEnabled;
 
 	/**
+	 * Issuer (iss) in the jwt token for access to microservices
+	 */
+	@Value("${jwt.issuer}")
+	private String jwtIssuer;
+
+	/**
+	 * Secret for jwt creation. Note that the underlying property should be treated
+	 * as secret data with appropriate controls
+	 */
+	@Value("${jwt.secret")
+	private String jwtSecret;
+
+	/**
+	 * algo for computing JWTs
+	 */
+	@Value("${jwt.algo}")
+	private String jwtAlgo;
+
+	/**
 	 * This is a string representation of AuthType mappings in the form
 	 * iRODType:userFriendlyType| (bar delimited) This is parsed from the
 	 * metalnx.properties and can be accessed as a parsed mapping via
@@ -224,24 +243,6 @@ public class ConfigServiceImpl implements ConfigService {
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("ConfigServiceImpl [msiAPIVersionSupported=").append(msiAPIVersionSupported)
-				.append(", mlxMSIsExpected=").append(mlxMSIsExpected).append(", irods41MSIsExpected=")
-				.append(irods41MSIsExpected).append(", irods42MSIsExpected=").append(irods42MSIsExpected)
-				.append(", otherMSIsExpected=").append(otherMSIsExpected).append(", irodsHost=").append(irodsHost)
-				.append(", irodsPort=").append(irodsPort).append(", irodsZone=").append(irodsZone)
-				.append(", irodsJobUser=").append(irodsJobUser).append(", irodsJobPassword=").append(irodsJobPassword)
-				.append(", irodsAuthScheme=").append(irodsAuthScheme).append(", populateMsiEnabled=")
-				.append(populateMsiEnabled).append(", ticketsEnabled=").append(ticketsEnabled)
-				.append(", uploadRulesEnabled=").append(uploadRulesEnabled).append(", downloadLimit=")
-				.append(downloadLimit).append(", handleNoAccessViaProxy=").append(handleNoAccessViaProxy)
-				.append(", defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme).append(", dashboardEnabled=")
-				.append(dashboardEnabled).append("]");
-		return builder.toString();
-	}
-
-	@Override
 	public List<AuthTypeMapping> listAuthTypeMappings() {
 		List<AuthTypeMapping> authTypeList = new ArrayList<AuthTypeMapping>();
 		if (this.getAuthtypeMappings() == null || this.getAuthtypeMappings().isEmpty()
@@ -271,5 +272,32 @@ public class ConfigServiceImpl implements ConfigService {
 
 	public void setAuthtypeMappings(String authtypeMappings) {
 		this.authtypeMappings = authtypeMappings;
+	}
+
+	@Override
+	public String getJwtIssuer() {
+		return jwtIssuer;
+	}
+
+	public void setJwtIssuer(String jwtIssuer) {
+		this.jwtIssuer = jwtIssuer;
+	}
+
+	@Override
+	public String getJwtSecret() {
+		return jwtSecret;
+	}
+
+	public void setJwtSecret(String jwtSecret) {
+		this.jwtSecret = jwtSecret;
+	}
+
+	@Override
+	public String getJwtAlgo() {
+		return jwtAlgo;
+	}
+
+	public void setJwtAlgo(String jwtAlgo) {
+		this.jwtAlgo = jwtAlgo;
 	}
 }

@@ -150,4 +150,7 @@ public interface ConfigService {
 	 * @return {@code List} of {@link AuthTypeMapping}
 	 */
 	List<AuthTypeMapping> listAuthTypeMappings();
+	String getJwtAlgo();
+	String getJwtSecret();
+	String getJwtIssuer();
 }
