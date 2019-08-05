@@ -214,7 +214,5 @@
 		<module>irodsext-data-typer</module>
 		<module>emc-metalnx-core</module>
 		<module>emc-metalnx-services</module>
-		<module>dot-irods-utilities</module>
-		<module>virtual-collections</module>
 	</modules>
 </project>
