@@ -214,6 +214,5 @@
 		<module>irodsext-data-typer</module>
 		<module>emc-metalnx-core</module>
 		<module>emc-metalnx-services</module>
-		<module>irodsext-jwt-service</module>
 	</modules>
 </project>
