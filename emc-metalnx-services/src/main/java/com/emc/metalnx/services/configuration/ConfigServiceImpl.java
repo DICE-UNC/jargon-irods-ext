@@ -12,11 +12,8 @@ import org.irods.jargon.core.connection.AuthScheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.emc.metalnx.services.interfaces.ConfigService;
 
@@ -25,7 +22,7 @@ import com.emc.metalnx.services.interfaces.ConfigService;
  */
 @Service
 @Transactional
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
+//@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
 public class ConfigServiceImpl implements ConfigService {
 
 	public final static Logger logger = LoggerFactory.getLogger(ConfigServiceImpl.class);
@@ -94,7 +91,7 @@ public class ConfigServiceImpl implements ConfigService {
 	 * Secret for jwt creation. Note that the underlying property should be treated
 	 * as secret data with appropriate controls
 	 */
-	@Value("${jwt.secret")
+	@Value("${jwt.secret}")
 	private String jwtSecret;
 
 	/**
