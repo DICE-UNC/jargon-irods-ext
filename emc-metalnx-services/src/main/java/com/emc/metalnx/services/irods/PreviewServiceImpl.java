@@ -47,6 +47,7 @@ public class PreviewServiceImpl implements PreviewService {
 		myMap.put("text/plain", "collections/preview :: cmFilePreview");
 		myMap.put("application/xml", "collections/preview :: cmFilePreview");
 		myMap.put("application/json", "collections/preview :: cmFilePreview");
+		myMap.put("text/x-log", "collections/preview :: cmFilePreview");
 		myMap.put("text/html", "collections/preview :: cmFilePreview");
 		myMap.put("text/csv", "collections/preview :: csvFilePreview");
 		myMap.put("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -117,10 +118,12 @@ public class PreviewServiceImpl implements PreviewService {
 
 	@Override
 	public String getTemplate(String mimeType) {
+		logger.info("getting template for mimeType: {}" + mimeType);
 		String template = "collections/preview :: noPreview";
 		if (myMap.containsKey(mimeType))
 			template = myMap.get(mimeType);
-
+		
+		logger.info("Matched template: {}" + template);
 		return template;
 	}
 
