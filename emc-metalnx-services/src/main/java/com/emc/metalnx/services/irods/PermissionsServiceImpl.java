@@ -25,11 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.emc.metalnx.core.domain.dao.GroupBookmarkDao;
-import com.emc.metalnx.core.domain.dao.GroupDao;
 import com.emc.metalnx.core.domain.entity.DataGridCollectionAndDataObject;
 import com.emc.metalnx.core.domain.entity.DataGridFilePermission;
-import com.emc.metalnx.core.domain.entity.DataGridGroup;
 import com.emc.metalnx.core.domain.entity.DataGridGroupPermission;
 import com.emc.metalnx.core.domain.entity.DataGridUser;
 import com.emc.metalnx.core.domain.entity.DataGridUserPermission;
@@ -52,12 +49,6 @@ public class PermissionsServiceImpl implements PermissionsService {
 
 	@Autowired
 	private IRODSServices irodsServices;
-
-	@Autowired
-	private GroupBookmarkDao groupBookmarkDao;
-
-	@Autowired
-	private GroupDao groupDao;
 
 	@Autowired
 	private CollectionService collectionService;
@@ -217,15 +208,6 @@ public class PermissionsServiceImpl implements PermissionsService {
 				} else {
 					operationResult = chmodDataObject(permType, path, uName, inAdminMode);
 				}
-
-				// If the permissions is NONE, remove all bookmarks associated to the group and
-				// the path
-				if (permType.equals(DataGridPermType.NONE)) {
-					DataGridGroup group = groupDao.findByGroupnameAndZone(uName, irodsServices.getCurrentUserZone());
-					if (group != null)
-						groupBookmarkDao.removeByGroupAndPath(group, path);
-				}
-
 				logger.info("Permission {} for user {} on path {} set successfully", permType, uName, paths);
 			} catch (JargonException e) {
 				logger.error("Could not set {} permission on path {} for user/group {}", permType, path, uName, e);

@@ -1,16 +1,12 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.services.irods;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.protovalues.UserTypeEnum;
@@ -30,9 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.emc.metalnx.core.domain.dao.UserDao;
-import com.emc.metalnx.core.domain.entity.DataGridGroup;
 import com.emc.metalnx.core.domain.entity.DataGridUser;
-import com.emc.metalnx.core.domain.entity.UserProfile;
 import com.emc.metalnx.core.domain.exceptions.DataGridConnectionRefusedException;
 import com.emc.metalnx.services.interfaces.ConfigService;
 import com.emc.metalnx.services.interfaces.GroupService;
@@ -297,7 +291,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateGroupList(DataGridUser user, List<DataGridGroup> groups)
+	public boolean updateGroupList(DataGridUser user, List<UserGroup> groups)
 			throws DataGridConnectionRefusedException {
 
 		UserGroupAO groupAO = irodsServices.getGroupAO();
@@ -307,59 +301,15 @@ public class UserServiceImpl implements UserService {
 			// List current groups for user
 			List<UserGroup> groupsFromIrods = groupAO.findUserGroupsForUser(user.getUsername());
 
-			// Building set with iRODS IDs already on this group
-			HashMap<Long, UserGroup> idsFromIrods = new HashMap<Long, UserGroup>();
-			for (UserGroup groupFromIrods : groupsFromIrods) {
-				idsFromIrods.put(Long.valueOf(groupFromIrods.getUserGroupId()), groupFromIrods);
-			}
-
-			// Building set with iRODS IDs coming from UI
-			HashMap<Long, DataGridGroup> idsFromUi = new HashMap<Long, DataGridGroup>();
-			for (DataGridGroup groupFromUi : groups) {
-				idsFromUi.put(groupFromUi.getDataGridId(), groupFromUi);
-			}
-
-			// Resolving differences from UI to iRODS
-			Set<Long> keysFromUi = idsFromUi.keySet();
-			Set<Long> keysFromIrods = idsFromIrods.keySet();
-
 			// Committing changes to iRODS
-			for (Long dataGridId : keysFromUi) {
-				if (!keysFromIrods.contains(dataGridId)) {
-					groupService.attachUserToGroup(user, idsFromUi.get(dataGridId));
-				}
-			}
 
-			for (Long dataGridId : keysFromIrods) {
-				if (!keysFromUi.contains(dataGridId)) {
-					DataGridGroup group = new DataGridGroup();
-					group.setGroupname(idsFromIrods.get(dataGridId).getUserGroupName());
-
-					if (group.getGroupname().compareTo("public") != 0) {
-						groupService.removeUserFromGroup(user, group);
-					}
-				}
-			}
+			// FIXME: compare groups and resolve deltas
 
 			return true;
 		} catch (Exception e) {
 			logger.info("Could not update [" + user.getUsername() + "] group list: ", e);
 		}
 		return false;
-	}
-
-	@Override
-	public boolean applyProfileToUser(UserProfile profile, DataGridUser user) {
-		Set<DataGridGroup> profileGroups = profile.getGroups();
-		for (DataGridGroup dataGridGroup : profileGroups) {
-			try {
-				groupService.attachUserToGroup(user, dataGridGroup);
-			} catch (Exception e) {
-				logger.info("iCAT already contain the user [" + user.getUsername() + "] on group ["
-						+ dataGridGroup.getGroupname() + "] :", e);
-			}
-		}
-		return true;
 	}
 
 	@Override
