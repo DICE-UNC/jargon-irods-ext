@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.irods.jargon.core.exception.DuplicateDataException;
+import org.irods.jargon.core.exception.InvalidGroupException;
+import org.irods.jargon.core.exception.InvalidUserException;
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.pub.CollectionAO;
 import org.irods.jargon.core.pub.DataObjectAO;
@@ -56,6 +58,21 @@ public class GroupServiceImpl implements GroupService {
 		} catch (JargonException e) {
 			logger.error("error finding groups", e);
 			throw new DataGridException(e);
+		}
+	}
+
+	@Override
+	public UserGroup findById(String groupId) throws DataGridException {
+		logger.info("findById()");
+		if (groupId == null || groupId.isEmpty()) {
+			throw new IllegalArgumentException("null groupId");
+		}
+		UserGroupAO userGroupAO = irodsServices.getGroupAO();
+		try {
+			return userGroupAO.find(groupId);
+		} catch (JargonException e) {
+			logger.error("error finding group by id:{}", groupId, e);
+			throw new DataGridException("error finding group", e);
 		}
 	}
 
@@ -216,21 +233,26 @@ public class GroupServiceImpl implements GroupService {
 			}
 
 			// Resolving differences from UI to iRODS
+			// keysFromUi = irods user ids from iCAT
 			Set<Long> keysFromUi = idsFromUi.keySet();
+			// keysFromIrods = irods user ids from web page
 			Set<Long> keysFromIrods = idsFromIrods.keySet();
 
-			for (Long dataGridId : keysFromUi) {
-				if (!keysFromIrods.contains(dataGridId)) {
-					logger.info("adding user:{}", keysFromUi);
-					// attachUserToGroup(idsFromUi.get(dataGridId), group);
+			// for each iRODS user in the group from web page
+			for (Long keyFromUi : keysFromUi) {
+				// if not in irods add itThe
+				if (!keysFromIrods.contains(keyFromUi)) {
+					logger.info("adding user:{}", keyFromUi);
+					attachUserToGroup(idsFromUi.get(keyFromUi), group);
 				}
 			}
 
-			for (Long dataGridId : keysFromIrods) {
-				if (!keysFromUi.contains(dataGridId)) {
+			for (Long keyFromIrods : keysFromIrods) {
+				// if the UI does not have the user from iRODS, remove it from iRODS
+				if (!keysFromUi.contains(keyFromIrods)) {
 					DataGridUser user = new DataGridUser();
-					user.setUsername(idsFromIrods.get(dataGridId).getName());
-					// removeUserFromGroup(user, group);
+					user.setUsername(idsFromIrods.get(keyFromIrods).getName());
+					removeUserFromGroup(user, group);
 					logger.info("removing user:{}", user);
 				}
 			}
@@ -238,6 +260,49 @@ public class GroupServiceImpl implements GroupService {
 		} catch (Exception e) {
 			logger.info("error updating user group membership", e);
 			throw new DataGridException("error adding group membership", e);
+		}
+	}
+
+	/**
+	 * Remove the given user from the group
+	 * 
+	 * @param user  {@link DataGridUser} to remove
+	 * @param group {@link UserGroup} from which the user will be removed
+	 */
+	private void removeUserFromGroup(DataGridUser user, UserGroup group) throws DataGridException {
+		logger.info("removeUserFromGroup()");
+		logger.info("user:{}", user);
+		logger.info("group:{}", group);
+		UserGroupAO groupAO = irodsServices.getGroupAO();
+		try {
+			groupAO.removeUserFromGroup(group.getNameWithZone(), user.getUsername(), user.getAdditionalInfo());
+		} catch (InvalidUserException e) {
+			logger.warn("invalid user, ignored", e);
+		} catch (InvalidGroupException e) {
+			logger.warn("invalid group, ignored", e);
+		} catch (JargonException e) {
+			logger.error("error adding user to group", e);
+			throw new DataGridException("error removing user from group", e);
+		}
+	}
+
+	/**
+	 * Attach the data grid user to the given UserGroup in iRODS
+	 * 
+	 * @param dataGridUser {@link DataGridUser} to add to group
+	 * @param group        {@link UserGroup} to add user to
+	 */
+	private void attachUserToGroup(DataGridUser dataGridUser, UserGroup group) throws DataGridException {
+		logger.info("attachUserToGroup()");
+		logger.info("dataGridUser:{}", dataGridUser);
+		logger.info("group:{}", group);
+		UserGroupAO groupAO = irodsServices.getGroupAO();
+		try {
+			groupAO.addUserToGroup(group.getNameWithZone(), dataGridUser.getUsername(),
+					dataGridUser.getAdditionalInfo());
+		} catch (JargonException e) {
+			logger.error("error adding user to group", e);
+			throw new DataGridException("error adding user to group", e);
 		}
 	}
 

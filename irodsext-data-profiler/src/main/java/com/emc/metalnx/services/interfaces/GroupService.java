@@ -133,4 +133,13 @@ public interface GroupService {
 	void updateOwnership(UserGroup group, Map<String, Boolean> addCollectionsToOwn,
 			Map<String, Boolean> removeCollectionsToOwn) throws DataGridException;
 
+	/**
+	 * Locate a user group based on its iCAT id
+	 * 
+	 * @param groupId {@code String} with the group id
+	 * @return {@link UserGroup} associated with the id, or {@code null}
+	 * @throws DataGridException {@link DataGridException}
+	 */
+	UserGroup findById(String groupId) throws DataGridException;
+
 }
