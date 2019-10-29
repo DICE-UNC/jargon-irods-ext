@@ -107,12 +107,15 @@ public class GroupServiceImpl implements GroupService {
 		StringBuilder sb = new StringBuilder();
 		sb.append(groupname);
 		if (!zone.isEmpty()) {
-			sb.append('#');
-			sb.append(zone);
+			if (!zone.equals(userGroupAO.getIRODSAccount().getZone())) {
+				sb.append('#');
+				sb.append(zone);
+			}
 		}
 
 		try {
-			UserGroup group = userGroupAO.find(sb.toString());
+			UserGroup group = userGroupAO.findByName(sb.toString());
+
 			return group;
 		} catch (JargonException e) {
 			logger.error("error finding groups", e);
