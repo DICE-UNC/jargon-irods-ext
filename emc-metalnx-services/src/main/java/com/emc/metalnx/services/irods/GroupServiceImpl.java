@@ -47,7 +47,7 @@ public class GroupServiceImpl implements GroupService {
 	@Autowired
 	private ConfigService configService;
 
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(GroupServiceImpl.class);
 
 	@Override
 	public List<UserGroup> findAll() throws DataGridException {
@@ -325,8 +325,12 @@ public class GroupServiceImpl implements GroupService {
 		logger.info("groupName:{}", groupName);
 		logger.info("groupZone:{}", groupZone);
 
+		UserGroupAO userGroupAO = irodsServices.getGroupAO();
+
 		String queryGroupName;
 		if (groupZone.isEmpty()) {
+			queryGroupName = groupName;
+		} else if (groupZone.equals(userGroupAO.getIRODSAccount().getZone())) {
 			queryGroupName = groupName;
 		} else {
 			StringBuilder sb = new StringBuilder();
@@ -338,12 +342,11 @@ public class GroupServiceImpl implements GroupService {
 
 		logger.info("queryGroupName:{}", queryGroupName);
 
-		UserGroupAO userGroupAO = irodsServices.getGroupAO();
 		try {
 			List<User> groupMembers = userGroupAO.listUserGroupMembers(queryGroupName);
 			String[] dataGridIds = new String[groupMembers.size()];
 			for (int i = 0; i < groupMembers.size(); i++) {
-				dataGridIds[i] = groupMembers.get(i).getNameWithZone();
+				dataGridIds[i] = groupMembers.get(i).getId();
 			}
 			return dataGridIds;
 		} catch (JargonException e) {

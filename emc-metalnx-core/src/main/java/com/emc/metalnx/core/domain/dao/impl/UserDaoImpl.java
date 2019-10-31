@@ -1,121 +1,129 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.core.domain.dao.impl;
 
-import com.emc.metalnx.core.domain.dao.UserDao;
-import com.emc.metalnx.core.domain.dao.generic.GenericDaoImpl;
-import com.emc.metalnx.core.domain.entity.DataGridUser;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.emc.metalnx.core.domain.dao.UserDao;
+import com.emc.metalnx.core.domain.dao.generic.GenericDaoImpl;
+import com.emc.metalnx.core.domain.entity.DataGridUser;
 
 @SuppressWarnings("unchecked")
 @Repository
 @Transactional
 public class UserDaoImpl extends GenericDaoImpl<DataGridUser, Long> implements UserDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+	private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
-    @Override
-    public List<DataGridUser> findByUsername(String username) {
+	@Autowired
+	private SessionFactory sessionFactory;
 
-        List<DataGridUser> users = null;
-        Query q = sessionFactory.getCurrentSession().createQuery("from DataGridUser where username = :username");
-        q.setString("username", username);
+	@Override
+	public List<DataGridUser> findByUsername(String username) {
 
-        users = q.list();
+		List<DataGridUser> users = null;
+		Query q = sessionFactory.getCurrentSession().createQuery("from DataGridUser where username = :username");
+		q.setString("username", username);
 
-        return users;
-    }
+		users = q.list();
 
-    @Override
-    public DataGridUser findByUsernameAndZone(String username, String zone) {
+		return users;
+	}
 
-        List<DataGridUser> users = null;
+	@Override
+	public DataGridUser findByUsernameAndZone(String username, String zone) {
 
-        Query q = sessionFactory.getCurrentSession().createQuery("from DataGridUser where username = :username and additional_info = :zone");
-        q.setString("username", username);
-        q.setString("zone", zone);
+		List<DataGridUser> users = null;
 
-        users = q.list();
-        return users.size() > 0 ? users.get(0) : null;
-    }
+		Query q = sessionFactory.getCurrentSession()
+				.createQuery("from DataGridUser where username = :username and additional_info = :zone");
+		q.setString("username", username);
+		q.setString("zone", zone);
 
-    @Override
-    public boolean deleteByUsername(String username) {
-        List<DataGridUser> users = findByUsername(username);
-        for (DataGridUser user : users) {
-            delete(user);
-        }
-        return true;
-    }
+		users = q.list();
+		return users.size() > 0 ? users.get(0) : null;
+	}
 
-    @Override
-    public List<DataGridUser> findByQueryString(String query) {
-        Query q = sessionFactory.getCurrentSession().createQuery(
-                "from DataGridUser where username like :username or additional_info like :additional_info "
-                        + "or first_name like :first_name or last_name like :last_name " + "or email like :email order by username");
+	@Override
+	public boolean deleteByUsername(String username) {
+		List<DataGridUser> users = findByUsername(username);
+		for (DataGridUser user : users) {
+			delete(user);
+		}
+		return true;
+	}
 
-        q.setParameter("username", "%" + query + "%");
-        q.setParameter("additional_info", "%" + query + "%");
-        q.setParameter("first_name", "%" + query + "%");
-        q.setParameter("last_name", "%" + query + "%");
-        q.setParameter("email", "%" + query + "%");
+	@Override
+	public List<DataGridUser> findByQueryString(String query) {
+		Query q = sessionFactory.getCurrentSession()
+				.createQuery("from DataGridUser where username like :username or additional_info like :additional_info "
+						+ "or first_name like :first_name or last_name like :last_name "
+						+ "or email like :email order by username");
 
-        // Returning results
-        return q.list();
-    }
+		q.setParameter("username", "%" + query + "%");
+		q.setParameter("additional_info", "%" + query + "%");
+		q.setParameter("first_name", "%" + query + "%");
+		q.setParameter("last_name", "%" + query + "%");
+		q.setParameter("email", "%" + query + "%");
 
-    @Override
-    public List<DataGridUser> findByDataGridIdList(String[] ids) {
-        List<DataGridUser> result = new ArrayList<DataGridUser>();
+		// Returning results
+		return q.list();
+	}
 
-        if (ids != null) {
-            int i = 0;
-            Integer ids_int[] = new Integer[ids.length];
+	@Override
+	public List<DataGridUser> findByDataGridIdList(String[] ids) {
+		logger.info("findByDataGridIdList()");
+		List<DataGridUser> result = new ArrayList<DataGridUser>();
 
-            for (String id_str : ids) {
-                ids_int[i++] = Integer.parseInt(id_str);
-            }
+		if (ids != null) {
+			int i = 0;
+			Integer ids_int[] = new Integer[ids.length];
 
-            // Checking if the input ID list is empty
-            if (ids_int != null) {
-                Query q = sessionFactory.getCurrentSession().createQuery("from DataGridUser where data_grid_id in (:ids)");
-                q.setParameterList("ids", ids_int);
-                result = q.list();
-            }
-        }
+			for (String id_str : ids) {
+				ids_int[i++] = Integer.parseInt(id_str);
+			}
 
-        // If the input list is null, the method returns null
-        return result;
-    }
+			// Checking if the input ID list is empty
+			if (ids_int != null) {
+				Query q = sessionFactory.getCurrentSession()
+						.createQuery("from DataGridUser where data_grid_id in (:ids)");
+				q.setParameterList("ids", ids_int);
+				result = q.list();
+			}
+		}
 
-    @Override
-    public DataGridUser findByDataGridId(long id) {
+		// If the input list is null, the method returns null
+		return result;
+	}
 
-        Query q = sessionFactory.getCurrentSession().createQuery("from DataGridUser where data_grid_id=(:id)");
-        q.setParameter("id", id);
+	@Override
+	public DataGridUser findByDataGridId(long id) {
 
-        List<DataGridUser> users = q.list();
+		Query q = sessionFactory.getCurrentSession().createQuery("from DataGridUser where data_grid_id=(:id)");
+		q.setParameter("id", id);
 
-        return users.size() > 0 ? users.get(0) : null;
-    }
+		List<DataGridUser> users = q.list();
 
-    @Override
-    public boolean deleteByDataGridId(long id) {
-        DataGridUser user = findByDataGridId(id);
-        if (user != null) {
-            delete(user);
-        }
-        return false;
-    }
+		return users.size() > 0 ? users.get(0) : null;
+	}
+
+	@Override
+	public boolean deleteByDataGridId(long id) {
+		DataGridUser user = findByDataGridId(id);
+		if (user != null) {
+			delete(user);
+		}
+		return false;
+	}
 
 }

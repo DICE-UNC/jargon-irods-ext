@@ -224,6 +224,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<DataGridUser> findByDataGridIds(String[] ids) {
+		logger.info("findByDataGridIds()");
 		List<DataGridUser> users = userDao.findByDataGridIdList(ids);
 		Collections.sort(users);
 		return users;
