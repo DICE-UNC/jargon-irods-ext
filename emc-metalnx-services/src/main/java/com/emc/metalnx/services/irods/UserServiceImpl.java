@@ -5,6 +5,7 @@ package com.emc.metalnx.services.irods;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +58,32 @@ public class UserServiceImpl implements UserService {
 	private ConfigService configService;
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+	/**
+	 * Compare the data grid user to the current zone and build a proper fully
+	 * qualified user name where indicated
+	 * 
+	 * @param dataGridUser {@link DataGridUser} to build the full user name
+	 * @return {@code String} with the full user name including #zone where needed
+	 */
+	public String buildConcatUserName(final DataGridUser dataGridUser) {
+		logger.info("buildConcatUserName()");
+		StringBuilder sb = new StringBuilder();
+		sb.append(dataGridUser.getUsername());
+
+		if (dataGridUser.getAdditionalInfo().isEmpty()) {
+			// no zone info
+		} else if (dataGridUser.getAdditionalInfo().equals(irodsServices.getCurrentUserZone())) {
+			// no need for zone, same zone
+		} else {
+			logger.debug("adding zone");
+			sb.append("#");
+			sb.append(dataGridUser.getAdditionalInfo());
+		}
+
+		return sb.toString();
+
+	}
 
 	@Override
 	public List<DataGridUser> findAll() {
@@ -302,9 +329,39 @@ public class UserServiceImpl implements UserService {
 			// List current groups for user
 			List<UserGroup> groupsFromIrods = groupAO.findUserGroupsForUser(user.getUsername());
 
+			Map<String, UserGroup> groupsFromUiMap = new HashMap<>();
+			Map<String, UserGroup> groupsFromIrodsMap = new HashMap<>();
+
+			for (UserGroup userGroup : groups) {
+				groupsFromUiMap.put(userGroup.getUserGroupName(), userGroup);
+			}
+
+			for (UserGroup userGroup : groupsFromIrods) {
+				groupsFromIrodsMap.put(userGroup.getUserGroupName(), userGroup);
+			}
+
 			// Committing changes to iRODS
 
-			// FIXME: compare groups and resolve deltas
+			// for every ui key not in irods put the user in that group
+
+			for (String key : groupsFromUiMap.keySet()) {
+				if (groupsFromIrodsMap.get(key) == null) {
+					logger.info("adding group:{}", key);
+					// groupAO.addUserToGroup(key, this.buildConcatUserName(user), "");
+					groupAO.addUserToGroup(key, user.getUsername(), user.getAdditionalInfo());
+				}
+			}
+
+			// for every irods key not in ui remove from irods
+
+			for (String key : groupsFromIrodsMap.keySet()) {
+				if (groupsFromUiMap.get(key) == null) {
+					logger.info("removing group:{}", key);
+					groupAO.removeUserFromGroup(key, user.getUsername(), user.getAdditionalInfo());
+				}
+			}
+
+			logger.info("done!");
 
 			return true;
 		} catch (Exception e) {
