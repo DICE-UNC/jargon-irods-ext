@@ -629,7 +629,7 @@ public class CollectionServiceImpl implements CollectionService {
 	}
 
 	@Override
-	public Set<String> listInheritanceForPath(String path) throws DataGridConnectionRefusedException {
+	public Set<String> listInheritanceForPath(String path) throws DataGridException {
 
 		logger.info("listInheritanceForPath()");
 
@@ -651,8 +651,8 @@ public class CollectionServiceImpl implements CollectionService {
 			return collections;
 		} catch (JargonException e) {
 			logger.error("Could not get collections with inheritance option enabled: ", e);
+			throw new DataGridException("exception getting inheritance", e);
 		}
-		return null;
 	}
 
 	@Override

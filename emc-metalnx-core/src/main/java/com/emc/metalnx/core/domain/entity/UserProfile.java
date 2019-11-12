@@ -1,6 +1,5 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.core.domain.entity;
 
@@ -8,19 +7,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 @Entity
@@ -40,11 +34,6 @@ public class UserProfile {
 	@Column(name = "description", nullable = false, length = 512)
 	private String description;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST })
-	@JoinTable(name = "user_profile_groups", joinColumns = { @JoinColumn(name = "profile_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "group_id") })
-	private Set<DataGridGroup> groups;
-
 	@OneToMany(mappedBy = "userProfile", fetch = FetchType.EAGER)
 	private Set<DataGridUser> users;
 
@@ -57,10 +46,9 @@ public class UserProfile {
 		this.description = description;
 	}
 
-	public UserProfile(String profileName, String description, Set<DataGridGroup> groups, Set<DataGridUser> users) {
+	public UserProfile(String profileName, String description, Set<DataGridUser> users) {
 		this.profileName = profileName;
 		this.description = description;
-		this.groups = groups;
 		this.users = users;
 	}
 
@@ -72,8 +60,7 @@ public class UserProfile {
 	}
 
 	/**
-	 * @param profileId
-	 *            the profileId to set
+	 * @param profileId the profileId to set
 	 */
 	public void setProfileId(Long profileId) {
 		this.profileId = profileId;
@@ -87,8 +74,7 @@ public class UserProfile {
 	}
 
 	/**
-	 * @param profileName
-	 *            the profileName to set
+	 * @param profileName the profileName to set
 	 */
 	public void setProfileName(String profileName) {
 		this.profileName = profileName;
@@ -102,26 +88,10 @@ public class UserProfile {
 	}
 
 	/**
-	 * @param description
-	 *            the description to set
+	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	/**
-	 * @return the groups
-	 */
-	public Set<DataGridGroup> getGroups() {
-		return groups;
-	}
-
-	/**
-	 * @param groups
-	 *            the groups to set
-	 */
-	public void setGroups(Set<DataGridGroup> groups) {
-		this.groups = groups;
 	}
 
 	/**
@@ -132,8 +102,7 @@ public class UserProfile {
 	}
 
 	/**
-	 * @param users
-	 *            the users to set
+	 * @param users the users to set
 	 */
 	public void setUsers(Set<DataGridUser> users) {
 		this.users = users;
@@ -153,9 +122,7 @@ public class UserProfile {
 		if (description != null) {
 			builder.append("description=").append(description).append(", ");
 		}
-		if (groups != null) {
-			builder.append("groups=").append(toString(groups, maxLen)).append(", ");
-		}
+
 		if (users != null) {
 			builder.append("users=").append(toString(users, maxLen));
 		}

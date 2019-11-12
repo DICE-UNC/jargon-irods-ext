@@ -1,18 +1,16 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.services.irods;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.irods.jargon.core.exception.DuplicateDataException;
+import org.irods.jargon.core.exception.InvalidGroupException;
+import org.irods.jargon.core.exception.InvalidUserException;
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.pub.CollectionAO;
 import org.irods.jargon.core.pub.DataObjectAO;
@@ -25,13 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.emc.metalnx.core.domain.dao.GroupDao;
-import com.emc.metalnx.core.domain.entity.DataGridGroup;
 import com.emc.metalnx.core.domain.entity.DataGridUser;
-import com.emc.metalnx.core.domain.exceptions.DataGridConnectionRefusedException;
+import com.emc.metalnx.core.domain.exceptions.DataGridException;
 import com.emc.metalnx.services.interfaces.CollectionService;
 import com.emc.metalnx.services.interfaces.ConfigService;
-import com.emc.metalnx.services.interfaces.GroupBookmarkService;
 import com.emc.metalnx.services.interfaces.GroupService;
 import com.emc.metalnx.services.interfaces.IRODSServices;
 import com.emc.metalnx.services.interfaces.UserBookmarkService;
@@ -47,153 +42,205 @@ public class GroupServiceImpl implements GroupService {
 	UserBookmarkService userBookmarkService;
 
 	@Autowired
-	GroupBookmarkService groupBookmarkService;
-
-	@Autowired
 	IRODSServices irodsServices;
-
-	@Autowired
-	GroupDao groupDao;
 
 	@Autowired
 	private ConfigService configService;
 
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(GroupServiceImpl.class);
 
 	@Override
-	public List<DataGridGroup> findAll() {
-		List<DataGridGroup> groups = groupDao.findAll(DataGridGroup.class);
-		Collections.sort(groups);
-		return groups;
+	public List<UserGroup> findAll() throws DataGridException {
+		try {
+			UserGroupAO groupAO = irodsServices.getGroupAO();
+			List<UserGroup> groups = groupAO.findAll();
+			return groups;
+		} catch (JargonException e) {
+			logger.error("error finding groups", e);
+			throw new DataGridException(e);
+		}
 	}
 
 	@Override
-	public List<DataGridGroup> findByGroupname(String groupname) {
-		List<DataGridGroup> groups = groupDao.findByGroupname(groupname);
-		Collections.sort(groups);
-		return groups;
+	public UserGroup findById(String groupId) throws DataGridException {
+		logger.info("findById()");
+		if (groupId == null || groupId.isEmpty()) {
+			throw new IllegalArgumentException("null groupId");
+		}
+		UserGroupAO userGroupAO = irodsServices.getGroupAO();
+		try {
+			return userGroupAO.find(groupId);
+		} catch (JargonException e) {
+			logger.error("error finding group by id:{}", groupId, e);
+			throw new DataGridException("error finding group", e);
+		}
 	}
 
 	@Override
-	public DataGridGroup findByGroupnameAndZone(String groupname, String zone) {
-		return groupDao.findByGroupnameAndZone(groupname, zone);
+	public List<UserGroup> findByGroupname(String groupname) throws DataGridException {
+		try {
+			UserGroupAO userGroupAO = irodsServices.getGroupAO();
+			List<UserGroup> groups = userGroupAO.findUserGroups(groupname);
+			return groups;
+		} catch (JargonException e) {
+			logger.error("error finding groups", e);
+			throw new DataGridException(e);
+		}
 	}
 
 	@Override
-	public boolean createGroup(DataGridGroup newGroup, List<DataGridUser> usersToBeAttached)
-			throws DataGridConnectionRefusedException {
+	public UserGroup findByGroupnameAndZone(String groupname, String zone) throws DataGridException {
+
+		logger.info("findByGroupnameAndZone()");
+		if (groupname == null || groupname.isEmpty()) {
+			throw new IllegalArgumentException("null or empty groupname");
+		}
+
+		if (zone == null) {
+			throw new IllegalArgumentException("null zone");
+		}
+
+		logger.info("groupname:{}", groupname);
+		logger.info("zone:{}", zone);
+
+		UserGroupAO userGroupAO = irodsServices.getGroupAO();
+		StringBuilder sb = new StringBuilder();
+		sb.append(groupname);
+		if (!zone.isEmpty()) {
+			if (!zone.equals(userGroupAO.getIRODSAccount().getZone())) {
+				sb.append('#');
+				sb.append(zone);
+			}
+		}
+
+		try {
+			UserGroup group = userGroupAO.findByName(sb.toString());
+
+			return group;
+		} catch (JargonException e) {
+			logger.error("error finding groups", e);
+			throw new DataGridException(e);
+		}
+	}
+
+	@Override
+	public boolean createGroup(UserGroup newGroup, List<DataGridUser> usersToBeAttached) throws DataGridException {
 
 		UserGroupAO groupAO = irodsServices.getGroupAO();
 
-		// Translating to iRODS model format
-		UserGroup irodsGroup = new UserGroup();
-
-		irodsGroup.setUserGroupName(newGroup.getGroupname());
-		irodsGroup.setZone(newGroup.getAdditionalInfo());
-
 		try {
 
-			irodsGroup.setUserGroupName(newGroup.getGroupname());
-			irodsGroup.setZone(newGroup.getAdditionalInfo());
-
 			// creating group in iRODS
-			groupAO.addUserGroup(irodsGroup);
-
-			// Recovering the recently created group to get the data grid id.
-			irodsGroup = groupAO.findByName(irodsGroup.getUserGroupName());
-			newGroup.setDataGridId(Long.parseLong(irodsGroup.getUserGroupId()));
-
-			// Persisting the new group into our database
-			groupDao.save(newGroup);
+			groupAO.addUserGroup(newGroup);
 
 			// attaching users to this group
 			updateMemberList(newGroup, usersToBeAttached);
 
 			return true;
 		} catch (DuplicateDataException e) {
-			logger.error("UserGroup " + newGroup.getGroupname() + " already exists: ", e);
+			logger.error("UserGroup " + newGroup.getUserGroupName() + " already exists: ", e);
+			return false;
 		} catch (JargonException e) {
 			logger.error("Could not execute createGroup() on UserGroupAO class: ", e);
+			throw new DataGridException("error creating group", e);
 		}
 
-		return false;
 	}
 
 	@Override
-	public boolean deleteGroupByGroupname(String groupname) throws DataGridConnectionRefusedException {
-		boolean groupDeleted = false;
+	public void deleteGroup(UserGroup userGroup) throws DataGridException {
+
+		logger.info("deleteGroup()");
+
+		if (userGroup == null) {
+			throw new IllegalArgumentException("null userGroup");
+		}
+
+		logger.info("userGroup:{}", userGroup);
 
 		UserGroupAO groupAO = irodsServices.getGroupAO();
-
 		try {
-
-			DataGridGroup group = groupDao.findByGroupnameAndZone(groupname, configService.getIrodsZone());
-
-			// remove group from the data grid
-			groupAO.removeUserGroup(groupname);
-
-			// Removing group bookmarks associated to this group
-			userBookmarkService
-					.removeBookmarkBasedOnPath(String.format("/%s/home/%s", configService.getIrodsZone(), groupname));
-			groupBookmarkService.removeBookmarkBasedOnGroup(group);
-
-			// remove user from the Mlx database
-			groupDeleted = groupDao.deleteByGroupname(groupname);
+			groupAO.removeUserGroup(userGroup);
 		} catch (JargonException e) {
-			logger.error("Could not execute removeUserGroup(String groupname)/"
-					+ "deleteByGroupname(groupname) on UserGroupAO/GroupDao class(es): ", e);
-		} catch (Exception e) {
-			logger.error("Could not execute delete group (dao)");
+			logger.error("exception removing user group", e);
+			throw new DataGridException("error removing user group", e);
 		}
 
-		return groupDeleted;
 	}
 
 	@Override
-	public boolean attachUserToGroup(DataGridUser user, DataGridGroup group) throws DataGridConnectionRefusedException {
+	public void attachUserToGroup(String userName, String userZone, UserGroup userGroup) throws DataGridException {
+
+		logger.info("attachUserToGroup()");
+
+		if (userName == null || userName.isEmpty()) {
+			throw new IllegalArgumentException("null or empty userName");
+		}
+
+		if (userZone == null) {
+			throw new IllegalArgumentException("null userZone");
+		}
+
+		if (userGroup == null) {
+			throw new IllegalArgumentException("null userGroup");
+		}
+
+		logger.info("userName:{}", userName);
+		logger.info("userZone:{}", userZone);
+		logger.info("userGroup:{}", userGroup);
 
 		UserGroupAO groupAO = irodsServices.getGroupAO();
+
 		try {
-			groupAO.addUserToGroup(group.getGroupname(), user.getUsername(), group.getAdditionalInfo());
-			return true;
+			groupAO.addUserToGroup(userGroup.getUserGroupName(), userName, userZone); // FIXME: needs support for user
+																						// zone and group zone
 		} catch (Exception e) {
-			logger.info("Could not attach user [" + user.getUsername() + "] to group [" + group.getGroupname() + "]: ",
-					e);
+			logger.error("unable to add user to group", e);
+			throw new DataGridException("unable to add user to group", e);
 		}
-		return false;
 	}
 
 	@Override
-	public boolean removeUserFromGroup(DataGridUser user, DataGridGroup group)
-			throws DataGridConnectionRefusedException {
+	public void removeUserFromGroup(String userName, String userZone, UserGroup userGroup) throws DataGridException {
 
-		UserGroupAO groupAO = irodsServices.getGroupAO();
+		UserGroupAO groupAO = irodsServices.getGroupAO(); // FIXME: user#zone and group#zone support
 		try {
-			groupAO.removeUserFromGroup(group.getGroupname(), user.getUsername(), group.getAdditionalInfo());
-			return true;
+			groupAO.removeUserFromGroup(userGroup.getUserGroupName(), userName, userZone);
 		} catch (Exception e) {
-			logger.info(
-					"Could not remove user [" + user.getUsername() + "] from group [" + group.getGroupname() + "]: ",
-					e);
+			logger.info("Could not remove user [" + userName + "] from group [" + userGroup + "]: ", e);
 		}
-		return false;
 	}
 
+	// FIXME: why is this done this way? Why not just track new users added?
+
 	@Override
-	public boolean updateMemberList(DataGridGroup group, List<DataGridUser> users)
-			throws DataGridConnectionRefusedException {
+	public void updateMemberList(UserGroup group, List<DataGridUser> users) throws DataGridException {
+
+		logger.info("updateMemberList()");
+
+		if (group == null) {
+			throw new IllegalArgumentException("null group");
+		}
+
+		if (users == null) {
+			throw new IllegalArgumentException("null users");
+		}
+
+		logger.info("group:{}", group);
+		logger.info("users:{}", users);
 
 		try {
 
 			UserGroupAO groupAO = irodsServices.getGroupAO();
-
+			// FIXME: incorporate user and group zone, include changes to userGroupAO
 			// Users that are currently on this group
-			List<User> usersFromIrods = groupAO.listUserGroupMembers(group.getGroupname());
+			List<User> usersFromIrods = groupAO.listUserGroupMembers(group.getUserGroupName());
 
 			// Building set with iRODS IDs already on this group
-			HashMap<Long, User> idsFromIrods = new HashMap<Long, User>();
+			HashMap<Long, User> idsFromIrods = new HashMap<>();
 			for (User userFromIrods : usersFromIrods) {
-				idsFromIrods.put(Long.valueOf(userFromIrods.getId()), userFromIrods);
+				idsFromIrods.put(Long.decode(userFromIrods.getId()), userFromIrods);
+				logger.info("userFromIrods:{}", userFromIrods);
 			}
 
 			// Building set with iRODS IDs coming from UI
@@ -203,85 +250,147 @@ public class GroupServiceImpl implements GroupService {
 			}
 
 			// Resolving differences from UI to iRODS
+			// keysFromUi = irods user ids from iCAT
 			Set<Long> keysFromUi = idsFromUi.keySet();
+			// keysFromIrods = irods user ids from web page
 			Set<Long> keysFromIrods = idsFromIrods.keySet();
 
-			for (Long dataGridId : keysFromUi) {
-				if (!keysFromIrods.contains(dataGridId)) {
-					attachUserToGroup(idsFromUi.get(dataGridId), group);
+			// for each iRODS user in the group from web page
+			for (Long keyFromUi : keysFromUi) {
+				// if not in irods add it
+				if (!keysFromIrods.contains(keyFromUi)) {
+					logger.info("adding user:{}", keyFromUi);
+					attachUserToGroup(idsFromUi.get(keyFromUi), group);
 				}
 			}
 
-			for (Long dataGridId : keysFromIrods) {
-				if (!keysFromUi.contains(dataGridId)) {
+			for (Long keyFromIrods : keysFromIrods) {
+				// if the UI does not have the user from iRODS, remove it from iRODS
+				if (!keysFromUi.contains(keyFromIrods)) {
 					DataGridUser user = new DataGridUser();
-					user.setUsername(idsFromIrods.get(dataGridId).getName());
+					user.setUsername(idsFromIrods.get(keyFromIrods).getName());
+					user.setAdditionalInfo(idsFromIrods.get(keyFromIrods).getZone());
 					removeUserFromGroup(user, group);
+					logger.info("removing user:{}", user);
 				}
 			}
 
-			return true;
 		} catch (Exception e) {
-			logger.info("Could not update [" + group.getGroupname() + "]: ", e);
+			logger.info("error updating user group membership", e);
+			throw new DataGridException("error adding group membership", e);
 		}
-		return false;
 	}
 
-	@Override
-	public List<DataGridGroup> findByQueryString(String query) {
-		List<DataGridGroup> groups = groupDao.findByQueryString(query);
-		Collections.sort(groups);
-		return groups;
-	}
-
-	@Override
-	public String[] getMemberList(DataGridGroup group) throws DataGridConnectionRefusedException {
-		UserGroupAO userGroupAO = irodsServices.getGroupAO();
+	/**
+	 * Remove the given user from the group
+	 * 
+	 * @param user  {@link DataGridUser} to remove
+	 * @param group {@link UserGroup} from which the user will be removed
+	 */
+	private void removeUserFromGroup(DataGridUser user, UserGroup group) throws DataGridException {
+		logger.info("removeUserFromGroup()");
+		logger.info("user:{}", user);
+		logger.info("group:{}", group);
+		UserGroupAO groupAO = irodsServices.getGroupAO();
 		try {
-			List<User> groupMembers = userGroupAO.listUserGroupMembers(group.getGroupname());
+			groupAO.removeUserFromGroup(group.getUserGroupName(), user.getUsername(), user.getAdditionalInfo());
+		} catch (InvalidUserException e) {
+			logger.warn("invalid user, ignored", e);
+		} catch (InvalidGroupException e) {
+			logger.warn("invalid group, ignored", e);
+		} catch (JargonException e) {
+			logger.error("error adding user to group", e);
+			throw new DataGridException("error removing user from group", e);
+		}
+	}
+
+	/**
+	 * Attach the data grid user to the given UserGroup in iRODS
+	 * 
+	 * @param dataGridUser {@link DataGridUser} to add to group
+	 * @param group        {@link UserGroup} to add user to
+	 */
+	private void attachUserToGroup(DataGridUser dataGridUser, UserGroup group) throws DataGridException {
+		logger.info("attachUserToGroup()");
+		logger.info("dataGridUser:{}", dataGridUser);
+		logger.info("group:{}", group);
+		UserGroupAO groupAO = irodsServices.getGroupAO();
+		try {
+			groupAO.addUserToGroup(group.getUserGroupName(), dataGridUser.getUsername(),
+					dataGridUser.getAdditionalInfo());
+		} catch (JargonException e) {
+			logger.error("error adding user to group", e);
+			throw new DataGridException("error adding user to group", e);
+		}
+	}
+
+	@Override
+	public String[] getMemberList(String groupName, String groupZone) throws DataGridException {
+
+		logger.info("getMemberList()");
+
+		if (groupName == null || groupName.isEmpty()) {
+			throw new IllegalArgumentException("null or empty groupName");
+		}
+
+		if (groupZone == null) {
+			throw new IllegalArgumentException("null groupZone");
+		}
+
+		logger.info("groupName:{}", groupName);
+		logger.info("groupZone:{}", groupZone);
+
+		UserGroupAO userGroupAO = irodsServices.getGroupAO();
+
+		String queryGroupName;
+		if (groupZone.isEmpty()) {
+			queryGroupName = groupName;
+		} else if (groupZone.equals(userGroupAO.getIRODSAccount().getZone())) {
+			queryGroupName = groupName;
+		} else {
+			StringBuilder sb = new StringBuilder();
+			sb.append(groupName);
+			sb.append('#');
+			sb.append(groupZone);
+			queryGroupName = sb.toString();
+		}
+
+		logger.info("queryGroupName:{}", queryGroupName);
+
+		try {
+			List<User> groupMembers = userGroupAO.listUserGroupMembers(queryGroupName);
 			String[] dataGridIds = new String[groupMembers.size()];
 			for (int i = 0; i < groupMembers.size(); i++) {
 				dataGridIds[i] = groupMembers.get(i).getId();
 			}
 			return dataGridIds;
 		} catch (JargonException e) {
-			logger.error("Could not get members list for group [" + group.getGroupname() + "]: ", e);
+			logger.error("Could not get members list for group ", e);
+			throw new DataGridException("error listing group members", e);
 		}
-		return new String[0];
 	}
 
 	@Override
-	public List<DataGridGroup> findByDataGridIdList(String[] ids) {
-		List<DataGridGroup> groups = groupDao.findByDataGridIdList(ids);
-		Collections.sort(groups);
-		return groups;
-	}
+	public void updateReadPermissions(UserGroup group, Map<String, Boolean> addCollectionsToRead,
+			Map<String, Boolean> removeCollectionsToRead) throws DataGridException {
 
-	@Override
-	public List<DataGridGroup> findByGroupNameList(String[] groupNames) {
-		List<DataGridGroup> groups = groupDao.findByGroupNameList(groupNames);
-		Collections.sort(groups);
-		return groups;
-	}
+		logger.info("updateReadPermissions()");
 
-	@Override
-	public List<DataGridGroup> findByIdList(String[] ids) {
-
-		if (ids != null) {
-			Long[] longIds = new Long[ids.length];
-			for (int i = 0; i < ids.length; i++) {
-				longIds[i] = Long.valueOf(ids[i]);
-			}
-			List<DataGridGroup> groups = groupDao.findByIdList(longIds);
-			Collections.sort(groups);
-			return groups;
+		if (group == null) {
+			throw new IllegalArgumentException("null group");
 		}
-		return new ArrayList<DataGridGroup>();
-	}
 
-	@Override
-	public boolean updateReadPermissions(DataGridGroup group, Map<String, Boolean> addCollectionsToRead,
-			Map<String, Boolean> removeCollectionsToRead) throws DataGridConnectionRefusedException {
+		if (addCollectionsToRead == null) {
+			throw new IllegalArgumentException("null addCollectionsToRead");
+		}
+
+		if (removeCollectionsToRead == null) {
+			throw new IllegalArgumentException("null removeCollectionsToRead");
+		}
+
+		logger.info("group:{}", group);
+		logger.info("addCollectionsToRead:{}", addCollectionsToRead);
+		logger.info("removeCollectionsToRead:{}", removeCollectionsToRead);
 
 		CollectionAO collectionAO = irodsServices.getCollectionAO();
 		DataObjectAO dataObjectAO = irodsServices.getDataObjectAO();
@@ -289,32 +398,47 @@ public class GroupServiceImpl implements GroupService {
 		try {
 			for (String path : addCollectionsToRead.keySet()) {
 				if (collectionService.isCollection(path)) {
-					collectionAO.setAccessPermissionReadAsAdmin(group.getAdditionalInfo(), path, group.getGroupname(),
+					collectionAO.setAccessPermissionReadAsAdmin(group.getZone(), path, group.getUserGroupName(),
 							addCollectionsToRead.get(path));
 				} else {
-					dataObjectAO.setAccessPermissionReadInAdminMode(group.getAdditionalInfo(), path,
-							group.getGroupname());
+					dataObjectAO.setAccessPermissionReadInAdminMode(group.getZone(), path, group.getUserGroupName());
 				}
 			}
 			for (String path : removeCollectionsToRead.keySet()) {
 				if (collectionService.isCollection(path)) {
-					collectionAO.removeAccessPermissionForUserAsAdmin(group.getAdditionalInfo(), path,
-							group.getGroupname(), removeCollectionsToRead.get(path));
+					collectionAO.removeAccessPermissionForUserAsAdmin(group.getZone(), path, group.getUserGroupName(),
+							removeCollectionsToRead.get(path));
 				} else {
-					dataObjectAO.setAccessPermissionReadInAdminMode(group.getAdditionalInfo(), path,
-							group.getGroupname());
+					dataObjectAO.setAccessPermissionReadInAdminMode(group.getZone(), path, group.getUserGroupName());
 				}
 			}
-			return true;
 		} catch (JargonException e) {
 			logger.error("Could not set read permission:", e);
+			throw new DataGridException("exception setting permission", e);
 		}
-		return false;
 	}
 
 	@Override
-	public boolean updateWritePermissions(DataGridGroup group, Map<String, Boolean> addCollectionsToWrite,
-			Map<String, Boolean> removeCollectionsToWrite) throws DataGridConnectionRefusedException {
+	public void updateWritePermissions(UserGroup group, Map<String, Boolean> addCollectionsToWrite,
+			Map<String, Boolean> removeCollectionsToWrite) throws DataGridException {
+
+		logger.info("updateWritePermissions()");
+
+		if (group == null) {
+			throw new IllegalArgumentException("null group");
+		}
+
+		if (addCollectionsToWrite == null) {
+			throw new IllegalArgumentException("null addCollectionsToWrite");
+		}
+
+		if (removeCollectionsToWrite == null) {
+			throw new IllegalArgumentException("null removeCollectionsToWrite");
+		}
+
+		logger.info("group:{}", group);
+		logger.info("addCollectionsToWrite:{}", addCollectionsToWrite);
+		logger.info("removeCollectionsToWrite:{}", removeCollectionsToWrite);
 
 		DataObjectAO dataObjectAO = irodsServices.getDataObjectAO();
 		CollectionAO collectionAO = irodsServices.getCollectionAO();
@@ -322,64 +446,75 @@ public class GroupServiceImpl implements GroupService {
 		try {
 			for (String path : addCollectionsToWrite.keySet()) {
 				if (collectionService.isCollection(path)) {
-					collectionAO.setAccessPermissionWriteAsAdmin(group.getAdditionalInfo(), path, group.getGroupname(),
+					collectionAO.setAccessPermissionWriteAsAdmin(group.getZone(), path, group.getUserGroupName(),
 							addCollectionsToWrite.get(path));
 				} else {
-					dataObjectAO.setAccessPermissionWriteInAdminMode(group.getAdditionalInfo(), path,
-							group.getGroupname());
+					dataObjectAO.setAccessPermissionWriteInAdminMode(group.getZone(), path, group.getUserGroupName());
 				}
 			}
 			for (String path : removeCollectionsToWrite.keySet()) {
 				if (collectionService.isCollection(path)) {
-					collectionAO.removeAccessPermissionForUserAsAdmin(group.getAdditionalInfo(), path,
-							group.getGroupname(), removeCollectionsToWrite.get(path));
+					collectionAO.removeAccessPermissionForUserAsAdmin(group.getZone(), path, group.getUserGroupName(),
+							removeCollectionsToWrite.get(path));
 				} else {
-					dataObjectAO.removeAccessPermissionsForUserInAdminMode(group.getAdditionalInfo(), path,
-							group.getGroupname());
+					dataObjectAO.removeAccessPermissionsForUserInAdminMode(group.getZone(), path,
+							group.getUserGroupName());
 				}
 			}
-			return true;
 		} catch (JargonException e) {
 			logger.error("Could not set read permission:", e);
+			throw new DataGridException("error setting read permission", e);
 		}
-		return false;
 	}
 
 	@Override
-	public boolean updateOwnership(DataGridGroup group, Map<String, Boolean> addCollectionsToOwn,
-			Map<String, Boolean> removeCollectionsToOwn) throws DataGridConnectionRefusedException {
+	public void updateOwnership(UserGroup group, Map<String, Boolean> addCollectionsToOwn,
+			Map<String, Boolean> removeCollectionsToOwn) throws DataGridException {
+
+		logger.info("updateOwnership()");
+
+		if (group == null) {
+			throw new IllegalArgumentException("null group");
+		}
+
+		if (addCollectionsToOwn == null) {
+			throw new IllegalArgumentException("null addCollectionsToOwn");
+		}
+
+		if (removeCollectionsToOwn == null) {
+			throw new IllegalArgumentException("null removeCollectionsToOwn");
+		}
+
+		logger.info("group:{}", group);
+		logger.info("addCollectionsToOwn:{}", addCollectionsToOwn);
+		logger.info("removeCollectionsToOwn:{}", removeCollectionsToOwn);
 
 		DataObjectAO dataObjectAO = irodsServices.getDataObjectAO();
 		CollectionAO collectionAO = irodsServices.getCollectionAO();
 		try {
 			for (String path : addCollectionsToOwn.keySet()) {
 				if (collectionService.isCollection(path)) {
-					collectionAO.setAccessPermissionOwnAsAdmin(group.getAdditionalInfo(), path, group.getGroupname(),
+					collectionAO.setAccessPermissionOwnAsAdmin(group.getZone(), path, group.getUserGroupName(),
 							addCollectionsToOwn.get(path));
 				} else {
-					dataObjectAO.setAccessPermissionWriteInAdminMode(group.getAdditionalInfo(), path,
-							group.getGroupname());
+					dataObjectAO.setAccessPermissionWriteInAdminMode(group.getZone(), path, group.getUserGroupName());
 				}
 			}
 			for (String path : removeCollectionsToOwn.keySet()) {
 				if (collectionService.isCollection(path)) {
-					collectionAO.removeAccessPermissionForUserAsAdmin(group.getAdditionalInfo(), path,
-							group.getGroupname(), removeCollectionsToOwn.get(path));
+					collectionAO.removeAccessPermissionForUserAsAdmin(group.getZone(), path, group.getUserGroupName(),
+							removeCollectionsToOwn.get(path));
 				} else {
-					dataObjectAO.removeAccessPermissionsForUserInAdminMode(group.getAdditionalInfo(), path,
-							group.getGroupname());
+					dataObjectAO.removeAccessPermissionsForUserInAdminMode(group.getZone(), path,
+							group.getUserGroupName());
 				}
 			}
-			return true;
+
 		} catch (JargonException e) {
 			logger.error("Could not set ownership:", e);
-		}
-		return false;
-	}
+			throw new DataGridException("error setting own permission", e);
 
-	@Override
-	public int countAll() {
-		return groupDao.findAll(DataGridGroup.class).size();
+		}
 	}
 
 	@Override
