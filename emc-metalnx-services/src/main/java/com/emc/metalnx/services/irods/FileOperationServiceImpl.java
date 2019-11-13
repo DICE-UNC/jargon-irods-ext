@@ -1,7 +1,5 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.services.irods;
 
@@ -33,7 +31,6 @@ import com.emc.metalnx.core.domain.exceptions.DataGridChecksumException;
 import com.emc.metalnx.core.domain.exceptions.DataGridConnectionRefusedException;
 import com.emc.metalnx.core.domain.exceptions.DataGridException;
 import com.emc.metalnx.services.interfaces.FileOperationService;
-import com.emc.metalnx.services.interfaces.GroupBookmarkService;
 import com.emc.metalnx.services.interfaces.IRODSServices;
 import com.emc.metalnx.services.interfaces.MetadataService;
 import com.emc.metalnx.services.interfaces.RuleService;
@@ -52,9 +49,6 @@ public class FileOperationServiceImpl implements FileOperationService {
 
 	@Autowired
 	private UserBookmarkService userBookmarkService;
-
-	@Autowired
-	private GroupBookmarkService groupBookmarkService;
 
 	@Autowired
 	private FavoritesService favoritesService;
@@ -143,9 +137,6 @@ public class FileOperationServiceImpl implements FileOperationService {
 			// item deleted, we need to delete any bookmarks related to it
 			userBookmarkService.removeBookmarkBasedOnPath(path);
 			userBookmarkService.removeBookmarkBasedOnRelativePath(path);
-
-			groupBookmarkService.removeBookmarkBasedOnPath(path);
-			groupBookmarkService.removeBookmarkBasedOnRelativePath(path);
 
 			favoritesService.removeFavoriteBasedOnPath(path);
 			favoritesService.removeFavoriteBasedOnRelativePath(path);
@@ -351,14 +342,12 @@ public class FileOperationServiceImpl implements FileOperationService {
 	 * Copies a buffered input stream from a file to a HTTP response for
 	 * downloading.
 	 *
-	 * @param path
-	 *            path to the file in iRODS to be added to the HTTP response
-	 * @param response
-	 *            HTTP response to let the user download the file
+	 * @param path     path to the file in iRODS to be added to the HTTP response
+	 * @param response HTTP response to let the user download the file
 	 * @return True, if the file was successfully added to the HTTP response. False,
 	 *         otherwise.
-	 * @throws DataGridConnectionRefusedException
-	 *             is Metalnx cannot connect to the data grid
+	 * @throws DataGridConnectionRefusedException is Metalnx cannot connect to the
+	 *                                            data grid
 	 */
 	private boolean copyFileIntoHttpResponse(String path, HttpServletResponse response)
 			throws DataGridConnectionRefusedException {
