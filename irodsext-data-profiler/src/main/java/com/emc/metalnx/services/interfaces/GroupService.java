@@ -1,175 +1,145 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.services.interfaces;
-
-import com.emc.metalnx.core.domain.entity.DataGridGroup;
-import com.emc.metalnx.core.domain.entity.DataGridUser;
-import com.emc.metalnx.core.domain.exceptions.DataGridConnectionRefusedException;
 
 import java.util.List;
 import java.util.Map;
 
+import org.irods.jargon.core.pub.domain.UserGroup;
+
+import com.emc.metalnx.core.domain.entity.DataGridUser;
+import com.emc.metalnx.core.domain.exceptions.DataGridException;
+
 public interface GroupService {
 
-    /**
-     * Lists all groups existing on iRODS
-     *
-     * @return all groups existing in iRODS
-     */
-    public List<DataGridGroup> findAll();
+	/**
+	 * Lists all groups existing on iRODS
+	 *
+	 * @return all groups existing in iRODS
+	 * @throws DataGridException
+	 */
+	public List<UserGroup> findAll() throws DataGridException;
 
-    /**
-     * Find an specific group whose name is equal to groupname
-     *
-     * @return all groups existing in iRODS
-     */
-    public List<DataGridGroup> findByGroupname(String groupname);
+	/**
+	 * Find an specific group whose name is equal to groupname
+	 *
+	 * @return all groups existing in iRODS
+	 * @throws DataGridException
+	 */
+	public List<UserGroup> findByGroupname(String groupname) throws DataGridException;
 
-    /**
-     * Find an specific group whose name is equal to groupname and zone
-     *
-     * @return
-     */
-    public DataGridGroup findByGroupnameAndZone(String groupname, String zone);
+	/**
+	 * Find an specific group whose name is equal to groupname and zone
+	 *
+	 * @return
+	 * @throws DataGridException {@link DataGridException}
+	 */
+	public UserGroup findByGroupnameAndZone(String groupname, String zone) throws DataGridException;
 
-    /**
-     * Creates a group in iRODS
-     *
-     * @param newGroup
-     * @return true if the group was created successfully, false otherwise
-     * @throws DataGridConnectionRefusedException
-     */
-    public boolean createGroup(DataGridGroup newGroup, List<DataGridUser> usersToBeAttached) throws DataGridConnectionRefusedException;
+	/**
+	 * Creates a group in iRODS
+	 *
+	 * @param newGroup
+	 * @return true if the group was created successfully, false otherwise
+	 * @throws DataGridException {@link DataGridException}
+	 */
+	public boolean createGroup(UserGroup newGroup, List<DataGridUser> usersToBeAttached) throws DataGridException;
 
-    /**
-     * Removes a group from iRODS
-     *
-     * @param groupname
-     * @return True, if the group was successfully deleted. False, otherwise.
-     * @throws DataGridConnectionRefusedException
-     */
-    public boolean deleteGroupByGroupname(String groupname) throws DataGridConnectionRefusedException;
+	/**
+	 * Gets the group's home collection path in the grid.
+	 *
+	 * Be aware that this method, for performance issues, does not call the data
+	 * grid to verify whether or not the group exists.
+	 *
+	 * @param groupName name of the group to find the home path
+	 * @return path to the group's home collection
+	 */
+	public String getGroupCollectionPath(String groupName);
 
-    /**
-     * Attach the user to the group
-     *
-     * @param user
-     * @param group
-     * @return
-     * @throws DataGridConnectionRefusedException
-     */
-    public boolean attachUserToGroup(DataGridUser user, DataGridGroup group) throws DataGridConnectionRefusedException;
+	/**
+	 * Delete the group from the connected zone
+	 * 
+	 * @param userGroup {@link UserGroup} to be deleted
+	 * @throws DataGridException {@link DataGridException}
+	 */
+	void deleteGroup(UserGroup userGroup) throws DataGridException;
 
-    /**
-     * Remove the user from the group
-     *
-     * @param user
-     * @param group
-     * @return
-     * @throws DataGridConnectionRefusedException
-     */
-    public boolean removeUserFromGroup(DataGridUser user, DataGridGroup group) throws DataGridConnectionRefusedException;
+	/**
+	 * Attach a user to a group. This group is local to the logged-in iRODS zone.
+	 * The user can be a cross-zone user as denoted by the {@code zoneName}
+	 * 
+	 * 
+	 * @throws DataGridException {@code DataGridException}
+	 */
+	void attachUserToGroup(String userName, String userZone, UserGroup userGroup) throws DataGridException;
 
-    /**
-     * Updates the list of users belonging to a given group
-     *
-     * @param user
-     * @param group
-     * @return the confirmation
-     * @throws DataGridConnectionRefusedException
-     */
-    public boolean updateMemberList(DataGridGroup group, List<DataGridUser> users) throws DataGridConnectionRefusedException;
+	/**
+	 * Remove the given user from the group
+	 * 
+	 * @param userName  {@code String} with the user to add
+	 * @param userZone  {@code String} with the name of the user zone
+	 * @param userGroup {@code userGroup} with the group#zone
+	 * @throws DataGridException
+	 */
+	void removeUserFromGroup(String userName, String userZone, UserGroup userGroup) throws DataGridException;
 
-    /**
-     * Updates the list of collections the group has read permission
-     *
-     * @return the confirmation
-     * @throws DataGridConnectionRefusedException
-     */
-    public boolean updateReadPermissions(DataGridGroup group, Map<String, Boolean> addCollectionsToRead, Map<String, Boolean> removeCollectionsToRead)
-            throws DataGridConnectionRefusedException;
+	/**
+	 * Given the users in the UI and in iRODS compare the delta and apply changes
+	 * FIXME: this is dumb
+	 * 
+	 * @param group {@link UserGroup} being operated on
+	 * @param users {@code List} of {@link DataGridUsers} to compute
+	 * @throws DataGridException {@link DataGridException}
+	 */
+	void updateMemberList(UserGroup group, List<DataGridUser> users) throws DataGridException;
 
-    /**
-     * Updates the list of collections the group has write permission
-     *
-     * @return the confirmation
-     * @throws DataGridConnectionRefusedException
-     */
-    public boolean updateWritePermissions(DataGridGroup group, Map<String, Boolean> addCollectionsToWrite,
-            Map<String, Boolean> removeCollectionsToWrite) throws DataGridConnectionRefusedException;
+	/**
+	 * Get a list of members for the given group and optional zone
+	 * 
+	 * @param groupName {@code String} with the name of the group
+	 * @param groupZone {@code String} with an optional zone
+	 * @return {@code List[String]} with the name of the members
+	 * @throws DataGridException {@link DataGridException}
+	 */
+	String[] getMemberList(String groupName, String groupZone) throws DataGridException;
 
-    /**
-     * Updates the list of collections the group owns
-     *
-     * @return the confirmation
-     * @throws DataGridConnectionRefusedException
-     */
-    public boolean updateOwnership(DataGridGroup group, Map<String, Boolean> addCollectionsToOwn, Map<String, Boolean> removeCollectionsToOwn)
-            throws DataGridConnectionRefusedException;
+	/**
+	 * Update permissions with a set of deltas to add and remove
+	 * 
+	 * @param group                   {@link UserGroup}
+	 * @param addCollectionsToRead    {@code List} of collections to add read
+	 *                                permissions
+	 * @param removeCollectionsToRead {@code List} of collections to remove read
+	 *                                permissions
+	 * @throws DataGridException {@link DataGridException}
+	 */
+	void updateReadPermissions(UserGroup group, Map<String, Boolean> addCollectionsToRead,
+			Map<String, Boolean> removeCollectionsToRead) throws DataGridException;
 
-    /**
-     * Returns the list of Data Grid IDs for the members of the group.
-     *
-     * @param group
-     * @return list of Data Grid IDs of members
-     * @throws DataGridConnectionRefusedException
-     */
-    public String[] getMemberList(DataGridGroup group) throws DataGridConnectionRefusedException;
+	/**
+	 * Updates the list of collections the group has write permission
+	 * 
+	 * @param group                    {@link UserGroup}
+	 * @param addCollectionsToWrite    {@code List} of collections to add write
+	 *                                 permissions
+	 * @param removeCollectionsToWrite {@code List} of collections to remove write
+	 *                                 permissions
+	 * @throws DataGridException {@link DataGridException}
+	 */
+	void updateWritePermissions(UserGroup group, Map<String, Boolean> addCollectionsToWrite,
+			Map<String, Boolean> removeCollectionsToWrite) throws DataGridException;
 
-    /**
-     * Finds users matching the specified query.
-     *
-     * @param query
-     * @param page
-     * @return list of users
-     */
-    public List<DataGridGroup> findByQueryString(String query);
+	void updateOwnership(UserGroup group, Map<String, Boolean> addCollectionsToOwn,
+			Map<String, Boolean> removeCollectionsToOwn) throws DataGridException;
 
-    /**
-     * Finds users whose ids match the list of ids.
-     *
-     * @param ids
-     * @return list of users
-     */
-    public List<DataGridGroup> findByDataGridIdList(String[] ids);
-
-    /**
-     * Finds groups whose names match the list of names.
-     *
-     * @param groupNames
-     * @return list of users
-     */
-    public List<DataGridGroup> findByGroupNameList(String[] groupNames);
-
-    /**
-     * Finds users whose ids match the list of ids.
-     *
-     * @param ids
-     * @return list of users
-     */
-    public List<DataGridGroup> findByIdList(String[] ids);
-
-    /**
-     * Calculates the number of existing groups
-     *
-     * @return the number of groups
-     */
-    public int countAll();
-
-    /**
-     * Gets the group's home collection path in the grid.
-     *
-     * Be aware that this method, for performance issues, does not call the data grid
-     * to verify whether or not the group exists.
-     *
-     * @param groupName
-     *            name of the group to find the home path
-     * @return
-     *         path to the group's home collection
-     */
-    public String getGroupCollectionPath(String groupName);
+	/**
+	 * Locate a user group based on its iCAT id
+	 * 
+	 * @param groupId {@code String} with the group id
+	 * @return {@link UserGroup} associated with the id, or {@code null}
+	 * @throws DataGridException {@link DataGridException}
+	 */
+	UserGroup findById(String groupId) throws DataGridException;
 
 }

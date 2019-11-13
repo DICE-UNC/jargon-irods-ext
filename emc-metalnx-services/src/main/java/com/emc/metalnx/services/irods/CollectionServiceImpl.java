@@ -651,7 +651,7 @@ public class CollectionServiceImpl implements CollectionService {
 			return collections;
 		} catch (JargonException e) {
 			logger.error("Could not get collections with inheritance option enabled: ", e);
-			return collections;
+			throw new DataGridException("exception getting inheritance", e);
 		}
 	}
 
