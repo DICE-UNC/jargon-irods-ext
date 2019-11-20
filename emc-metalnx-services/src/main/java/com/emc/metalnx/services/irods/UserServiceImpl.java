@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.emc.metalnx.core.domain.dao.UserDao;
 import com.emc.metalnx.core.domain.entity.DataGridUser;
 import com.emc.metalnx.core.domain.exceptions.DataGridConnectionRefusedException;
+import com.emc.metalnx.core.domain.exceptions.DataGridException;
 import com.emc.metalnx.services.interfaces.ConfigService;
 import com.emc.metalnx.services.interfaces.GroupService;
 import com.emc.metalnx.services.interfaces.IRODSServices;
@@ -107,6 +108,8 @@ public class UserServiceImpl implements UserService {
 
 		if (user.getUserType().compareTo(UserTypeEnum.RODS_ADMIN.getTextValue()) == 0) {
 			irodsUser.setUserType(UserTypeEnum.RODS_ADMIN);
+		} else if (user.getUserType().compareTo(UserTypeEnum.GROUP_ADMIN.getTextValue()) == 0) {
+			irodsUser.setUserType(UserTypeEnum.GROUP_ADMIN);
 		} else {
 			irodsUser.setUserType(UserTypeEnum.RODS_USER);
 		}
@@ -181,6 +184,8 @@ public class UserServiceImpl implements UserService {
 			if (!iRodsUser.getUserType().getTextValue().equals(modifyUser.getUserType())) {
 				if (modifyUser.getUserType().compareTo(UserTypeEnum.RODS_ADMIN.getTextValue()) == 0) {
 					iRodsUser.setUserType(UserTypeEnum.RODS_ADMIN);
+				} else if (modifyUser.getUserType().compareTo(UserTypeEnum.GROUP_ADMIN.getTextValue()) == 0) {
+					iRodsUser.setUserType(UserTypeEnum.GROUP_ADMIN);
 				} else {
 					iRodsUser.setUserType(UserTypeEnum.RODS_USER);
 				}
@@ -319,8 +324,20 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateGroupList(DataGridUser user, List<UserGroup> groups)
-			throws DataGridConnectionRefusedException {
+	public boolean updateGroupList(DataGridUser user, List<UserGroup> groups) throws DataGridException {
+
+		logger.info("updateGroupList()");
+
+		if (user == null) {
+			throw new IllegalArgumentException("null user");
+		}
+
+		if (groups == null) {
+			throw new IllegalArgumentException("null groups");
+		}
+
+		logger.info("user:{}", user);
+		logger.info("groups:{}", groups);
 
 		UserGroupAO groupAO = irodsServices.getGroupAO();
 
@@ -365,9 +382,9 @@ public class UserServiceImpl implements UserService {
 
 			return true;
 		} catch (Exception e) {
-			logger.info("Could not update [" + user.getUsername() + "] group list: ", e);
+			logger.error("Could not update [" + user.getUsername() + "] group list: ", e);
+			throw new DataGridException("error updating user groups", e);
 		}
-		return false;
 	}
 
 	@Override
@@ -479,6 +496,7 @@ public class UserServiceImpl implements UserService {
 		List<String> userTypes = new ArrayList<String>();
 
 		userTypes.add(UserTypeEnum.RODS_ADMIN.getTextValue());
+		userTypes.add(UserTypeEnum.GROUP_ADMIN.getTextValue());
 		userTypes.add(UserTypeEnum.RODS_USER.getTextValue());
 
 		return userTypes;

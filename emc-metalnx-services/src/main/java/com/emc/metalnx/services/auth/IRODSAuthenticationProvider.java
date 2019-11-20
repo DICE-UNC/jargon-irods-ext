@@ -108,6 +108,8 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 			GrantedAuthority grantedAuth;
 			if (irodsUser.getUserType().equals(UserTypeEnum.RODS_ADMIN)) {
 				grantedAuth = new IRODSAdminGrantedAuthority();
+			} else if (irodsUser.getUserType().equals(UserTypeEnum.GROUP_ADMIN)) {
+				grantedAuth = new IRODSGroupadminGrantedAuthority();
 			} else {
 				grantedAuth = new IRODSUserGrantedAuthority();
 			}
@@ -237,8 +239,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 	}
 
 	/**
-	 * @param irodsHost
-	 *            the irodsHost to set
+	 * @param irodsHost the irodsHost to set
 	 */
 	public void setIrodsHost(String irodsHost) {
 		this.irodsHost = irodsHost;
@@ -252,8 +253,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 	}
 
 	/**
-	 * @param irodsPort
-	 *            the irodsPort to set
+	 * @param irodsPort the irodsPort to set
 	 */
 	public void setIrodsPort(String irodsPort) {
 		this.irodsPort = irodsPort;
@@ -267,8 +267,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 	}
 
 	/**
-	 * @param irodsZoneName
-	 *            the irodsZoneName to set
+	 * @param irodsZoneName the irodsZoneName to set
 	 */
 	public void setIrodsZoneName(String irodsZoneName) {
 		this.irodsZoneName = irodsZoneName;
@@ -285,6 +284,18 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 		@Override
 		public String getAuthority() {
 			return "ROLE_ADMIN";
+		}
+	}
+
+	/*
+	 * Temporary implementation of the GrantedAuthority interface for GroupAdmin
+	 * authentication
+	 */
+	private class IRODSGroupadminGrantedAuthority implements GrantedAuthority {
+
+		@Override
+		public String getAuthority() {
+			return "ROLE_GROUPADMIN";
 		}
 	}
 
