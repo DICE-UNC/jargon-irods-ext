@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean modifyUser(DataGridUser modifyUser) throws DataGridConnectionRefusedException {
+	public boolean modifyUser(DataGridUser modifyUser) throws DataGridException {
 
 		UserAO userAO = irodsServices.getUserAO();
 
@@ -249,9 +249,9 @@ public class UserServiceImpl implements UserService {
 
 			return true;
 		} catch (JargonException e) {
-			e.printStackTrace();
+			logger.error("error modifying user:{}", modifyUser, e);
+			throw new DataGridException("unable to modify user", e);
 		}
-		return false;
 	}
 
 	@Override

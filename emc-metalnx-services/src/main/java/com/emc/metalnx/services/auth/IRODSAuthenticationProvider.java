@@ -191,6 +191,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 
 			// If the user is found
 			if (irodsUser.getUserType().equals(UserTypeEnum.RODS_ADMIN)
+					|| irodsUser.getUserType().equals(UserTypeEnum.GROUP_ADMIN)
 					|| irodsUser.getUserType().equals(UserTypeEnum.RODS_USER)) {
 
 				// If the user is not yet persisted in our database
@@ -207,6 +208,9 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 					if (irodsUser.getUserType().equals(UserTypeEnum.RODS_ADMIN)) {
 						logger.debug("setting user type admin:{}", irodsUser.getUserType());
 						user.setUserType(UserTypeEnum.RODS_ADMIN.getTextValue());
+					} else if (irodsUser.getUserType().equals(UserTypeEnum.GROUP_ADMIN)) {
+						logger.debug("setting user type groupadmin:{}", irodsUser.getUserType());
+						user.setUserType(UserTypeEnum.GROUP_ADMIN.getTextValue());
 					} else {
 						logger.debug("setting user type rodsuser:{}", irodsUser.getUserType());
 						user.setUserType(UserTypeEnum.RODS_USER.getTextValue());
@@ -292,6 +296,8 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 	 * authentication
 	 */
 	private class IRODSGroupadminGrantedAuthority implements GrantedAuthority {
+
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public String getAuthority() {

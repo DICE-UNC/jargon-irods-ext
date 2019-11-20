@@ -52,11 +52,11 @@ public interface UserService {
 	/**
 	 * Modify user by username
 	 *
-	 * @param username
+	 * @param modifyUser {@link DataGridUser} to be modified
 	 * @return a confirmation that the user has been modified
-	 * @throws DataGridConnectionRefusedException
+	 * @throws DataGridException {@link DataGridException}
 	 */
-	public boolean modifyUser(DataGridUser modifyUser) throws DataGridConnectionRefusedException;
+	public boolean modifyUser(DataGridUser modifyUser) throws DataGridException;
 
 	/**
 	 * Finds users by username
