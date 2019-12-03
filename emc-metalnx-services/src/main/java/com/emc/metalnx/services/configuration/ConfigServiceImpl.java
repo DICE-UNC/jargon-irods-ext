@@ -81,7 +81,7 @@ public class ConfigServiceImpl implements ConfigService {
 	@Value("${irods.auth.scheme}")
 	private String defaultIrodsAuthScheme;
 
-	@Value("${metalnx.enable.dashboard}")
+	@Value("${metalnx.enable.dashboard: false}")
 	private boolean dashboardEnabled;
 
 	/**
