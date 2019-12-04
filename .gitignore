@@ -6,6 +6,7 @@
 **/metalnx.testing.properties
 **/*.eml
 **/Scripts
+**/.vscode
 .idea
 *.iml
 .project
