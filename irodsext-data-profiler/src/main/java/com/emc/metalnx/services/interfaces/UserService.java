@@ -11,6 +11,7 @@ import org.irods.jargon.core.pub.domain.UserGroup;
 
 import com.emc.metalnx.core.domain.entity.DataGridUser;
 import com.emc.metalnx.core.domain.exceptions.DataGridConnectionRefusedException;
+import com.emc.metalnx.core.domain.exceptions.DataGridException;
 
 public interface UserService {
 
@@ -51,11 +52,11 @@ public interface UserService {
 	/**
 	 * Modify user by username
 	 *
-	 * @param username
+	 * @param modifyUser {@link DataGridUser} to be modified
 	 * @return a confirmation that the user has been modified
-	 * @throws DataGridConnectionRefusedException
+	 * @throws DataGridException {@link DataGridException}
 	 */
-	public boolean modifyUser(DataGridUser modifyUser) throws DataGridConnectionRefusedException;
+	public boolean modifyUser(DataGridUser modifyUser) throws DataGridException;
 
 	/**
 	 * Finds users by username
@@ -114,12 +115,13 @@ public interface UserService {
 	/**
 	 * Updates the list of groups the user belongs to.
 	 *
-	 * @param user
-	 * @param groups
+	 * @param user   {@link DataGridUser} to be updated
+	 * @param groups {@code List} of {@link UserGroup}
 	 * @return the confirmation of the update.
-	 * @throws DataGridConnectionRefusedException
+	 * @throws DataGridException {@link DataGridException}
 	 */
-	public boolean updateGroupList(DataGridUser user, List<UserGroup> groups) throws DataGridConnectionRefusedException;
+	public boolean updateGroupList(DataGridUser user, List<UserGroup> groups)
+			throws DataGridConnectionRefusedException, DataGridException;
 
 	/**
 	 * Updates the list of collections the user has read permission

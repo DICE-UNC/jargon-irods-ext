@@ -132,8 +132,7 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param userBookmarks
-	 *            the userBookmarks to set
+	 * @param userBookmarks the userBookmarks to set
 	 */
 	public void setUserBookmarks(Set<DataGridUserBookmark> userBookmarks) {
 		bookmarks = userBookmarks;
@@ -158,8 +157,7 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param userFavorites
-	 *            the userFavorites to set
+	 * @param userFavorites the userFavorites to set
 	 */
 	public void setUserFavorites(Set<DataGridUserFavorite> userFavorites) {
 		favorites = userFavorites;
@@ -215,56 +213,49 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param id the id to set
 	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
 	/**
-	 * @param dataGridId
-	 *            the dataGridId to set
+	 * @param dataGridId the dataGridId to set
 	 */
 	public void setDataGridId(long dataGridId) {
 		this.dataGridId = dataGridId;
 	}
 
 	/**
-	 * @param username
-	 *            the username to set
+	 * @param username the username to set
 	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
 	/**
-	 * @param additionalInfo
-	 *            the additionalInfo to set
+	 * @param additionalInfo the additionalInfo to set
 	 */
 	public void setAdditionalInfo(String additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}
 
 	/**
-	 * @param enabled
-	 *            the enabled to set
+	 * @param enabled the enabled to set
 	 */
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
 	/**
-	 * @param advancedView
-	 *            to set
+	 * @param advancedView to set
 	 */
 	public void setAdvanceView(boolean advancedView) {
 		this.advancedView = advancedView;
 	}
 
 	/**
-	 * @param metadataUnitView
-	 *            to set
+	 * @param metadataUnitView to set
 	 */
 	public void setMetadataUnitView(boolean metadataUnitView) {
 		this.metadataUnitView = metadataUnitView;
@@ -285,16 +276,14 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param firstName
-	 *            the firstName to set
+	 * @param firstName the firstName to set
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
 	/**
-	 * @param lastName
-	 *            the lastName to set
+	 * @param lastName the lastName to set
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
@@ -308,8 +297,7 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param email
-	 *            the email to set
+	 * @param email the email to set
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -323,8 +311,7 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param userProfile
-	 *            the userProfile to set
+	 * @param userProfile the userProfile to set
 	 */
 	public void setUserProfile(UserProfile userProfile) {
 		this.userProfile = userProfile;
@@ -338,8 +325,7 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param locale
-	 *            the locale to set
+	 * @param locale the locale to set
 	 */
 	public void setLocale(String locale) {
 		this.locale = locale;
@@ -361,8 +347,7 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param organizationalRole
-	 *            the organizationalRole to set
+	 * @param organizationalRole the organizationalRole to set
 	 */
 	public void setOrganizationalRole(String organizationalRole) {
 		this.organizationalRole = organizationalRole;
@@ -390,24 +375,21 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param company
-	 *            the company to set
+	 * @param company the company to set
 	 */
 	public void setCompany(String company) {
 		this.company = company;
 	}
 
 	/**
-	 * @param department
-	 *            the department to set
+	 * @param department the department to set
 	 */
 	public void setDepartment(String department) {
 		this.department = department;
 	}
 
 	/**
-	 * @param title
-	 *            the title to set
+	 * @param title the title to set
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -422,6 +404,10 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 		return userType.compareTo("rodsadmin") == 0;
 	}
 
+	public boolean isGroupAdmin() {
+		return userType.compareTo("groupadmin") == 0;
+	}
+
 	/**
 	 * @return the forceFileOverwriting
 	 */
@@ -430,8 +416,7 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param forceFileOverwriting
-	 *            the forceFileOverwriting to set
+	 * @param forceFileOverwriting the forceFileOverwriting to set
 	 */
 	public void setForceFileOverwriting(boolean forceFileOverwriting) {
 		this.forceFileOverwriting = forceFileOverwriting;
@@ -445,8 +430,7 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param password
-	 *            the password to set
+	 * @param password the password to set
 	 */
 	public void setPassword(String password) {
 		this.password = password;
