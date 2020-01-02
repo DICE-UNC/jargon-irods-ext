@@ -30,6 +30,11 @@ public class GlobalConfig {
 	private boolean dashboardEnabled = false;
 
 	/**
+	 * Turn on or off the pluggable search interface elements
+	 */
+	private boolean pluggableSearchEnabled = false;
+
+	/**
 	 * Turn on or off the ability to generate no-access pages for files and
 	 * collections
 	 *
@@ -49,8 +54,9 @@ public class GlobalConfig {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("GlobalConfig [ticketsEnabled=").append(ticketsEnabled).append(", uploadRulesEnabled=")
-				.append(uploadRulesEnabled).append(", handleNoAccessViaProxy=").append(handleNoAccessViaProxy)
-				.append("]");
+				.append(uploadRulesEnabled).append(", dashboardEnabled=").append(dashboardEnabled)
+				.append(", pluggableSearchEnabled=").append(pluggableSearchEnabled).append(", handleNoAccessViaProxy=")
+				.append(handleNoAccessViaProxy).append("]");
 		return builder.toString();
 	}
 
@@ -78,11 +84,18 @@ public class GlobalConfig {
 	}
 
 	/**
-	 * @param dashboardEnabled
-	 *            the dashboardEnabled to set
+	 * @param dashboardEnabled the dashboardEnabled to set
 	 */
 	public void setDashboardEnabled(boolean dashboardEnabled) {
 		this.dashboardEnabled = dashboardEnabled;
+	}
+
+	public boolean isPluggableSearchEnabled() {
+		return pluggableSearchEnabled;
+	}
+
+	public void setPluggableSearchEnabled(boolean pluggableSearchEnabled) {
+		this.pluggableSearchEnabled = pluggableSearchEnabled;
 	}
 
 }
