@@ -129,6 +129,7 @@ public class ConfigServiceImpl implements ConfigService {
 		globalConfig.setHandleNoAccessViaProxy(handleNoAccessViaProxy);
 		globalConfig.setDashboardEnabled(dashboardEnabled);
 		globalConfig.setPluggableSearchEnabled(pluggableSearchEnabled);
+		globalConfig.setClassicSearchEnabled(classicSearchEnabled);
 		logger.debug("globalConfig:{}", globalConfig);
 		return globalConfig;
 	}
