@@ -108,6 +108,8 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 			GrantedAuthority grantedAuth;
 			if (irodsUser.getUserType().equals(UserTypeEnum.RODS_ADMIN)) {
 				grantedAuth = new IRODSAdminGrantedAuthority();
+			} else if (irodsUser.getUserType().equals(UserTypeEnum.GROUP_ADMIN)) {
+				grantedAuth = new IRODSGroupadminGrantedAuthority();
 			} else {
 				grantedAuth = new IRODSUserGrantedAuthority();
 			}
@@ -160,7 +162,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 		// Getting iRODS protocol set
 		logger.debug("Creating IRODSAccount object.");
 		this.irodsAccount = IRODSAccount.instance(this.irodsHost, Integer.parseInt(this.irodsPort), username, password,
-				"", this.irodsZoneName, "demoResc");
+				"", this.irodsZoneName, "");
 		this.irodsAccount.setAuthenticationScheme(authScheme);
 		// this.irodsAccount.setAuthenticationScheme(AuthScheme.findTypeByString(this.irodsAuthScheme));
 		logger.debug("configured auth scheme:{}", irodsAuthScheme);
@@ -189,6 +191,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 
 			// If the user is found
 			if (irodsUser.getUserType().equals(UserTypeEnum.RODS_ADMIN)
+					|| irodsUser.getUserType().equals(UserTypeEnum.GROUP_ADMIN)
 					|| irodsUser.getUserType().equals(UserTypeEnum.RODS_USER)) {
 
 				// If the user is not yet persisted in our database
@@ -205,6 +208,9 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 					if (irodsUser.getUserType().equals(UserTypeEnum.RODS_ADMIN)) {
 						logger.debug("setting user type admin:{}", irodsUser.getUserType());
 						user.setUserType(UserTypeEnum.RODS_ADMIN.getTextValue());
+					} else if (irodsUser.getUserType().equals(UserTypeEnum.GROUP_ADMIN)) {
+						logger.debug("setting user type groupadmin:{}", irodsUser.getUserType());
+						user.setUserType(UserTypeEnum.GROUP_ADMIN.getTextValue());
 					} else {
 						logger.debug("setting user type rodsuser:{}", irodsUser.getUserType());
 						user.setUserType(UserTypeEnum.RODS_USER.getTextValue());
@@ -237,8 +243,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 	}
 
 	/**
-	 * @param irodsHost
-	 *            the irodsHost to set
+	 * @param irodsHost the irodsHost to set
 	 */
 	public void setIrodsHost(String irodsHost) {
 		this.irodsHost = irodsHost;
@@ -252,8 +257,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 	}
 
 	/**
-	 * @param irodsPort
-	 *            the irodsPort to set
+	 * @param irodsPort the irodsPort to set
 	 */
 	public void setIrodsPort(String irodsPort) {
 		this.irodsPort = irodsPort;
@@ -267,8 +271,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 	}
 
 	/**
-	 * @param irodsZoneName
-	 *            the irodsZoneName to set
+	 * @param irodsZoneName the irodsZoneName to set
 	 */
 	public void setIrodsZoneName(String irodsZoneName) {
 		this.irodsZoneName = irodsZoneName;
@@ -285,6 +288,20 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 		@Override
 		public String getAuthority() {
 			return "ROLE_ADMIN";
+		}
+	}
+
+	/*
+	 * Temporary implementation of the GrantedAuthority interface for GroupAdmin
+	 * authentication
+	 */
+	private class IRODSGroupadminGrantedAuthority implements GrantedAuthority {
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public String getAuthority() {
+			return "ROLE_GROUPADMIN";
 		}
 	}
 

@@ -19,16 +19,15 @@ import org.irods.jargon.core.pub.domain.UserFilePermission;
 import org.irods.jargon.core.pub.domain.UserGroup;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
+import org.irods.jargon.core.utils.MiscIRODSUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.emc.metalnx.core.domain.entity.DataGridCollectionAndDataObject;
 import com.emc.metalnx.core.domain.entity.DataGridFilePermission;
 import com.emc.metalnx.core.domain.entity.DataGridGroupPermission;
-import com.emc.metalnx.core.domain.entity.DataGridUser;
 import com.emc.metalnx.core.domain.entity.DataGridUserPermission;
 import com.emc.metalnx.core.domain.entity.enums.DataGridPermType;
 import com.emc.metalnx.core.domain.exceptions.DataGridConnectionRefusedException;
@@ -284,22 +283,53 @@ public class PermissionsServiceImpl implements PermissionsService {
 	}
 
 	@Override
-	public void resolveMostPermissiveAccessForUser(DataGridCollectionAndDataObject obj, DataGridUser user)
+	public String resolveMostPermissiveAccessForUser(String irodsAbsolutePath, String userName)
 			throws DataGridException {
 
 		logger.info("resolveMostPermissiveAccessForUser()");
 
-		if (obj == null || user == null)
-			return;
+		if (irodsAbsolutePath == null || irodsAbsolutePath.isEmpty()) {
+			throw new IllegalArgumentException("null or empty irodsAbsolutePath");
+		}
+
+		if (userName == null || userName.isEmpty()) {
+			throw new IllegalArgumentException("null or empty userName");
+		}
+
+		logger.info("irodsAbsolutePath:{}", irodsAbsolutePath);
+		logger.info("userName:{}", userName);
+
+		/*
+		 * The user is characterized by the user name as well as the zone they are
+		 * logged into. The iRODS file path may indicate that the user is browsing
+		 * across a federation and a zone will be thus added to the user name assuming
+		 * user#zone is the subject for which permissions will be sought
+		 */
+
+		String targetZone = MiscIRODSUtils.getZoneInPath(irodsAbsolutePath);
+		logger.debug("targetZone from path:{}", targetZone);
+		String targetUser = null;
+		if (targetZone.equals(irodsServices.getCurrentUserZone())) {
+			logger.debug("expanding user name for cross-zone query");
+			StringBuilder sb = new StringBuilder();
+			sb.append(userName);
+			sb.append('#');
+			sb.append(irodsServices.getCurrentUserZone());
+			targetUser = sb.toString();
+		} else {
+			logger.debug("use existing user name within-zone");
+			targetUser = userName;
+			targetZone = "";
+		}
 
 		List<UserGroup> userGroups;
 		List<UserFilePermission> acl;
 
 		try {
-			logger.info("obtaining user groups for user:{}", user.getUsername());
-			userGroups = irodsServices.getGroupAO().findUserGroupsForUser(user.getUsername());
-			logger.info("obtaining acls list for object:{}", obj.getPath());
-			acl = getFilePermissionListForObject(obj.getPath());
+			logger.info("obtaining user groups for user:{}", userName);
+			userGroups = irodsServices.getGroupAO().findUserGroupsForUserInZone(targetUser, targetZone);
+			logger.info("obtaining acls list for object:{}", irodsAbsolutePath);
+			acl = getFilePermissionListForObject(irodsAbsolutePath);
 			logger.info("acl:{}", acl);
 		} catch (JargonException e) {
 			logger.error("jargon exception getting permission listing", e);
@@ -325,7 +355,7 @@ public class PermissionsServiceImpl implements PermissionsService {
 			String permUserName = perm.getUserName();
 
 			// Checking if current permission is related to logged user
-			if (permUserName.compareTo(user.getUsername()) == 0 || userGroupsSet.contains(permUserName)) {
+			if (permUserName.compareTo(targetUser) == 0 || userGroupsSet.contains(permUserName)) {
 				String permissionName = perm.getFilePermissionEnum().name();
 				int userOrGroupPerm = permissions.indexOf(permissionName);
 				int currentPermission = permissions.indexOf(resultingPermission);
@@ -340,7 +370,7 @@ public class PermissionsServiceImpl implements PermissionsService {
 			}
 		}
 
-		obj.setMostPermissiveAccessForCurrentUser(resultingPermission.toLowerCase());
+		return resultingPermission.toLowerCase();
 	}
 
 	/***********************************************************************************/

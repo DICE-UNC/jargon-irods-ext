@@ -81,6 +81,9 @@ public class ConfigServiceImpl implements ConfigService {
 	@Value("${metalnx.enable.dashboard}")
 	private boolean dashboardEnabled;
 
+	@Value("${pluggablesearch.enabled}")
+	private boolean pluggableSearchEnabled = false;
+
 	/**
 	 * Issuer (iss) in the jwt token for access to microservices
 	 */
@@ -117,6 +120,7 @@ public class ConfigServiceImpl implements ConfigService {
 		globalConfig.setUploadRulesEnabled(isUploadRulesEnabled());
 		globalConfig.setHandleNoAccessViaProxy(handleNoAccessViaProxy);
 		globalConfig.setDashboardEnabled(dashboardEnabled);
+		globalConfig.setPluggableSearchEnabled(pluggableSearchEnabled);
 		logger.debug("globalConfig:{}", globalConfig);
 		return globalConfig;
 	}
@@ -296,5 +300,13 @@ public class ConfigServiceImpl implements ConfigService {
 
 	public void setJwtAlgo(String jwtAlgo) {
 		this.jwtAlgo = jwtAlgo;
+	}
+
+	public boolean isPluggableSearchEnabled() {
+		return pluggableSearchEnabled;
+	}
+
+	public void setPluggableSearchEnabled(boolean pluggableSearchEnabled) {
+		this.pluggableSearchEnabled = pluggableSearchEnabled;
 	}
 }
