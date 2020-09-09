@@ -76,7 +76,10 @@ public interface FileOperationService {
 	 *             if an error occurred during deletion
 	 */
 	boolean deleteCollection(String collectionPath, boolean forceFlag) throws DataGridException;
-
+	
+	
+	boolean addItemsToCart(String[] paths) throws DataGridConnectionRefusedException;
+	
 	/**
 	 * Delete a data object in iRODS
 	 *

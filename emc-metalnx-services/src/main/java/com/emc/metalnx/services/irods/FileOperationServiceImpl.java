@@ -18,6 +18,9 @@ import org.irods.jargon.core.pub.TrashOperationsAO;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.core.pub.io.IRODSFileInputStream;
+import org.irods.jargon.datautils.shoppingcart.FileShoppingCart;
+import org.irods.jargon.datautils.shoppingcart.ShoppingCartEntry;
+import org.irods.jargon.datautils.shoppingcart.ShoppingCartService;
 import org.irodsext.dataprofiler.favorites.FavoritesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +61,10 @@ public class FileOperationServiceImpl implements FileOperationService {
 
 	@Autowired
 	private RuleService rs;
-
+	
+	@Autowired
+	private ShoppingCartService shoppingCartService;
+	
 	@Override
 	public boolean copy(String sourcePath, String dstPath, boolean copyWithMetadata)
 			throws DataGridConnectionRefusedException {
@@ -166,6 +172,32 @@ public class FileOperationServiceImpl implements FileOperationService {
 			logger.error("Could not delete collection: ", e.getMessage());
 		}
 
+		return false;
+	}
+	
+	@Override
+	public boolean addItemsToCart(String[] paths) throws DataGridConnectionRefusedException {
+		logger.info("\n\n\n\n\n fileOpertaionsController:::::");
+		logger.info("List of paths:" + paths.toString());
+		FileShoppingCart cart = null;
+		String key;
+		key = "test";
+		
+		try {
+			String cartPath = shoppingCartService.serializeShoppingCartAsLoggedInUser(cart, key);
+			cart = shoppingCartService.retreiveShoppingCartAsLoggedInUser(key);
+			
+			for (String path : paths) {
+				logger.info("Adding path to cart:: " + path);
+				cart.addAnItem(ShoppingCartEntry.instance(path));
+			}
+			logger.info("Cart file path:: " + cartPath);
+			return true;
+			
+		} catch (JargonException e) {
+			logger.error("Could not delete collection: ", e.getMessage());
+		}
+		
 		return false;
 	}
 
