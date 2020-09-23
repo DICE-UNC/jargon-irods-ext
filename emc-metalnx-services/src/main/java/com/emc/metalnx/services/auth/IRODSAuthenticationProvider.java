@@ -27,7 +27,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.transaction.TransactionException;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -66,7 +65,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
+		logger.info("authenticate()");
 		String username = authentication.getName();
 		String password = authentication.getCredentials().toString();
 		AuthResponse authResponse;
@@ -80,6 +79,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 			String authScheme = request.getParameter("authScheme");
 			logger.info("authScheme:{}", authScheme);
 			authSchemeEnum = AuthScheme.findTypeByString(authScheme);
+			logger.info("authSchemeEnum found:{}", authScheme);
 		}
 
 		if (authSchemeEnum == null) {
@@ -132,13 +132,13 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 			authObject.setDetails(userDetails);
 		} catch (TransactionException e) {
 			logger.error("Database not responding");
-			throw new DataGridDatabaseException(e.getMessage());
+			throw new DataGridDatabaseException("database not responding", e);
 		} catch (InvalidUserException | org.irods.jargon.core.exception.AuthenticationException e) {
-			logger.error("Could not authenticate user: ", username);
-			throw new DataGridAuthenticationException(e.getMessage());
+			logger.error("Could not authenticate user:{}", username, e);
+			throw new DataGridAuthenticationException("could not authenticate user", e);
 		} catch (JargonException e) {
-			logger.error("Server not responding");
-			throw new DataGridServerException(e.getMessage());
+			logger.error("Server not responding", e);
+			throw new DataGridServerException("exception", e);
 		}
 
 		return authObject;
@@ -151,10 +151,22 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 
 	private AuthResponse authenticateAgainstIRODS(String username, String password, AuthScheme authScheme)
 			throws JargonException {
+
+		logger.info("authenticateAgainstIRODS()");
+
 		if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+			logger.error("null or empty username");
 			throw new DataGridAuthenticationException("Username or password invalid: null or empty value(s) provided");
-		} else if (username.equalsIgnoreCase(IRODS_ANONYMOUS_ACCOUNT)) {
+		}
+
+		if (username.equalsIgnoreCase(IRODS_ANONYMOUS_ACCOUNT)) {
+			logger.error("Cannot log in as anonymous");
 			throw new DataGridAuthenticationException("Cannot log in as anonymous");
+		}
+
+		if (authScheme == null) {
+			logger.error("authScheme is null");
+			throw new DataGridAuthenticationException("authScheme is null");
 		}
 
 		AuthResponse authResponse;
@@ -163,11 +175,10 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 		logger.debug("Creating IRODSAccount object.");
 		this.irodsAccount = IRODSAccount.instance(this.irodsHost, Integer.parseInt(this.irodsPort), username, password,
 				"", this.irodsZoneName, "");
-		this.irodsAccount.setAuthenticationScheme(authScheme);
-		// this.irodsAccount.setAuthenticationScheme(AuthScheme.findTypeByString(this.irodsAuthScheme));
-		logger.debug("configured auth scheme:{}", irodsAuthScheme);
-		logger.debug("set irodsAccount auth scheme to :{}", irodsAccount.getAuthenticationScheme());
-		logger.debug("Done.");
+		// this.irodsAccount.setAuthenticationScheme(authScheme);
+		this.irodsAccount.setAuthenticationScheme(AuthScheme.findTypeByString(this.irodsAuthScheme));
+		logger.info("configured auth scheme:{}", irodsAuthScheme);
+		logger.info("set irodsAccount auth scheme to :{}", irodsAccount.getAuthenticationScheme());
 
 		logger.debug(
 				"Authenticating IRODSAccount:\n\tusername: {}\n\tpassword: ***********\n\tirodsHost: {}\n\tirodsZone: {}",
@@ -177,7 +188,8 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 
 		if (authResponse.isSuccessful()) {
 
-			if (StringUtils.isEmpty(authResponse.getAuthMessage())) {
+			logger.info("auth is successful");
+			if (authResponse.getAuthMessage().isEmpty()) {
 				logger.debug("AuthMessage: {}", authResponse.getAuthMessage());
 			}
 
@@ -225,7 +237,6 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 						this.userDao.merge(user);
 						logger.info("updated user type in db");
 					}
-
 				}
 
 				this.user = user;
