@@ -1,6 +1,5 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.core.domain.entity;
 
@@ -36,21 +35,19 @@ public class DataGridMetadataSearch {
 	 * @return SQL query string
 	 */
 	public String getSpecQueryAsString() {
-		String attr = this.attribute.replaceAll(regex, "");
-		String opt = this.operator.toString().replaceAll(regex, "");
-		String val = this.value.replaceAll(regex, "");
-		String unit = this.unit.replaceAll(regex, "");
 
-		boolean hasAttr = !attr.isEmpty();
-		boolean hasVal = !val.isEmpty();
-		boolean hasUnit = !unit.isEmpty();
+		boolean hasAttr = !this.attribute.isEmpty();
+		boolean hasVal = !this.value.isEmpty();
+		boolean hasUnit = !this.unit.isEmpty();
 
-		val = addSQLCharToQueryParamBasedOnOperator(val);
-		unit = addSQLCharToQueryParamBasedOnOperator(unit);
+		String val = addSQLCharToQueryParamBasedOnOperator(this.value);
+		String theUnit = addSQLCharToQueryParamBasedOnOperator(unit);
 
-		String attrQuery = hasAttr ? String.format(" LOWER( %s ) = LOWER( '%s' ) ", attrColName, attr) : "";
-		String valueQuery = hasVal ? String.format(" LOWER( %s ) %s LOWER( %s ) ", valueColName, opt, val) : "";
-		String unitQuery = hasUnit ? String.format(" LOWER( %s ) %s LOWER( %s ) ", unitColName, opt, unit) : "";
+		String attrQuery = hasAttr ? String.format(" LOWER( %s ) = LOWER( '%s' ) ", attrColName, this.attribute) : "";
+		String valueQuery = hasVal ? String.format(" LOWER( %s ) %s LOWER( %s ) ", valueColName, this.operator, val)
+				: "";
+		String unitQuery = hasUnit ? String.format(" LOWER( %s ) %s LOWER( %s ) ", unitColName, this.operator, theUnit)
+				: "";
 
 		if (hasAttr && (hasVal || hasUnit)) {
 			attrQuery = String.format(" %s AND ", attrQuery);
