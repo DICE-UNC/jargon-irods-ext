@@ -25,6 +25,7 @@ import org.irods.jargon.core.pub.ZoneAO;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.datautils.avuautocomplete.AvuAutocompleteService;
 import org.irods.jargon.datautils.filesampler.FileSamplerService;
+import org.irods.jargon.datautils.shoppingcart.ShoppingCartService;
 import org.irods.jargon.ticket.TicketAdminService;
 import org.irods.jargon.zipservice.api.JargonZipService;
 
@@ -239,6 +240,8 @@ public interface IRODSServices {
 	 * @throws JargonException
 	 */
 	AvuAutocompleteService getAvuAutocompleteService() throws JargonException;
+	
+	ShoppingCartService getShoppingCartService() throws JargonException;
 
 	/**
 	 * Return an instance of the JargonZipService that handles bundles

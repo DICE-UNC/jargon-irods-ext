@@ -15,6 +15,7 @@ import org.irods.jargon.core.pub.DataObjectAO;
 import org.irods.jargon.core.pub.DataTransferOperations;
 import org.irods.jargon.core.pub.EnvironmentalInfoAO;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
+import org.irods.jargon.core.pub.IRODSFileSystem;
 import org.irods.jargon.core.pub.IRODSFileSystemAO;
 import org.irods.jargon.core.pub.RemoteExecutionOfCommandsAO;
 import org.irods.jargon.core.pub.ResourceAO;
@@ -28,8 +29,13 @@ import org.irods.jargon.core.pub.ZoneAO;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.datautils.avuautocomplete.AvuAutocompleteService;
 import org.irods.jargon.datautils.avuautocomplete.AvuAutocompleteServiceImpl;
+import org.irods.jargon.datautils.datacache.DataCacheService;
+import org.irods.jargon.datautils.datacache.DataCacheServiceFactory;
+import org.irods.jargon.datautils.datacache.DataCacheServiceFactoryImpl;
 import org.irods.jargon.datautils.filesampler.FileSamplerService;
 import org.irods.jargon.datautils.filesampler.FileSamplerServiceImpl;
+import org.irods.jargon.datautils.shoppingcart.ShoppingCartService;
+import org.irods.jargon.datautils.shoppingcart.ShoppingCartServiceImpl;
 import org.irods.jargon.midtier.utils.configuration.MidTierConfiguration;
 import org.irods.jargon.ticket.TicketAdminService;
 import org.irods.jargon.ticket.TicketServiceFactory;
@@ -387,6 +393,16 @@ public class IRODSServicesImpl implements IRODSServices {
 	public AvuAutocompleteService getAvuAutocompleteService() throws JargonException {
 		// Returning AvuAutocompleteServiceImpl instance
 		return new AvuAutocompleteServiceImpl(irodsAccessObjectFactory, irodsAccount);
+	}
+	
+	@Override
+	public ShoppingCartService getShoppingCartService() throws JargonException {
+		// TODO Auto-generated method stub
+		
+		IRODSFileSystem irodsFileSystem = IRODSFileSystem.instance();
+		DataCacheServiceFactory dataCacheServiceFactory = new DataCacheServiceFactoryImpl(
+				irodsFileSystem.getIRODSAccessObjectFactory());
+		return new ShoppingCartServiceImpl(irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount, dataCacheServiceFactory);
 	}
 
 	@Override
