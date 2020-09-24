@@ -35,6 +35,13 @@ public class GlobalConfig {
 	private boolean pluggableSearchEnabled = false;
 
 	/**
+	 * Turn on or off the original file properties/metadata search menu item, can be
+	 * replaced if using the standard search via the iRODS search plugin and
+	 * Elasticsearch (this is a work in progress)
+	 */
+	private boolean classicSearchEnabled = true;
+
+	/**
 	 * Turn on or off the ability to generate no-access pages for files and
 	 * collections
 	 *
@@ -55,8 +62,9 @@ public class GlobalConfig {
 		StringBuilder builder = new StringBuilder();
 		builder.append("GlobalConfig [ticketsEnabled=").append(ticketsEnabled).append(", uploadRulesEnabled=")
 				.append(uploadRulesEnabled).append(", dashboardEnabled=").append(dashboardEnabled)
-				.append(", pluggableSearchEnabled=").append(pluggableSearchEnabled).append(", handleNoAccessViaProxy=")
-				.append(handleNoAccessViaProxy).append("]");
+				.append(", pluggableSearchEnabled=").append(pluggableSearchEnabled).append(", classicSearchEnabled=")
+				.append(classicSearchEnabled).append(", handleNoAccessViaProxy=").append(handleNoAccessViaProxy)
+				.append("]");
 		return builder.toString();
 	}
 
@@ -96,6 +104,20 @@ public class GlobalConfig {
 
 	public void setPluggableSearchEnabled(boolean pluggableSearchEnabled) {
 		this.pluggableSearchEnabled = pluggableSearchEnabled;
+	}
+
+	/**
+	 * @return the classicSearchEnabled
+	 */
+	public boolean isClassicSearchEnabled() {
+		return classicSearchEnabled;
+	}
+
+	/**
+	 * @param classicSearchEnabled the classicSearchEnabled to set
+	 */
+	public void setClassicSearchEnabled(boolean classicSearchEnabled) {
+		this.classicSearchEnabled = classicSearchEnabled;
 	}
 
 }

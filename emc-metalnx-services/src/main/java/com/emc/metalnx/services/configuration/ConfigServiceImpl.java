@@ -85,6 +85,14 @@ public class ConfigServiceImpl implements ConfigService {
 	private boolean pluggableSearchEnabled = false;
 
 	/**
+	 * Indicates whether the old file props and AVU search is visible in the menu
+	 * options, if AVU via elasticsearch is enabled you should probably turn this
+	 * off
+	 */
+	@Value("${classicsearch.enabled}")
+	private boolean classicSearchEnabled = true;
+
+	/**
 	 * Issuer (iss) in the jwt token for access to microservices
 	 */
 	@Value("${jwt.issuer}")
@@ -121,6 +129,7 @@ public class ConfigServiceImpl implements ConfigService {
 		globalConfig.setHandleNoAccessViaProxy(handleNoAccessViaProxy);
 		globalConfig.setDashboardEnabled(dashboardEnabled);
 		globalConfig.setPluggableSearchEnabled(pluggableSearchEnabled);
+		globalConfig.setClassicSearchEnabled(classicSearchEnabled);
 		logger.debug("globalConfig:{}", globalConfig);
 		return globalConfig;
 	}
@@ -308,5 +317,70 @@ public class ConfigServiceImpl implements ConfigService {
 
 	public void setPluggableSearchEnabled(boolean pluggableSearchEnabled) {
 		this.pluggableSearchEnabled = pluggableSearchEnabled;
+	}
+
+	public boolean isClassicSearchEnabled() {
+		return classicSearchEnabled;
+	}
+
+	public void setClassicSearchEnabled(boolean classicSearchEnabled) {
+		this.classicSearchEnabled = classicSearchEnabled;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ConfigServiceImpl [");
+		if (msiAPIVersionSupported != null) {
+			builder.append("msiAPIVersionSupported=").append(msiAPIVersionSupported).append(", ");
+		}
+		if (mlxMSIsExpected != null) {
+			builder.append("mlxMSIsExpected=").append(mlxMSIsExpected).append(", ");
+		}
+		if (irods41MSIsExpected != null) {
+			builder.append("irods41MSIsExpected=").append(irods41MSIsExpected).append(", ");
+		}
+		if (irods42MSIsExpected != null) {
+			builder.append("irods42MSIsExpected=").append(irods42MSIsExpected).append(", ");
+		}
+		if (otherMSIsExpected != null) {
+			builder.append("otherMSIsExpected=").append(otherMSIsExpected).append(", ");
+		}
+		if (irodsHost != null) {
+			builder.append("irodsHost=").append(irodsHost).append(", ");
+		}
+		if (irodsPort != null) {
+			builder.append("irodsPort=").append(irodsPort).append(", ");
+		}
+		if (irodsZone != null) {
+			builder.append("irodsZone=").append(irodsZone).append(", ");
+		}
+		if (irodsJobUser != null) {
+			builder.append("irodsJobUser=").append(irodsJobUser).append(", ");
+		}
+		if (irodsAuthScheme != null) {
+			builder.append("irodsAuthScheme=").append(irodsAuthScheme).append(", ");
+		}
+		builder.append("populateMsiEnabled=").append(populateMsiEnabled).append(", ticketsEnabled=")
+				.append(ticketsEnabled).append(", uploadRulesEnabled=").append(uploadRulesEnabled)
+				.append(", downloadLimit=").append(downloadLimit).append(", handleNoAccessViaProxy=")
+				.append(handleNoAccessViaProxy).append(", ");
+		if (defaultIrodsAuthScheme != null) {
+			builder.append("defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme).append(", ");
+		}
+		builder.append("dashboardEnabled=").append(dashboardEnabled).append(", pluggableSearchEnabled=")
+				.append(pluggableSearchEnabled).append(", classicSearchEnabled=").append(classicSearchEnabled)
+				.append(", ");
+		if (jwtIssuer != null) {
+			builder.append("jwtIssuer=").append(jwtIssuer).append(", ");
+		}
+		if (jwtAlgo != null) {
+			builder.append("jwtAlgo=").append(jwtAlgo).append(", ");
+		}
+		if (authtypeMappings != null) {
+			builder.append("authtypeMappings=").append(authtypeMappings);
+		}
+		builder.append("]");
+		return builder.toString();
 	}
 }

@@ -14,7 +14,9 @@ Add ability to issue JWTs for logged-in users in order to access Metalnx associa
 
 This change requires the addition of several properties in metalnx.properties...
 
+#### Support UTF-8 in metadata search #17
 
+Removed 'sanitizing' code in metadata query that was trimming accented utf-8 characters
 
 ### Removed
 
