@@ -175,8 +175,8 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 		logger.debug("Creating IRODSAccount object.");
 		this.irodsAccount = IRODSAccount.instance(this.irodsHost, Integer.parseInt(this.irodsPort), username, password,
 				"", this.irodsZoneName, "");
-		// this.irodsAccount.setAuthenticationScheme(authScheme);
-		this.irodsAccount.setAuthenticationScheme(AuthScheme.findTypeByString(this.irodsAuthScheme));
+		this.irodsAccount.setAuthenticationScheme(authScheme);
+		// this.irodsAccount.setAuthenticationScheme(AuthScheme.findTypeByString(this.irodsAuthScheme));
 		logger.info("configured auth scheme:{}", irodsAuthScheme);
 		logger.info("set irodsAccount auth scheme to :{}", irodsAccount.getAuthenticationScheme());
 
