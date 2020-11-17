@@ -8,19 +8,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-#### Add JWT config and issue support #9
-
-Add ability to issue JWTs for logged-in users in order to access Metalnx associated microservices. This is initially to support pluggable search and notifications. This is for auth when Metalnx is acting as a client for other supporting microservices.
-
-This change requires the addition of several properties in metalnx.properties...
-
-#### fix authscheme in irodsauthentication provider to pull from http request #19
-
-Clean up passing specific auth schemes to the authentication process based on a user selection
-
-#### Support UTF-8 in metadata search #17
-
-Removed 'sanitizing' code in metadata query that was trimming accented utf-8 characters
-
 ### Removed
 
