@@ -35,8 +35,7 @@ public class GalleryServiceImpl {
 	private ConfigService configService;
 
 	public void list(String path, int offset, int limit) throws JargonException {
-		logger.info("Get Replication Rule called");
-
+		logger.info("list()");
 		RuleProcessingAO ruleProcessingAO = is.getRuleProcessingAO();
 
 	}
