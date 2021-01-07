@@ -26,6 +26,7 @@ import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.datautils.avuautocomplete.AvuAutocompleteService;
 import org.irods.jargon.datautils.filesampler.FileSamplerService;
 import org.irods.jargon.datautils.shoppingcart.ShoppingCartService;
+import org.irods.jargon.extensions.thumbnail.GalleryListService;
 import org.irods.jargon.ticket.TicketAdminService;
 import org.irods.jargon.zipservice.api.JargonZipService;
 
@@ -42,8 +43,8 @@ public interface IRODSServices {
 	 * Gets an instance of the ticket admin service.
 	 * 
 	 * @return TicketAdminService instance
-	 * @throws DataGridConnectionRefusedException
-	 *             if Metalnx cannot connect to the grid.
+	 * @throws DataGridConnectionRefusedException if Metalnx cannot connect to the
+	 *                                            grid.
 	 */
 	TicketAdminService getTicketAdminService() throws DataGridConnectionRefusedException;
 
@@ -51,8 +52,8 @@ public interface IRODSServices {
 	 * Finds what version of iRODS Metalnx is running against.
 	 * 
 	 * @return a String representing the version of iRODS. (major.minor.path)
-	 * @throws DataGridConnectionRefusedException
-	 *             if Metalnx cannot connect to the grid
+	 * @throws DataGridConnectionRefusedException if Metalnx cannot connect to the
+	 *                                            grid
 	 */
 	String findIRodsVersion() throws DataGridConnectionRefusedException;
 
@@ -204,8 +205,8 @@ public interface IRODSServices {
 	 * Verifies whether or not the version of iRODS is at least 4.2.0.
 	 * 
 	 * @return True if iRODS version is >= 4.2.0. False, otherwise.
-	 * @throws DataGridConnectionRefusedException
-	 *             if Metalnx cannot connect to the grid.
+	 * @throws DataGridConnectionRefusedException if Metalnx cannot connect to the
+	 *                                            grid.
 	 */
 	boolean isAtLeastIrods420() throws DataGridConnectionRefusedException;
 
@@ -240,15 +241,14 @@ public interface IRODSServices {
 	 * @throws JargonException
 	 */
 	AvuAutocompleteService getAvuAutocompleteService() throws JargonException;
-	
+
 	ShoppingCartService getShoppingCartService() throws JargonException;
 
 	/**
 	 * Return an instance of the JargonZipService that handles bundles
 	 * 
 	 * @return {@link JargonZipService}
-	 * @throws JargonException
-	 *             {@link JargonException}
+	 * @throws JargonException {@link JargonException}
 	 */
 	JargonZipService getJargonZipService() throws JargonException;
 
@@ -256,8 +256,7 @@ public interface IRODSServices {
 	 * Return an iRODS admin account
 	 * 
 	 * @return {@link IRODSAccount} for the configured iRODS admin
-	 * @throws JargonException
-	 *             {@link JargonException}
+	 * @throws JargonException {@link JargonException}
 	 */
 	IRODSAccount getIrodsAdminAccount() throws DataGridException;
 
@@ -268,5 +267,13 @@ public interface IRODSServices {
 	 * @return {@code boolean} indicating {@code true} if user is an admin
 	 */
 	boolean isActingAsAdmin();
+
+	/**
+	 * Get a service for gallery views and browse
+	 * 
+	 * @return {@link GalleryListService}
+	 * @throws JargonException {@link JargonException}
+	 */
+	GalleryListService getGalleryListService() throws JargonException;
 
 }
