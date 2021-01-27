@@ -35,6 +35,11 @@ public class GlobalConfig {
 	private boolean pluggableSearchEnabled = false;
 
 	/**
+	 * Turn on or off the pluggable search interface elements
+	 */
+	private boolean pluggableShoppingCartEnabled = false;
+
+	/**
 	 * Turn on or off the original file properties/metadata search menu item, can be
 	 * replaced if using the standard search via the iRODS search plugin and
 	 * Elasticsearch (this is a work in progress)
@@ -62,9 +67,10 @@ public class GlobalConfig {
 		StringBuilder builder = new StringBuilder();
 		builder.append("GlobalConfig [ticketsEnabled=").append(ticketsEnabled).append(", uploadRulesEnabled=")
 				.append(uploadRulesEnabled).append(", dashboardEnabled=").append(dashboardEnabled)
-				.append(", pluggableSearchEnabled=").append(pluggableSearchEnabled).append(", classicSearchEnabled=")
-				.append(classicSearchEnabled).append(", handleNoAccessViaProxy=").append(handleNoAccessViaProxy)
-				.append("]");
+				.append(", pluggableSearchEnabled=").append(pluggableSearchEnabled)
+				.append(", classicSearchEnabled=").append(classicSearchEnabled)
+				.append(", pluggableShoppingCartEnabled=").append(pluggableShoppingCartEnabled)
+				.append(", handleNoAccessViaProxy=").append(handleNoAccessViaProxy).append("]");
 		return builder.toString();
 	}
 
@@ -104,6 +110,14 @@ public class GlobalConfig {
 
 	public void setPluggableSearchEnabled(boolean pluggableSearchEnabled) {
 		this.pluggableSearchEnabled = pluggableSearchEnabled;
+	}
+
+	public boolean isPluggableShoppingCartEnabled() {
+		return pluggableShoppingCartEnabled;
+	}
+
+	public void setPluggableShoppingCartEnabled(boolean pluggableShoppingCartEnabled) {
+		this.pluggableShoppingCartEnabled = pluggableShoppingCartEnabled;
 	}
 
 	/**

@@ -84,6 +84,9 @@ public class ConfigServiceImpl implements ConfigService {
 	@Value("${pluggablesearch.enabled}")
 	private boolean pluggableSearchEnabled = false;
 
+	@Value("${pluggableshoppingcart.enabled}")
+	private boolean pluggableShoppingCartEnabled = false;
+
 	/**
 	 * Indicates whether the old file props and AVU search is visible in the menu
 	 * options, if AVU via elasticsearch is enabled you should probably turn this
@@ -129,6 +132,7 @@ public class ConfigServiceImpl implements ConfigService {
 		globalConfig.setHandleNoAccessViaProxy(handleNoAccessViaProxy);
 		globalConfig.setDashboardEnabled(dashboardEnabled);
 		globalConfig.setPluggableSearchEnabled(pluggableSearchEnabled);
+		globalConfig.setPluggableShoppingCartEnabled(pluggableShoppingCartEnabled);
 		globalConfig.setClassicSearchEnabled(classicSearchEnabled);
 		logger.debug("globalConfig:{}", globalConfig);
 		return globalConfig;
@@ -319,6 +323,14 @@ public class ConfigServiceImpl implements ConfigService {
 		this.pluggableSearchEnabled = pluggableSearchEnabled;
 	}
 
+	public boolean isPluggableShoppingCartEnabled() {
+		return pluggableShoppingCartEnabled;
+	}
+
+	public void setPluggableShoppingCartEnabled(boolean pluggableShoppingCartEnabled) {
+		this.pluggableShoppingCartEnabled = pluggableShoppingCartEnabled;
+	}
+
 	public boolean isClassicSearchEnabled() {
 		return classicSearchEnabled;
 	}
@@ -369,8 +381,10 @@ public class ConfigServiceImpl implements ConfigService {
 			builder.append("defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme).append(", ");
 		}
 		builder.append("dashboardEnabled=").append(dashboardEnabled).append(", pluggableSearchEnabled=")
-				.append(pluggableSearchEnabled).append(", classicSearchEnabled=").append(classicSearchEnabled)
+				.append(pluggableSearchEnabled).append(", pluggableShoppingCartEnabled=")
+				.append(pluggableShoppingCartEnabled).append(", classicSearchEnabled=").append(classicSearchEnabled)
 				.append(", ");
+
 		if (jwtIssuer != null) {
 			builder.append("jwtIssuer=").append(jwtIssuer).append(", ");
 		}
