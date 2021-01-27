@@ -79,7 +79,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 			String authScheme = request.getParameter("authScheme");
 			logger.info("authScheme:{}", authScheme);
 			authSchemeEnum = AuthScheme.findTypeByString(authScheme);
-			logger.info("authSchemeEnum found:{}", authScheme);
+			logger.info("authSchemeEnum found:{}", authSchemeEnum);
 		}
 
 		if (authSchemeEnum == null) {
@@ -169,6 +169,9 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 			throw new DataGridAuthenticationException("authScheme is null");
 		}
 
+		logger.info("username:{}", username);
+		logger.info("authScheme:{}", authScheme);
+
 		AuthResponse authResponse;
 
 		// Getting iRODS protocol set
@@ -176,8 +179,6 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 		this.irodsAccount = IRODSAccount.instance(this.irodsHost, Integer.parseInt(this.irodsPort), username, password,
 				"", this.irodsZoneName, "");
 		this.irodsAccount.setAuthenticationScheme(authScheme);
-		// this.irodsAccount.setAuthenticationScheme(AuthScheme.findTypeByString(this.irodsAuthScheme));
-		logger.info("configured auth scheme:{}", irodsAuthScheme);
 		logger.info("set irodsAccount auth scheme to :{}", irodsAccount.getAuthenticationScheme());
 
 		logger.debug(

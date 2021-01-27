@@ -18,9 +18,6 @@ import org.irods.jargon.core.pub.TrashOperationsAO;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.core.pub.io.IRODSFileInputStream;
-import org.irods.jargon.datautils.shoppingcart.FileShoppingCart;
-import org.irods.jargon.datautils.shoppingcart.ShoppingCartEntry;
-import org.irods.jargon.datautils.shoppingcart.ShoppingCartService;
 import org.irodsext.dataprofiler.favorites.FavoritesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -377,7 +374,14 @@ public class FileOperationServiceImpl implements FileOperationService {
 			// set file mime type
 			response.setContentType(CONTENT_TYPE);
 			response.setHeader("Content-Disposition", String.format(HEADER_FORMAT, fileName));
-			response.setContentLength((int) irodsFile.length());
+
+			long length = irodsFile.length();
+
+			if (length <= Integer.MAX_VALUE) {
+				response.setContentLength((int) length);
+			} else {
+				response.addHeader("Content-Length", Long.toString(length));
+			}
 
 			FileCopyUtils.copy(irodsFileInputStream, response.getOutputStream());
 
