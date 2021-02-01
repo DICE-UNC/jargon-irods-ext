@@ -8,12 +8,14 @@ import java.util.List;
 
 import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.exception.JargonException;
+import org.irods.jargon.core.exception.JargonRuntimeException;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.RuleProcessingAO;
+import org.irods.jargon.core.rule.IRODSRuleExecResult;
+import org.irods.jargon.core.rule.IRODSRuleExecResultOutputParameter;
 import org.irods.jargon.core.rule.IRODSRuleParameter;
 import org.irods.jargon.core.rule.RuleInvocationConfiguration;
 import org.irods.jargon.core.service.AbstractJargonService;
-import org.irods.jargon.core.utils.LocalFileUtils;
 import org.irods.jargon.extensions.thumbnail.GalleryListService;
 import org.irods.jargon.extensions.thumbnail.ThumbnailList;
 import org.irodsext.dataprofiler.IrodsextDataProfilerService;
@@ -67,22 +69,27 @@ public class GalleryListServiceImpl extends AbstractJargonService implements Gal
 		log.info("offset:{}", offset);
 		log.info("length:{}", length);
 
-		List<IRODSRuleParameter> irodsRuleParameters = new ArrayList<>();
-		irodsRuleParameters.add(new IRODSRuleParameter("absPath", irodsFileAbsolutePath));
-		irodsRuleParameters.add(new IRODSRuleParameter("offset", offset));
-		irodsRuleParameters.add(new IRODSRuleParameter("length", length));
 		RuleInvocationConfiguration ruleInvocationConfiguration = RuleInvocationConfiguration
 				.instanceWithDefaultAutoSettings();
+		List<IRODSRuleParameter> inputParameters = new ArrayList<>();
+		inputParameters.add(new IRODSRuleParameter("logical_path", irodsFileAbsolutePath));
+		inputParameters.add(new IRODSRuleParameter("offset", offset));
+		inputParameters.add(new IRODSRuleParameter("length", length));
 
 		RuleProcessingAO ruleProcessingAO = this.getIrodsAccessObjectFactory().getRuleProcessingAO(getIrodsAccount());
-		// IRODSRuleExecResult result =
-		// ruleProcessingAO.executeRuleFromResource("/rules/call_gallery_list.r",
-		// irodsRuleParameters, ruleInvocationConfiguration);
+		IRODSRuleExecResult result = ruleProcessingAO.executeRuleFromResource("/rules/call_gallery_list.r",
+				inputParameters, ruleInvocationConfiguration);
+		log.debug("result:{}", result);
+		IRODSRuleExecResultOutputParameter outParam = result.getOutputParameterResults().get("*out");
 
-		// log.debug("result:{}", result);
-		// String jsonString = result.get
-		// FIXME: this is a test shim
-		String galleryData = LocalFileUtils.getClasspathResourceFileAsString("/data/gallery_response.json");
+		// I expect an out param from the rule
+		if (outParam == null) {
+			log.error("out param missing in rule{}", result);
+			throw new JargonRuntimeException("unexpected result from rule call");
+		}
+
+		String galleryData = (String) outParam.getResultObject();
+
 		try {
 			ThumbnailList thumbnailListEntry = objectMapper.readerFor(ThumbnailList.class).readValue(galleryData);
 			return thumbnailListEntry;
