@@ -118,6 +118,7 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<scope>test</scope>
+			<version>${mockito.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
