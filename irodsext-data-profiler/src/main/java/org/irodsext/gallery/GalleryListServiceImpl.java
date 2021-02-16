@@ -3,9 +3,6 @@
  */
 package org.irodsext.gallery;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.exception.JargonRuntimeException;
@@ -13,7 +10,7 @@ import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.RuleProcessingAO;
 import org.irods.jargon.core.rule.IRODSRuleExecResult;
 import org.irods.jargon.core.rule.IRODSRuleExecResultOutputParameter;
-import org.irods.jargon.core.rule.IRODSRuleParameter;
+import org.irods.jargon.core.rule.IrodsRuleInvocationTypeEnum;
 import org.irods.jargon.core.rule.RuleInvocationConfiguration;
 import org.irods.jargon.core.service.AbstractJargonService;
 import org.irods.jargon.extensions.thumbnail.GalleryListService;
@@ -71,14 +68,39 @@ public class GalleryListServiceImpl extends AbstractJargonService implements Gal
 
 		RuleInvocationConfiguration ruleInvocationConfiguration = RuleInvocationConfiguration
 				.instanceWithDefaultAutoSettings();
-		List<IRODSRuleParameter> inputParameters = new ArrayList<>();
-		inputParameters.add(new IRODSRuleParameter("logical_path", irodsFileAbsolutePath));
-		inputParameters.add(new IRODSRuleParameter("offset", offset));
-		inputParameters.add(new IRODSRuleParameter("length", length));
+		ruleInvocationConfiguration.setIrodsRuleInvocationTypeEnum(IrodsRuleInvocationTypeEnum.IRODS);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("myrule { irods_policy_list_thumbnails_for_logical_path(\"");
+		sb.append(irodsFileAbsolutePath);
+		sb.append("\",\"");
+		sb.append(offset);
+		sb.append("\",\"");
+		sb.append(length);
+		sb.append("\",*out) }");
+		sb.append("\nINPUT null");
+		sb.append("\nOUTPUT *out");
+
+		/*
+		 * List<IRODSRuleParameter> inputParameters = new ArrayList<>();
+		 * inputParameters.add(new IRODSRuleParameter("*logical_path",
+		 * irodsFileAbsolutePath)); inputParameters.add(new
+		 * IRODSRuleParameter("*offset", String.valueOf(offset)));
+		 * inputParameters.add(new IRODSRuleParameter("*limit",
+		 * String.valueOf(length)));
+		 */
 
 		RuleProcessingAO ruleProcessingAO = this.getIrodsAccessObjectFactory().getRuleProcessingAO(getIrodsAccount());
-		IRODSRuleExecResult result = ruleProcessingAO.executeRuleFromResource("/rules/call_gallery_list.r",
-				inputParameters, ruleInvocationConfiguration);
+		/*
+		 * IRODSRuleExecResult result =
+		 * ruleProcessingAO.executeRuleFromResource("/rules/call_gallery_list.r", null,
+		 * ruleInvocationConfiguration);
+		 */
+
+		log.info("ruleString:{}", sb.toString());
+
+		IRODSRuleExecResult result = ruleProcessingAO.executeRule(sb.toString(), null, ruleInvocationConfiguration);
+
 		log.debug("result:{}", result);
 		IRODSRuleExecResultOutputParameter outParam = result.getOutputParameterResults().get("*out");
 

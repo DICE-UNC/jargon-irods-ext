@@ -53,7 +53,7 @@ public class GalleryListServiceImplTest {
 		IRODSAccount irodsAccount = testingPropertiesHelper.buildIRODSAccountFromTestProperties(testingProperties);
 		IRODSAccessObjectFactory accessObjectFactory = irodsFileSystem.getIRODSAccessObjectFactory();
 		GalleryListService galleryListService = new GalleryListServiceImpl(accessObjectFactory, irodsAccount);
-		ThumbnailList actual = galleryListService.list("/a", 0, 100);
+		ThumbnailList actual = galleryListService.list("/tempZone/home/rods/", 0, 100);
 		Assert.assertNotNull("null thumbnails", actual);
 	}
 
