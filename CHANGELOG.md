@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+##### Support for metalnx thumbnail based gallery browsing #21
+
+Added a GalleryListService that can support gallery browsing in applications such as metalnx, handling thumbnails for image results.
+
+
 ### Changed
 
 ### Removed

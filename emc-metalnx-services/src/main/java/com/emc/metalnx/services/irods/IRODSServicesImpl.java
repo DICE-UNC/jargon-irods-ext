@@ -29,13 +29,13 @@ import org.irods.jargon.core.pub.ZoneAO;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.datautils.avuautocomplete.AvuAutocompleteService;
 import org.irods.jargon.datautils.avuautocomplete.AvuAutocompleteServiceImpl;
-import org.irods.jargon.datautils.datacache.DataCacheService;
 import org.irods.jargon.datautils.datacache.DataCacheServiceFactory;
 import org.irods.jargon.datautils.datacache.DataCacheServiceFactoryImpl;
 import org.irods.jargon.datautils.filesampler.FileSamplerService;
 import org.irods.jargon.datautils.filesampler.FileSamplerServiceImpl;
 import org.irods.jargon.datautils.shoppingcart.ShoppingCartService;
 import org.irods.jargon.datautils.shoppingcart.ShoppingCartServiceImpl;
+import org.irods.jargon.extensions.thumbnail.GalleryListService;
 import org.irods.jargon.midtier.utils.configuration.MidTierConfiguration;
 import org.irods.jargon.ticket.TicketAdminService;
 import org.irods.jargon.ticket.TicketServiceFactory;
@@ -43,6 +43,7 @@ import org.irods.jargon.ticket.TicketServiceFactoryImpl;
 import org.irods.jargon.zipservice.api.JargonZipService;
 import org.irods.jargon.zipservice.api.JargonZipServiceImpl;
 import org.irods.jargon.zipservice.api.ZipServiceConfiguration;
+import org.irodsext.gallery.GalleryListServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -394,15 +395,16 @@ public class IRODSServicesImpl implements IRODSServices {
 		// Returning AvuAutocompleteServiceImpl instance
 		return new AvuAutocompleteServiceImpl(irodsAccessObjectFactory, irodsAccount);
 	}
-	
+
 	@Override
 	public ShoppingCartService getShoppingCartService() throws JargonException {
 		// TODO Auto-generated method stub
-		
+
 		IRODSFileSystem irodsFileSystem = IRODSFileSystem.instance();
 		DataCacheServiceFactory dataCacheServiceFactory = new DataCacheServiceFactoryImpl(
 				irodsFileSystem.getIRODSAccessObjectFactory());
-		return new ShoppingCartServiceImpl(irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount, dataCacheServiceFactory);
+		return new ShoppingCartServiceImpl(irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
+				dataCacheServiceFactory);
 	}
 
 	@Override
@@ -465,6 +467,13 @@ public class IRODSServicesImpl implements IRODSServices {
 	@Override
 	public String getDefaultStorageResource() {
 		return this.irodsAccount.getDefaultStorageResource();
+	}
+
+	@Override
+	public GalleryListService getGalleryListService() throws JargonException {
+
+		GalleryListService galleryListService = new GalleryListServiceImpl(irodsAccessObjectFactory, this.irodsAccount);
+		return galleryListService;
 	}
 
 	@Override
