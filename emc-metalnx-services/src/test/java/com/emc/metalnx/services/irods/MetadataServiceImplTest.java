@@ -118,7 +118,8 @@ public class MetadataServiceImplTest {
 		Assert.assertNotNull("no results", actual);
 	}
 
-	@Test // replicates https://github.com/DICE-UNC/jargon-irods-ext/issues/22
+	@Test // does not fail but replicates
+			// https://github.com/DICE-UNC/jargon-irods-ext/issues/22
 	public void testFindByMetadataWithReplica() throws Exception {
 		String testFileName = "testFindByMetadataWithReplica.dat";
 		String absPath = scratchFileUtils.createAndReturnAbsoluteScratchPath(IRODS_TEST_SUBDIR_PATH);
@@ -174,8 +175,7 @@ public class MetadataServiceImplTest {
 		searchList.add(new DataGridMetadataSearch(expectedAttribName, expectedAttribValue, "",
 				DataGridSearchOperatorEnum.LIKE));
 		DataGridPageContext pageContext = new DataGridPageContext();
-		List<DataGridCollectionAndDataObject> actual = metadataService.findByMetadata(searchList, pageContext, 0,
-				Integer.MAX_VALUE);
+		List<DataGridCollectionAndDataObject> actual = metadataService.findByMetadata(searchList, pageContext, 0, 5000);
 		Assert.assertNotNull("no results", actual);
 	}
 
@@ -235,7 +235,8 @@ public class MetadataServiceImplTest {
 		searchList.add(new DataGridMetadataSearch(expectedAttribName, expectedAttribValue, "",
 				DataGridSearchOperatorEnum.LIKE));
 		DataGridPageContext pageContext = new DataGridPageContext();
-		List<DataGridCollectionAndDataObject> actual = metadataService.findByMetadata(searchList, pageContext, 0, 5000);
+		List<DataGridCollectionAndDataObject> actual = metadataService.findByMetadata(searchList, pageContext, 0,
+				Integer.MAX_VALUE);
 		Assert.assertNotNull("no results", actual);
 	}
 
