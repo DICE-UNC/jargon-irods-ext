@@ -383,4 +383,69 @@ public class ConfigServiceImpl implements ConfigService {
 		builder.append("]");
 		return builder.toString();
 	}
+
+	@Override
+	public void setMsiAPIVersionSupported(String msiAPIVersionSupported) {
+		this.msiAPIVersionSupported = msiAPIVersionSupported;
+	}
+
+	@Override
+	public void setMlxMSIsExpected(String mlxMSIsExpected) {
+		this.mlxMSIsExpected = mlxMSIsExpected;
+	}
+
+	@Override
+	public void setIrods41MSIsExpected(String irods41msIsExpected) {
+		irods41MSIsExpected = irods41msIsExpected;
+	}
+
+	@Override
+	public void setIrods42MSIsExpected(String irods42msIsExpected) {
+		irods42MSIsExpected = irods42msIsExpected;
+	}
+
+	@Override
+	public void setOtherMSIsExpected(String otherMSIsExpected) {
+		this.otherMSIsExpected = otherMSIsExpected;
+	}
+
+	@Override
+	public void setIrodsHost(String irodsHost) {
+		this.irodsHost = irodsHost;
+	}
+
+	@Override
+	public void setIrodsPort(String irodsPort) {
+		this.irodsPort = irodsPort;
+	}
+
+	@Override
+	public void setIrodsZone(String irodsZone) {
+		this.irodsZone = irodsZone;
+	}
+
+	@Override
+	public void setIrodsJobUser(String irodsJobUser) {
+		this.irodsJobUser = irodsJobUser;
+	}
+
+	@Override
+	public void setIrodsJobPassword(String irodsJobPassword) {
+		this.irodsJobPassword = irodsJobPassword;
+	}
+
+	@Override
+	public void setIrodsAuthScheme(String irodsAuthScheme) {
+		this.irodsAuthScheme = irodsAuthScheme;
+	}
+
+	@Override
+	public void setPopulateMsiEnabled(boolean populateMsiEnabled) {
+		this.populateMsiEnabled = populateMsiEnabled;
+	}
+
+	@Override
+	public void setDownloadLimit(long downloadLimit) {
+		this.downloadLimit = downloadLimit;
+	}
 }

@@ -153,4 +153,17 @@ public interface ConfigService {
 	String getJwtAlgo();
 	String getJwtSecret();
 	String getJwtIssuer();
+	void setDownloadLimit(long downloadLimit);
+	void setPopulateMsiEnabled(boolean populateMsiEnabled);
+	void setIrodsAuthScheme(String irodsAuthScheme);
+	void setIrodsJobPassword(String irodsJobPassword);
+	void setIrodsJobUser(String irodsJobUser);
+	void setIrodsZone(String irodsZone);
+	void setIrodsPort(String irodsPort);
+	void setIrodsHost(String irodsHost);
+	void setOtherMSIsExpected(String otherMSIsExpected);
+	void setIrods42MSIsExpected(String irods42msIsExpected);
+	void setIrods41MSIsExpected(String irods41msIsExpected);
+	void setMlxMSIsExpected(String mlxMSIsExpected);
+	void setMsiAPIVersionSupported(String msiAPIVersionSupported);
 }

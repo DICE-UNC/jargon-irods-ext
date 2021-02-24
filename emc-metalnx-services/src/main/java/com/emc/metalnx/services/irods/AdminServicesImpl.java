@@ -1,7 +1,5 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 package com.emc.metalnx.services.irods;
 
@@ -140,6 +138,36 @@ public class AdminServicesImpl implements AdminServices {
 		}
 
 		return null;
+	}
+
+	@Override
+	public IRODSAccessObjectFactory getIrodsAccessObjectFactory() {
+		return irodsAccessObjectFactory;
+	}
+
+	@Override
+	public void setIrodsAccessObjectFactory(IRODSAccessObjectFactory irodsAccessObjectFactory) {
+		this.irodsAccessObjectFactory = irodsAccessObjectFactory;
+	}
+
+	@Override
+	public ConfigService getConfigService() {
+		return configService;
+	}
+
+	@Override
+	public void setConfigService(ConfigService configService) {
+		this.configService = configService;
+	}
+
+	@Override
+	public IRODSAccount getIrodsAccount() {
+		return irodsAccount;
+	}
+
+	@Override
+	public void setIrodsAccount(IRODSAccount irodsAccount) {
+		this.irodsAccount = irodsAccount;
 	}
 
 }
