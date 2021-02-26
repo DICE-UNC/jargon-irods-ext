@@ -1,7 +1,5 @@
- /* Copyright (c) 2018, University of North Carolina at Chapel Hill */
- /* Copyright (c) 2015-2017, Dell EMC */
- 
-
+/* Copyright (c) 2018, University of North Carolina at Chapel Hill */
+/* Copyright (c) 2015-2017, Dell EMC */
 
 /**
  * 
@@ -24,19 +22,13 @@ public interface SpecQueryService {
 	/**
 	 * Searches data objects or collections by metadata.
 	 * 
-	 * @param metadataSearch
-	 *            list of metadata criteria to apply the search
-	 * @param zone
-	 *            zone to be looking for collections and data objects
-	 * @param searchAgainstColls
-	 *            flag set to true when looking for collections and set to false
-	 *            when looking for data objects
-	 * @param pageContext
-	 *            pagination context
-	 * @param offset
-	 *            offset for pagination
-	 * @param limit
-	 *            max number of items shown in a page
+	 * @param metadataSearch     list of metadata criteria to apply the search
+	 * @param zone               zone to be looking for collections and data objects
+	 * @param searchAgainstColls flag set to true when looking for collections and
+	 *                           set to false when looking for data objects
+	 * @param pageContext        pagination context
+	 * @param offset             offset for pagination
+	 * @param limit              max number of items shown in a page
 	 * @return Query result set from a metadata search
 	 * @throws DataGridConnectionRefusedException
 	 * @throws JargonException
@@ -48,19 +40,14 @@ public interface SpecQueryService {
 	/**
 	 * Searches data objects or collections by file properties.
 	 * 
-	 * @param metadataSearch
-	 *            list of file properties criteria to apply the search
-	 * @param zone
-	 *            zone to be looking for collections and data objects
-	 * @param searchAgainstColls
-	 *            flag set to true when looking for collections and set to false
-	 *            when looking for data objects
-	 * @param pageContext
-	 *            pagination context
-	 * @param offset
-	 *            offset for pagination
-	 * @param limit
-	 *            max number of items shown in a page
+	 * @param metadataSearch     list of file properties criteria to apply the
+	 *                           search
+	 * @param zone               zone to be looking for collections and data objects
+	 * @param searchAgainstColls flag set to true when looking for collections and
+	 *                           set to false when looking for data objects
+	 * @param pageContext        pagination context
+	 * @param offset             offset for pagination
+	 * @param limit              max number of items shown in a page
 	 * @return Query result set from a file properties search
 	 * @throws DataGridConnectionRefusedException
 	 * @throws JargonException
@@ -80,10 +67,8 @@ public interface SpecQueryService {
 	/**
 	 * Counts the total number of Collections matching a specific metadata criteria.
 	 * 
-	 * @param metadataSearch
-	 *            list of metadata criteria to apply the search
-	 * @param zone
-	 *            zone to be looking for collections
+	 * @param metadataSearch list of metadata criteria to apply the search
+	 * @param zone           zone to be looking for collections
 	 * @return total number of collections matching a metadata search criteria
 	 * @throws DataGridConnectionRefusedException
 	 * @throws JargonException
@@ -95,10 +80,8 @@ public interface SpecQueryService {
 	 * Counts the total number of data objects matching a specific metadata
 	 * criteria.
 	 * 
-	 * @param metadataSearch
-	 *            list of metadata criteria to apply the search
-	 * @param zone
-	 *            zone to be looking for data objects
+	 * @param metadataSearch list of metadata criteria to apply the search
+	 * @param zone           zone to be looking for data objects
 	 * @return total number of data objects matching a metadata search criteria
 	 * @throws DataGridConnectionRefusedException
 	 * @throws JargonException
@@ -110,10 +93,9 @@ public interface SpecQueryService {
 	 * Counts the total number of Collections matching a specific file properties
 	 * criteria.
 	 * 
-	 * @param filePropertiesSearch
-	 *            list of file properties criteria to apply the search
-	 * @param zone
-	 *            zone to be looking for collections
+	 * @param filePropertiesSearch list of file properties criteria to apply the
+	 *                             search
+	 * @param zone                 zone to be looking for collections
 	 * @return total number of collections matching a file properties search
 	 *         criteria
 	 * @throws DataGridConnectionRefusedException
@@ -128,10 +110,9 @@ public interface SpecQueryService {
 	 * Counts the total number of data objects matching a specific file properties
 	 * criteria.
 	 * 
-	 * @param filePropertiesSearch
-	 *            list of file properties criteria to apply the search
-	 * @param zone
-	 *            zone to be looking for data objects
+	 * @param filePropertiesSearch list of file properties criteria to apply the
+	 *                             search
+	 * @param zone                 zone to be looking for data objects
 	 * @return total number of data objects matching a file properties search
 	 *         criteria
 	 * @throws DataGridConnectionRefusedException
@@ -141,11 +122,6 @@ public interface SpecQueryService {
 	public int countDataObjectsMatchingFileProperties(List<DataGridFilePropertySearch> filePropertiesSearch,
 			String zone)
 			throws DataGridConnectionRefusedException, UnsupportedDataGridFeatureException, JargonException;
-
-	/**
-	 * @param irodsServices the irodsServices to set
-	 */
-	void setIrodsServices(IRODSServices irodsServices);
 
 	/**
 	 * @param adminServices the adminServices to set
