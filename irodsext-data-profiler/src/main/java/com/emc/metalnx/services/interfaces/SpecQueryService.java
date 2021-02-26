@@ -141,4 +141,29 @@ public interface SpecQueryService {
 	public int countDataObjectsMatchingFileProperties(List<DataGridFilePropertySearch> filePropertiesSearch,
 			String zone)
 			throws DataGridConnectionRefusedException, UnsupportedDataGridFeatureException, JargonException;
+
+	/**
+	 * @param irodsServices the irodsServices to set
+	 */
+	void setIrodsServices(IRODSServices irodsServices);
+
+	/**
+	 * @param adminServices the adminServices to set
+	 */
+	void setAdminServices(AdminServices adminServices);
+
+	/**
+	 * @return the adminServices
+	 */
+	AdminServices getAdminServices();
+
+	/**
+	 * @param irodsServices the irodsServices to set
+	 */
+	void setIrodsServices(IRODSServices irodsServices);
+
+	/**
+	 * @return the irodsServices
+	 */
+	IRODSServices getIrodsServices();
 }

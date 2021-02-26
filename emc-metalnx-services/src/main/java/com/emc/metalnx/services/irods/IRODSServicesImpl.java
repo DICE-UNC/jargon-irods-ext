@@ -533,4 +533,9 @@ public class IRODSServicesImpl implements IRODSServices {
 		this.irodsAccount = irodsAccount;
 	}
 
+	@Override
+	public void setIrodsAccessObjectFactory(IRODSAccessObjectFactory irodsAccessObjectFactory) {
+		this.irodsAccessObjectFactory = irodsAccessObjectFactory;
+	}
+
 }

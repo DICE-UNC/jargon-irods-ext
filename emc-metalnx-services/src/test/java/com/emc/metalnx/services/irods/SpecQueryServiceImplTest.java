@@ -33,6 +33,7 @@ import com.emc.metalnx.core.domain.entity.enums.DataGridSearchOperatorEnum;
 import com.emc.metalnx.core.domain.entity.enums.FilePropertyField;
 import com.emc.metalnx.services.interfaces.AdminServices;
 import com.emc.metalnx.services.interfaces.IRODSServices;
+import com.emc.metalnx.services.interfaces.SpecQueryService;
 
 import junit.framework.Assert;
 
@@ -139,7 +140,7 @@ public class SpecQueryServiceImplTest {
 	@Test
 	public void testCountCollectionsMatchingMetadata() throws Exception {
 
-		SpecQueryServiceImpl specQueryService = new SpecQueryServiceImpl();
+		SpecQueryService specQueryService = new SpecQueryServiceImpl();
 		IRODSServices irodsService = Mockito.mock(IRODSServices.class);
 		AdminServices adminServices = Mockito.mock(AdminServices.class);
 
@@ -166,7 +167,7 @@ public class SpecQueryServiceImplTest {
 
 	@Test
 	public void testCountDataObjectsMatchingMetadata() throws Exception {
-		SpecQueryServiceImpl specQueryService = new SpecQueryServiceImpl();
+		SpecQueryService specQueryService = new SpecQueryServiceImpl();
 		IRODSServices irodsService = Mockito.mock(IRODSServices.class);
 		AdminServices adminServices = Mockito.mock(AdminServices.class);
 
@@ -192,7 +193,7 @@ public class SpecQueryServiceImplTest {
 
 	@Test
 	public void testSearchByMetadataDataObjects() throws Exception {
-		SpecQueryServiceImpl specQueryService = new SpecQueryServiceImpl();
+		SpecQueryService specQueryService = new SpecQueryServiceImpl();
 		IRODSServices irodsService = Mockito.mock(IRODSServices.class);
 		AdminServices adminServices = Mockito.mock(AdminServices.class);
 
@@ -219,7 +220,7 @@ public class SpecQueryServiceImplTest {
 
 	@Test
 	public void testSearchByMetadataCollections() throws Exception {
-		SpecQueryServiceImpl specQueryService = new SpecQueryServiceImpl();
+		SpecQueryService specQueryService = new SpecQueryServiceImpl();
 		IRODSServices irodsService = Mockito.mock(IRODSServices.class);
 		AdminServices adminServices = Mockito.mock(AdminServices.class);
 
@@ -246,7 +247,7 @@ public class SpecQueryServiceImplTest {
 
 	@Test
 	public void testSearchByFilePropertiesForDataObjects() throws Exception {
-		SpecQueryServiceImpl specQueryService = new SpecQueryServiceImpl();
+		SpecQueryService specQueryService = new SpecQueryServiceImpl();
 		IRODSServices irodsService = Mockito.mock(IRODSServices.class);
 		AdminServices adminServices = Mockito.mock(AdminServices.class);
 
@@ -278,7 +279,7 @@ public class SpecQueryServiceImplTest {
 
 	@Test
 	public void testSearchByFilePropertiesForCollections() throws Exception {
-		SpecQueryServiceImpl specQueryService = new SpecQueryServiceImpl();
+		SpecQueryService specQueryService = new SpecQueryServiceImpl();
 		IRODSServices irodsService = Mockito.mock(IRODSServices.class);
 		AdminServices adminServices = Mockito.mock(AdminServices.class);
 
@@ -307,7 +308,7 @@ public class SpecQueryServiceImplTest {
 
 	@Test
 	public void testCountCollectionsMatchingFileProperties() throws Exception {
-		SpecQueryServiceImpl specQueryService = new SpecQueryServiceImpl();
+		SpecQueryService specQueryService = new SpecQueryServiceImpl();
 		IRODSServices irodsService = Mockito.mock(IRODSServices.class);
 		AdminServices adminServices = Mockito.mock(AdminServices.class);
 
@@ -334,7 +335,7 @@ public class SpecQueryServiceImplTest {
 
 	@Test
 	public void testCountDataObjectsMatchingFileProperties() throws Exception {
-		SpecQueryServiceImpl specQueryService = new SpecQueryServiceImpl();
+		SpecQueryService specQueryService = new SpecQueryServiceImpl();
 		IRODSServices irodsService = Mockito.mock(IRODSServices.class);
 		AdminServices adminServices = Mockito.mock(AdminServices.class);
 

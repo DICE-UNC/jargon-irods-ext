@@ -335,6 +335,7 @@ public class SpecQueryServiceImpl implements SpecQueryService {
 	/**
 	 * @return the irodsServices
 	 */
+	@Override
 	public IRODSServices getIrodsServices() {
 		return irodsServices;
 	}
@@ -342,6 +343,7 @@ public class SpecQueryServiceImpl implements SpecQueryService {
 	/**
 	 * @param irodsServices the irodsServices to set
 	 */
+	@Override
 	public void setIrodsServices(IRODSServices irodsServices) {
 		this.irodsServices = irodsServices;
 	}
@@ -349,6 +351,7 @@ public class SpecQueryServiceImpl implements SpecQueryService {
 	/**
 	 * @return the adminServices
 	 */
+	@Override
 	public AdminServices getAdminServices() {
 		return adminServices;
 	}
@@ -356,6 +359,7 @@ public class SpecQueryServiceImpl implements SpecQueryService {
 	/**
 	 * @param adminServices the adminServices to set
 	 */
+	@Override
 	public void setAdminServices(AdminServices adminServices) {
 		this.adminServices = adminServices;
 	}
