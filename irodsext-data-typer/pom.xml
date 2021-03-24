@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>jargon-irods-ext</artifactId>
 		<groupId>org.irods.jargon</groupId>
-		<version>4.3.2.1-RELEASE</version>
+		<version>4.3.2.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>irodsext-data-typer</artifactId>
 	<name>irodsext-data-typer</name>

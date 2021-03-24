@@ -159,10 +159,9 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 			throw new DataGridAuthenticationException("Username or password invalid: null or empty value(s) provided");
 		}
 
-		if (username.equalsIgnoreCase(IRODS_ANONYMOUS_ACCOUNT)) {
-			logger.error("Cannot log in as anonymous");
-			throw new DataGridAuthenticationException("Cannot log in as anonymous");
-		}
+		/*
+		 * add if ladder so that if anon is allowed...let it happen
+		 */
 
 		if (authScheme == null) {
 			logger.error("authScheme is null");
