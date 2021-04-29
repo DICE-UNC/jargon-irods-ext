@@ -154,7 +154,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 
 		logger.info("authenticateAgainstIRODS()");
 
-		if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+		if (username == null || username.isEmpty() || password == null) {
 			logger.error("null or empty username");
 			throw new DataGridAuthenticationException("Username or password invalid: null or empty value(s) provided");
 		}
