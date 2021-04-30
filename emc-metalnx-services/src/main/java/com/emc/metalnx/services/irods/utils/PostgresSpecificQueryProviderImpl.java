@@ -96,11 +96,12 @@ public class PostgresSpecificQueryProviderImpl implements SpecificQueryProvider 
 			objQuery.append("      d.data_repl_num as repl_num, ");
 			objQuery.append("      d.create_ts as create_ts,");
 			objQuery.append("      d.modify_ts as modify_ts, ");
-			objQuery.append("      d.resc_name as resc_name, ");
+			objQuery.append("      r.resc_name as resc_name, ");
 			objQuery.append("      c.coll_name as parent_path,");
 			objQuery.append("      COUNT(d.data_name) as totalMatches");
 			objQuery.append(" FROM r_data_main d ");
 			objQuery.append(" JOIN r_coll_main c ON (d.coll_id = c.coll_id) ");
+			objQuery.append(" INNER JOIN r_resc_main r ON (d.resc_id = r.resc_id) ");
 			objQuery.append(" JOIN ( ");
 
 			gb.append(" ) AS data_obj_metadata ON (d.data_id = map_object_id) ");
@@ -111,7 +112,7 @@ public class PostgresSpecificQueryProviderImpl implements SpecificQueryProvider 
 			gb.append("      d.data_repl_num,");
 			gb.append("      d.create_ts,");
 			gb.append("      d.modify_ts,");
-			gb.append("      d.resc_name, ");
+			gb.append("      r.resc_name, ");
 			gb.append("      c.coll_name");
 			gb.append(" ORDER BY totalMatches DESC, d.data_name ");
 			gb.append(" ) AS ms ");
