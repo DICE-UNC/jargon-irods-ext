@@ -894,6 +894,8 @@ public class CollectionServiceImpl implements CollectionService {
 		dgObj.setOwner(entry.getOwnerName());
 		dgObj.setDisplaySize(MiscIRODSUtils.humanReadableByteCount(entry.getDataSize()));
 		dgObj.setProxy(entry.getObjectType() == ObjectType.COLLECTION_HEURISTIC_STANDIN);
+		dgObj.setSize(entry.getDataSize());
+
 		return dgObj;
 	}
 
