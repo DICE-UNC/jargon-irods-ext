@@ -6,8 +6,11 @@
 package com.emc.metalnx.services.interfaces;
 
 import com.emc.metalnx.core.domain.exceptions.DataGridConnectionRefusedException;
+
+import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.pub.CollectionAndDataObjectListAndSearchAO;
 import org.irods.jargon.core.pub.DataObjectAO;
+import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.SpecificQueryAO;
 import org.irods.jargon.core.pub.UserAO;
 
@@ -48,5 +51,17 @@ public interface AdminServices {
      * @throws DataGridConnectionRefusedException
      */
     public CollectionAndDataObjectListAndSearchAO getCollectionAndDataObjectListAndSearchAO() throws DataGridConnectionRefusedException;
+
+	void setIrodsAccount(IRODSAccount irodsAccount);
+
+	IRODSAccount getIrodsAccount();
+
+	void setConfigService(ConfigService configService);
+
+	ConfigService getConfigService();
+
+	void setIrodsAccessObjectFactory(IRODSAccessObjectFactory irodsAccessObjectFactory);
+
+	IRODSAccessObjectFactory getIrodsAccessObjectFactory();
 
 }

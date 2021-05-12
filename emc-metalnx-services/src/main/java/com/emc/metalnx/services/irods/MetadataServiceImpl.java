@@ -355,4 +355,44 @@ public class MetadataServiceImpl implements MetadataService {
 
 		return isMetadataCopied;
 	}
+
+	@Override
+	public IRODSServices getIrodsServices() {
+		return irodsServices;
+	}
+
+	@Override
+	public void setIrodsServices(IRODSServices irodsServices) {
+		this.irodsServices = irodsServices;
+	}
+
+	@Override
+	public SpecQueryService getSpecQueryService() {
+		return specQueryService;
+	}
+
+	@Override
+	public void setSpecQueryService(SpecQueryService specQueryService) {
+		this.specQueryService = specQueryService;
+	}
+
+	@Override
+	public UserService getUserService() {
+		return userService;
+	}
+
+	@Override
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	@Override
+	public PermissionsService getPermissionsService() {
+		return permissionsService;
+	}
+
+	@Override
+	public void setPermissionsService(PermissionsService permissionsService) {
+		this.permissionsService = permissionsService;
+	}
 }

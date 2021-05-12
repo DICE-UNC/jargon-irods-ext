@@ -135,4 +135,20 @@ public interface MetadataService {
 	 * @throws DataGridException
 	 */
 	boolean copyMetadata(String srcPath, String dstPath) throws DataGridException;
+
+	void setPermissionsService(PermissionsService permissionsService);
+
+	PermissionsService getPermissionsService();
+
+	void setUserService(UserService userService);
+
+	UserService getUserService();
+
+	void setSpecQueryService(SpecQueryService specQueryService);
+
+	SpecQueryService getSpecQueryService();
+
+	void setIrodsServices(IRODSServices irodsServices);
+
+	IRODSServices getIrodsServices();
 }

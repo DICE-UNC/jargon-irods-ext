@@ -276,4 +276,6 @@ public interface IRODSServices {
 	 */
 	GalleryListService getGalleryListService() throws JargonException;
 
+	void setIrodsAccessObjectFactory(IRODSAccessObjectFactory irodsAccessObjectFactory);
+
 }

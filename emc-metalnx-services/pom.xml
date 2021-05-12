@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>jargon-irods-ext</artifactId>
 		<groupId>org.irods.jargon</groupId>
-		<version>4.3.2.1-SNAPSHOT</version>
+		<version>4.3.2.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>emc-metalnx-services</artifactId>
 	<dependencies>
