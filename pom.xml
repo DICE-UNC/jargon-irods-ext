@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.irods</groupId>
 		<artifactId>jargon-pom</artifactId>
-		<version>4.3.2.2-RELEASE</version>
+		<version>4.3.2.3-SNAPSHOT</version>
 	</parent>
 	<properties>
 		<hibernate.version>4.3.11.Final</hibernate.version>
