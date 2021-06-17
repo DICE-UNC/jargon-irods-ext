@@ -167,7 +167,7 @@ public class PostgresSpecificQueryProviderImpl implements SpecificQueryProvider 
 				|| inAttribute == FilePropertyField.MODIFICATION_DATE;
 
 		if (inOperator == DataGridSearchOperatorEnum.LIKE || inOperator == DataGridSearchOperatorEnum.NOT_LIKE) {
-			whereClause = String.format(" LOWER( fileProperties.%s ) %s LOWER( '%%%s%%' )", attribute, operator, value);
+			whereClause = String.format(" fileProperties.%s %s '%%%s%%'", attribute, operator, value);
 		} else if (isAttributeEqualsDate && inOperator == DataGridSearchOperatorEnum.EQUAL) {
 			whereClause = String.format(" fileProperties.%s BETWEEN %s AND %d", attribute, value,
 					Long.parseLong(value) + 60);
@@ -175,7 +175,7 @@ public class PostgresSpecificQueryProviderImpl implements SpecificQueryProvider 
 				|| inAttribute == FilePropertyField.SIZE) {
 			whereClause = String.format(" fileProperties.%s %s %s", attribute, operator, value);
 		} else {
-			whereClause = String.format(" LOWER( fileProperties.%s ) %s LOWER( '%s' )", attribute, operator, value);
+			whereClause = String.format(" fileProperties.%s %s '%s'", attribute, operator, value);
 		}
 
 		return whereClause;
