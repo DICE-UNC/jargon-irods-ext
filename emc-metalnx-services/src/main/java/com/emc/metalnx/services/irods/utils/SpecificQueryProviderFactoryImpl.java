@@ -46,7 +46,7 @@ public class SpecificQueryProviderFactoryImpl implements SpecificQueryProviderFa
 			provider = new PostgresSpecificQueryProviderImpl();
 			break;
 		case MYSQL:
-			provider = null;
+			provider = new MysqlSpecificQueryProviderImpl();
 			break;
 		default:
 			throw new UnsupportedDataGridFeatureException("unable to handle specific queries to database");

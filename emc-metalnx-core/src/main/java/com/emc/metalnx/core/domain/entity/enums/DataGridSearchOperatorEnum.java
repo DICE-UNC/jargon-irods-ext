@@ -8,8 +8,8 @@ public enum DataGridSearchOperatorEnum {
 
 	EQUAL("="), 
 	NOT_EQUAL("!="), 
-	LIKE("ILIKE"), 
-	NOT_LIKE("NOT ILIKE"),
+	LIKE("LIKE"), 
+	NOT_LIKE("NOT LIKE"),
 	BIGGER_THAN(">"),
 	LESS_THAN("<");
 

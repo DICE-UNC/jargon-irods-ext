@@ -17,7 +17,7 @@ public class DataGridMetadataSearchTest {
 		String queryString = dataGridMetadataSearch.getSpecQueryAsString();
 		Assert.assertNotNull(queryString);
 		Assert.assertEquals(
-				" SELECT map.object_id AS map_object_id  FROM r_objt_metamap map  JOIN (      SELECT m.meta_id, m.meta_attr_name, m.meta_attr_value     FROM r_meta_main m  WHERE   LOWER( m.meta_attr_name ) = LOWER( 'Sîne klâwen durh die wolken sint geslagen' )  AND   LOWER( m.meta_attr_value ) = LOWER(  'На берегу пустынных волн'  )  AND  LOWER( m.meta_attr_unit ) = LOWER(  'Ég get etið gler án þess að meiða mig'  )   )  AS metadata ON (metadata.meta_id = map.meta_id)  GROUP BY map.object_id  HAVING COUNT(map.meta_id) > 0 ",
+				" SELECT map.object_id AS map_object_id  FROM R_OBJT_METAMAP map  JOIN (      SELECT m.meta_id, m.meta_attr_name, m.meta_attr_value     FROM R_META_MAIN m  WHERE   LOWER( m.meta_attr_name ) = LOWER( 'Sîne klâwen durh die wolken sint geslagen' )  AND   LOWER( m.meta_attr_value ) = LOWER(  'На берегу пустынных волн'  )  AND  LOWER( m.meta_attr_unit ) = LOWER(  'Ég get etið gler án þess að meiða mig'  )   )  AS metadata ON (metadata.meta_id = map.meta_id)  GROUP BY map.object_id  HAVING COUNT(map.meta_id) > 0 ",
 				queryString);
 
 	}
