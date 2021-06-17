@@ -9,8 +9,8 @@ public enum FilePropertySearchOperator {
 
 	EQUALS("="),
 	NOT_EQUALS("!="),
-	CONTAINS("ILIKE"),
-	NOT_CONTAINS("NOT ILIKE");
+	CONTAINS("LIKE"),
+	NOT_CONTAINS("NOT LIKE");
 	
 	private String operator;
 	

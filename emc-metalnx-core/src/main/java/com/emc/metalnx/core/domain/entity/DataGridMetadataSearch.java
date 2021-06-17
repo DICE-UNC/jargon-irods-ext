@@ -59,10 +59,10 @@ public class DataGridMetadataSearch {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT map.object_id AS map_object_id ");
-		sb.append(" FROM r_objt_metamap map ");
+		sb.append(" FROM R_OBJT_METAMAP map ");
 		sb.append(" JOIN ( ");
 		sb.append("     SELECT m.meta_id, m.meta_attr_name, m.meta_attr_value");
-		sb.append("     FROM r_meta_main m ");
+		sb.append("     FROM R_META_MAIN m ");
 		sb.append(" WHERE ");
 		sb.append(attrQuery);
 		sb.append(valueQuery);
