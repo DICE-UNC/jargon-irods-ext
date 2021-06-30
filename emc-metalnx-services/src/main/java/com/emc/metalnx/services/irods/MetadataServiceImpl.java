@@ -193,7 +193,7 @@ public class MetadataServiceImpl implements MetadataService {
 		} catch (JargonQueryException e) {
 			logger.error("Error getting metadata info from collection", e);
 		} catch (JargonException e) {
-			logger.error("Error getting metadata info from dataobject", e.toString());
+			logger.error("Error getting metadata info from dataobject", e);
 		}
 
 		return dataGridMetadataList;
