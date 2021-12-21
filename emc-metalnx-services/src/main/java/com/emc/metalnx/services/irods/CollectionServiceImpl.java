@@ -762,17 +762,17 @@ public class CollectionServiceImpl implements CollectionService {
 				throw new FileSizeTooLargeException("file size too large for bundle creation");
 			} else {
 				/*
-				 * Setting default BundleType to ZIP TODO: Add download bundle option as .tar to
-				 * user preference
+				 * Setting default BundleType to TAR. In the future multiple bundle types may be
+				 * supported
 				 */
-				zipServiceConfiguration.setPreferredBundleType(BundleType.ZIP);
+				zipServiceConfiguration.setPreferredBundleType(BundleType.TAR);
 				jargonZipService.setZipServiceConfiguration(zipServiceConfiguration);
 
 				if (!sourcePaths.isEmpty()) {
 					logger.info("Copying files to be downloaded to the temporary collection");
-					IRODSFile zippedFile = jargonZipService.obtainBundleAsIrodsFileGivenPaths(sourcePaths);
-					path = zippedFile.getPath();
-					logger.info("Zipped collection path: {}", path);
+					IRODSFile bundledFile = jargonZipService.obtainBundleAsIrodsFileGivenPaths(sourcePaths);
+					path = bundledFile.getPath();
+					logger.info("bundled collection path: {}", path);
 				}
 			}
 		} catch (JargonException e) {

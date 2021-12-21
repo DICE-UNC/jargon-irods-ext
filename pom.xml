@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.irods.jargon</groupId>
 	<artifactId>jargon-irods-ext</artifactId>
 	<parent>
 		<groupId>org.irods</groupId>
 		<artifactId>jargon-pom</artifactId>
-		<version>4.3.2.3-SNAPSHOT</version>
+		<version>4.3.2.4-RELEASE</version>
 	</parent>
 	<properties>
 		<hibernate.version>4.3.11.Final</hibernate.version>
@@ -23,7 +22,7 @@
 		<el.version>2.2</el.version>
 		<!-- xml apis version -->
 		<!-- https://mvnrepository.com/artifact/xml-apis/xml-apis -->
-   	<xml.apis.version>2.0.2</xml.apis.version>
+		<xml.apis.version>2.0.2</xml.apis.version>
 	</properties>
 	<packaging>pom</packaging>
 	<name>jargon-extensions</name>
@@ -92,9 +91,9 @@
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/xml-apis/xml-apis -->
 			<dependency>
-			    <groupId>xml-apis</groupId>
-			    <artifactId>xml-apis</artifactId>
-			    <version>${xml.apis.version}</version>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis</artifactId>
+				<version>${xml.apis.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -104,17 +103,13 @@
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-		<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-core</artifactId>
-				<scope>test</scope>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
