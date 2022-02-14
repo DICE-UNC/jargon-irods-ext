@@ -5,11 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [unreleased]
+
 ### Added
 
-##### Support for metalnx thumbnail based gallery browsing #21
+### Changed
 
-Added a GalleryListService that can support gallery browsing in applications such as metalnx, handling thumbnails for image results.
+### Removed
+
+## [4.3.2.5-RELEASE]
+
+### Added
 
 ### Changed
+
+### Removed
 
