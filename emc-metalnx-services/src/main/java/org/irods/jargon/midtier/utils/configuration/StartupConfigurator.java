@@ -82,6 +82,7 @@ public class StartupConfigurator {
 
 		SettableJargonProperties props = new SettableJargonProperties(irodsSession.getJargonProperties());
 		props.setComputeChecksumAfterTransfer(midTierConfiguration.isComputeChecksum());
+		props.setComputeAndVerifyChecksumAfterTransfer(midTierConfiguration.isComputeChecksum());
 		log.info("set checksum policy to:{}", midTierConfiguration.isComputeChecksum());
 
 		SslNegotiationPolicy policyToSet = ClientServerNegotiationPolicy
