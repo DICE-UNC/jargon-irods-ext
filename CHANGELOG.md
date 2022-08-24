@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+#### Remove LOWER functions on file properties/metadata #30
+
 ### Removed
 
 ## [4.3.2.5-RELEASE]
