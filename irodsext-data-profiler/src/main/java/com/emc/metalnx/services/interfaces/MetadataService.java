@@ -7,6 +7,7 @@
 package com.emc.metalnx.services.interfaces;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.emc.metalnx.core.domain.entity.DataGridCollectionAndDataObject;
 import com.emc.metalnx.core.domain.entity.DataGridMetadata;
@@ -42,6 +43,20 @@ public interface MetadataService {
 	 * @throws DataGridException
 	 */
 	public List<DataGridMetadata> findMetadataValuesByPath(String path) throws DataGridException;
+
+	/**
+	 * Get all metadata (Attribute/Value/Unit) related to a Collection or DataObject
+	 * in iRODS
+	 *
+	 * @param path      path of the Collection or DataObject from which we will get
+	 *                  all metadata related to it
+	 * @param predicate a predicate used to filter the metadata results. Only
+	 *                  metadata that satisfies the predicate will be included.
+	 * @return list of metadata objects from a Collection or DataObject
+	 * @throws DataGridException
+	 */
+	public List<DataGridMetadata> findMetadataValuesByPath(String path, Predicate<DataGridMetadata> predicate)
+			throws DataGridException;
 
 	/**
 	 * Add metadata (Attribute/Value/Unit) to a Collection or DataObject in iRODS

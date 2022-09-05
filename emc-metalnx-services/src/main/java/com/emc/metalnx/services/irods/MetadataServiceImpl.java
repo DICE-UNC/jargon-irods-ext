@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.protovalues.FilePermissionEnum;
@@ -197,6 +199,12 @@ public class MetadataServiceImpl implements MetadataService {
 		}
 
 		return dataGridMetadataList;
+	}
+
+	@Override
+	public List<DataGridMetadata> findMetadataValuesByPath(String path, Predicate<DataGridMetadata> predicate)
+			throws DataGridException {
+		return findMetadataValuesByPath(path).stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	@Override
