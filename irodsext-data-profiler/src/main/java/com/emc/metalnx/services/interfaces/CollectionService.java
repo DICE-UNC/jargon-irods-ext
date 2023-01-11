@@ -155,6 +155,15 @@ public interface CollectionService {
 	 * @throws DataGridException
 	 */
 	boolean createCollection(DataGridCollectionAndDataObject newCollection) throws DataGridException;
+	
+	/**
+	 * Create a collection in iRODS
+	 *
+	 * @param newCollection
+	 * @param createParentCollections 
+	 * @throws DataGridException
+	 */
+	boolean createCollection(DataGridCollectionAndDataObject newCollection, boolean createParentCollections) throws DataGridException;
 
 	/**
 	 * Find collections that match the parameter name

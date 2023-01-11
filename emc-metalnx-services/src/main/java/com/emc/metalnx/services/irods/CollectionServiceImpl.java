@@ -393,6 +393,11 @@ public class CollectionServiceImpl implements CollectionService {
 
 	@Override
 	public boolean createCollection(DataGridCollectionAndDataObject collection) throws DataGridException {
+		return createCollection(collection, false);
+	}
+
+	@Override
+	public boolean createCollection(DataGridCollectionAndDataObject collection, boolean createParentCollections) throws DataGridException {
 
 		logger.info("createCollection()");
 
@@ -403,7 +408,7 @@ public class CollectionServiceImpl implements CollectionService {
 			IRODSFileFactory irodsFileFactory = irodsServices.getIRODSFileFactory();
 
 			IRODSFile newFile = irodsFileFactory.instanceIRODSFile(collection.getParentPath(), collection.getName());
-			irodsFileSystemAO.mkdir(newFile, false);
+			irodsFileSystemAO.mkdir(newFile, createParentCollections);
 
 			// Updating inheritance option on the collection, if needed
 			CollectionAO collectionAO = irodsServices.getCollectionAO();

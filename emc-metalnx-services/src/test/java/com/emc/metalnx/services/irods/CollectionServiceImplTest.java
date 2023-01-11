@@ -141,4 +141,34 @@ public class CollectionServiceImplTest {
 
 	}
 
+	@Test
+	public void testCreateCollectionWithParent() throws Exception {
+
+		IRODSAccount irodsAccount = testingPropertiesHelper.buildIRODSAccountFromTestProperties(testingProperties);
+
+		IRODSServicesImpl irodsServices = new IRODSServicesImpl();
+		irodsServices.setIrodsAccount(irodsAccount);
+		irodsServices.irodsAccessObjectFactory = irodsFileSystem.getIRODSAccessObjectFactory();
+
+		CollectionServiceImpl collectionService = new CollectionServiceImpl();
+		collectionService.setIrodsServices(irodsServices);
+
+		// get new collection as DataGridCollectionAndDataObject
+		String newSubCollection = "subdir1/subdir2";
+
+		String currentPath = irodsAccount.getHomeDirectory();
+		String fullPath = currentPath + '/' + newSubCollection;
+
+		DataGridCollectionAndDataObject newCollection = new DataGridCollectionAndDataObject(
+				fullPath, newSubCollection, currentPath, true);
+
+		// create new collection
+		collectionService.createCollection(newCollection, true);
+
+		// search for new collection
+		List<DataGridCollectionAndDataObject> actual = collectionService.searchCollectionAndDataObjectsByName(fullPath);
+
+		Assert.assertTrue("actual number of matching collections is not 1", actual.size() == 1);
+	}
+
 }
