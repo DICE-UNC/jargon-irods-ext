@@ -98,7 +98,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>1.5</version>
+				<version>2.5.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -108,7 +108,18 @@
 				</executions>
 				<configuration>
 					<!-- The name of your generated source package -->
-					<arguments>-extension -npa -b "${project.basedir}/src/main/xsd/global.xjb"</arguments>
+                                        <noPackageLevelAnnotations>true</noPackageLevelAnnotations>
+                                        <xjcSourceExcludeFilters>
+                                                <filter implementation="org.codehaus.mojo.jaxb2.shared.filters.pattern.PatternFileFilter">
+                                                        <patterns>
+                                                                <pattern>\.xjb</pattern>
+                                                        </patterns>
+                                                </filter>
+                                        </xjcSourceExcludeFilters>
+                                        <xjbSources>
+                                                <xjbSource>${project.basedir}/src/main/xsd/global.xjb</xjbSource>
+                                        </xjbSources>
+                                        <verbose>false</verbose>
 				</configuration>
 			</plugin>
 			<plugin>
