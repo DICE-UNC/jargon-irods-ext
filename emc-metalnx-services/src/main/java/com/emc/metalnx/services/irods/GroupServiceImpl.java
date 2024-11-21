@@ -29,7 +29,6 @@ import com.emc.metalnx.services.interfaces.CollectionService;
 import com.emc.metalnx.services.interfaces.ConfigService;
 import com.emc.metalnx.services.interfaces.GroupService;
 import com.emc.metalnx.services.interfaces.IRODSServices;
-import com.emc.metalnx.services.interfaces.UserBookmarkService;
 
 @Service
 @Transactional
@@ -37,9 +36,6 @@ public class GroupServiceImpl implements GroupService {
 
 	@Autowired
 	CollectionService collectionService;
-
-	@Autowired
-	UserBookmarkService userBookmarkService;
 
 	@Autowired
 	IRODSServices irodsServices;

@@ -10,7 +10,6 @@ import org.irods.jargon.extensions.dataprofiler.DataProfilerFactory;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
 import org.irods.jargon.extensions.datatyper.DataTypeResolutionServiceFactory;
-import org.irodsext.dataprofiler.favorites.FavoritesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,13 +33,6 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 	private DataTypeResolutionServiceFactory dataTypeResolutionServiceFactory;
 
 	/**
-	 * MetaLnx favorites service is current source of 'favorites' and bookmarks,
-	 * this comes from the irods-ext database at moment. This is provided to the
-	 * data profiler service instance during factory creation
-	 */
-	private FavoritesService favoritesService;
-
-	/**
 	 * MetaLnx service to map user/zone accounts to the MetaLnx {@link DataGridUser}
 	 */
 	private UserService userService;
@@ -59,7 +51,6 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 				irodsAccessObjectFactory, irodsAccount);
 		dataProfilerService.setDataTypeResolutionService(
 				dataTypeResolutionServiceFactory.instanceDataTypeResolutionService(irodsAccount));
-		dataProfilerService.setFavoritesService(getFavoritesService());
 		dataProfilerService.setDataGridUser(resolveDataGridUser(irodsAccount));
 		return dataProfilerService;
 	}
@@ -106,14 +97,6 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 
 	}
 
-	public FavoritesService getFavoritesService() {
-		return favoritesService;
-	}
-
-	public void setFavoritesService(FavoritesService favoritesService) {
-		this.favoritesService = favoritesService;
-	}
-
 	public UserService getUserService() {
 		return userService;
 	}
@@ -149,7 +132,6 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 				irodsAccessObjectFactory, irodsAccount);
 		dataProfilerService.setDataTypeResolutionService(
 				dataTypeResolutionServiceFactory.instanceDataTypeResolutionService(irodsAccount));
-		dataProfilerService.setFavoritesService(getFavoritesService());
 		dataProfilerService.setDataGridUser(resolveDataGridUser(irodsAccount));
 		return dataProfilerService;
 	}

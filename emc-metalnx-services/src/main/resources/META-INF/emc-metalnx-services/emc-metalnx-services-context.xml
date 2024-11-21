@@ -122,7 +122,6 @@
 			ref="dataProfilerSettings" />
 		<property name="dataTypeResolutionServiceFactory"
 			ref="dataTypeResolutionServiceFactory" />
-		<property name="favoritesService" ref="favoritesService" />
 		<property name="userService" ref="userService" />
 	</bean>
 

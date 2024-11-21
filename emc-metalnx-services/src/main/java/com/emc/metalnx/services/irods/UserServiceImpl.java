@@ -13,13 +13,13 @@ import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.protovalues.UserTypeEnum;
 import org.irods.jargon.core.pub.CollectionAO;
 import org.irods.jargon.core.pub.DataObjectAO;
+import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.UserAO;
 import org.irods.jargon.core.pub.UserGroupAO;
 import org.irods.jargon.core.pub.domain.User;
 import org.irods.jargon.core.pub.domain.UserGroup;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
-import org.irodsext.dataprofiler.favorites.FavoritesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,6 @@ import com.emc.metalnx.core.domain.exceptions.DataGridException;
 import com.emc.metalnx.services.interfaces.ConfigService;
 import com.emc.metalnx.services.interfaces.GroupService;
 import com.emc.metalnx.services.interfaces.IRODSServices;
-import com.emc.metalnx.services.interfaces.UserBookmarkService;
 import com.emc.metalnx.services.interfaces.UserService;
 
 @Service("userService")
@@ -47,13 +46,10 @@ public class UserServiceImpl implements UserService {
 	GroupService groupService;
 
 	@Autowired
-	UserBookmarkService userBookmarkService;
-
-	@Autowired
-	FavoritesService favoritesService;
-
-	@Autowired
 	private IRODSServices irodsServices;
+	
+	@Autowired
+	IRODSAccessObjectFactory irodsAccessObjectFactory;
 
 	@Autowired
 	private ConfigService configService;
@@ -88,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<DataGridUser> findAll() {
-		List<DataGridUser> users = userDao.findAll(DataGridUser.class);
+		List<DataGridUser> users = userDao.findAll();
 		Collections.sort(users);
 		return users;
 	}
@@ -121,7 +117,6 @@ public class UserServiceImpl implements UserService {
 
 		user.setDataGridId(Long.parseLong(irodsUser.getId()));
 		user.setEnabled(true);
-		userDao.save(user);
 
 		logger.info("setting password if provided (may be a PAM user!)");
 		if (password == null || password.isEmpty()) {
@@ -149,13 +144,6 @@ public class UserServiceImpl implements UserService {
 			// Removing user
 			userAO.deleteUser(username);
 			userDao.deleteByUsername(username);
-
-			// Removing favorites and user bookmarks before removing user
-			userBookmarkService.removeBookmarkBasedOnUser(user);
-			userBookmarkService.removeBookmarkBasedOnPath(userHomeFolder);
-
-			favoritesService.removeFavoriteBasedOnUser(user);
-			favoritesService.removeFavoriteBasedOnPath(userHomeFolder);
 
 			return true;
 		} catch (Exception e) {
@@ -198,49 +186,6 @@ public class UserServiceImpl implements UserService {
 				userAO.updateUser(iRodsUser);
 			}
 
-			DataGridUser applicationUser = userDao.findByUsernameAndZone(modifyUser.getUsername(),
-					modifyUser.getAdditionalInfo());
-
-			// check which fields were modified (our database)
-			if (applicationUser.getAdditionalInfo() == null
-					|| applicationUser.getAdditionalInfo().compareTo(modifyUser.getAdditionalInfo()) != 0) {
-				applicationUser.setAdditionalInfo(modifyUser.getAdditionalInfo());
-			}
-
-			if (applicationUser.getFirstName() == null
-					|| applicationUser.getFirstName().compareTo(modifyUser.getFirstName()) != 0) {
-				applicationUser.setFirstName(modifyUser.getFirstName());
-			}
-
-			if (applicationUser.getLastName() == null
-					|| applicationUser.getLastName().compareTo(modifyUser.getLastName()) != 0) {
-				applicationUser.setLastName(modifyUser.getLastName());
-			}
-
-			if (applicationUser.getEmail() == null
-					|| applicationUser.getEmail().compareTo(modifyUser.getEmail()) != 0) {
-				applicationUser.setEmail(modifyUser.getEmail());
-			}
-
-			if (applicationUser.getCompany() == null
-					|| applicationUser.getCompany().compareTo(modifyUser.getCompany()) != 0) {
-				applicationUser.setCompany(modifyUser.getCompany());
-			}
-
-			if (applicationUser.getDepartment() == null
-					|| applicationUser.getDepartment().compareTo(modifyUser.getDepartment()) != 0) {
-				applicationUser.setDepartment(modifyUser.getDepartment());
-			}
-
-			applicationUser.setUserProfile(modifyUser.getUserProfile());
-			applicationUser.setLocale(modifyUser.getLocale());
-			applicationUser.setOrganizationalRole(modifyUser.getOrganizationalRole());
-			applicationUser.setUserType(modifyUser.getUserType());
-			applicationUser.setForceFileOverwriting(modifyUser.isForceFileOverwriting());
-			applicationUser.setAdvanceView(modifyUser.isAdvancedView());
-			applicationUser.setMetadataUnitView(modifyUser.isMetadataUnitView());
-			userDao.merge(applicationUser);
-
 			// Changing password if a new password is set
 			String newPassword = modifyUser.getPassword();
 			if (newPassword != null && !newPassword.isEmpty()) {
@@ -276,7 +221,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int countAll() {
-		return userDao.findAll(DataGridUser.class).size();
+		return userDao.findAll().size();
 	}
 
 	@Override

@@ -4,12 +4,11 @@
 
 package com.emc.metalnx.core.domain.dao;
 
-import com.emc.metalnx.core.domain.dao.generic.GenericDao;
 import com.emc.metalnx.core.domain.entity.DataGridUser;
 
 import java.util.List;
 
-public interface UserDao extends GenericDao<DataGridUser, Long> {
+public interface UserDao {
 	
 	/**
 	 * Find a user by his ID
@@ -61,5 +60,7 @@ public interface UserDao extends GenericDao<DataGridUser, Long> {
 	 * @param query
 	 * @return list of users
 	 */
-	public List<DataGridUser> findByQueryString(String query);	
+	public List<DataGridUser> findByQueryString(String query);
+
+	List<DataGridUser> findAll();	
 }

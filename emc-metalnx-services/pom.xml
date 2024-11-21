@@ -125,7 +125,7 @@
 						<id>0</id>
 						<phase>validate</phase>
 						<configuration>
-							<tasks>
+							<target>
 								<delete
 									file="${basedir}/src/test/resources/testing.properties" />
 								<touch
@@ -188,7 +188,7 @@
 									test.option.mount.basedir=${test.option.mount.basedir}
 									test.option.python=${test.option.python}
 								</echo>
-							</tasks>
+							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
@@ -199,7 +199,7 @@
 						<id>2</id>
 						<phase>validate</phase>
 						<configuration>
-							<tasks>
+							<target>
 								<delete
 									file="${basedir}/src/test/resources/test.metalnx.properties" />
 								<touch
@@ -313,7 +313,7 @@
 									mail.from=${metalnx.mail.from}
 									mail.to=${metalnx.mail.to}
 								</echo>
-							</tasks>
+							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
