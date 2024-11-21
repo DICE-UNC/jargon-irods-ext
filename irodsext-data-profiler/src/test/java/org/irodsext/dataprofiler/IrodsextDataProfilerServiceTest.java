@@ -23,7 +23,6 @@ import org.irods.jargon.testutils.IRODSTestSetupUtilities;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.irods.jargon.testutils.filemanip.FileGenerator;
 import org.irods.jargon.testutils.filemanip.ScratchFileUtils;
-import org.irodsext.dataprofiler.favorites.FavoritesService;
 import org.irodsext.datatyper.IrodsextDataTypeResolutionService;
 import org.irodsext.datatyper.IrodsextDataTypeResolutionServiceFactoryImpl;
 import org.junit.After;
@@ -108,12 +107,8 @@ public class IrodsextDataProfilerServiceTest {
 		DataGridUser dataGridUser = new DataGridUser();
 		dataGridUser.setUsername(irodsAccount.getUserName());
 
-		FavoritesService favoritesService = Mockito.mock(FavoritesService.class);
-		Mockito.when(favoritesService.isPathFavoriteForUser(dataGridUser, targetIrodsCollection)).thenReturn(true);
-
 		IrodsextDataProfilerService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings,
 				accessObjectFactory, irodsAccount);
-		dataProfilerService.setFavoritesService(favoritesService);
 		dataProfilerService.setDataTypeResolutionService(dataTyperService);
 		dataProfilerService.setDataGridUser(dataGridUser);
 		@SuppressWarnings("rawtypes")
@@ -200,14 +195,10 @@ public class IrodsextDataProfilerServiceTest {
 		DataGridUser dataGridUser = new DataGridUser();
 		dataGridUser.setUsername(irodsAccount.getUserName());
 
-		FavoritesService favoritesService = Mockito.mock(FavoritesService.class);
-		Mockito.when(favoritesService.isPathFavoriteForUser(dataGridUser, dataName)).thenReturn(true);
-
 		IrodsextDataProfilerService dataProfilerService = new IrodsextDataProfilerService(dataProfilerSettings,
 				accessObjectFactory, irodsAccount);
 		dataProfilerService.setDataTypeResolutionService(dataTyperService);
 		dataProfilerService.setDataGridUser(dataGridUser);
-		dataProfilerService.setFavoritesService(favoritesService);
 		@SuppressWarnings("rawtypes")
 		DataProfile dataProfile = dataProfilerService.retrieveDataProfile(dataName);
 		Assert.assertTrue("should be starred", dataProfile.isStarred());

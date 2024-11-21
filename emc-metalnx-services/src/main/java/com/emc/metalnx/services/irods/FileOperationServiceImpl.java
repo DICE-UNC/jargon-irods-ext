@@ -18,7 +18,6 @@ import org.irods.jargon.core.pub.TrashOperationsAO;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.core.pub.io.IRODSFileInputStream;
-import org.irodsext.dataprofiler.favorites.FavoritesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ import com.emc.metalnx.services.interfaces.FileOperationService;
 import com.emc.metalnx.services.interfaces.IRODSServices;
 import com.emc.metalnx.services.interfaces.MetadataService;
 import com.emc.metalnx.services.interfaces.RuleService;
-import com.emc.metalnx.services.interfaces.UserBookmarkService;
 
 @Service
 @Transactional
@@ -46,12 +44,6 @@ public class FileOperationServiceImpl implements FileOperationService {
 
 	@Autowired
 	private IRODSServices irodsServices;
-
-	@Autowired
-	private UserBookmarkService userBookmarkService;
-
-	@Autowired
-	private FavoritesService favoritesService;
 
 	@Autowired
 	private MetadataService metadataService;
@@ -133,13 +125,6 @@ public class FileOperationServiceImpl implements FileOperationService {
 			}
 
 			itemDeleted = true;
-
-			// item deleted, we need to delete any bookmarks related to it
-			userBookmarkService.removeBookmarkBasedOnPath(path);
-			userBookmarkService.removeBookmarkBasedOnRelativePath(path);
-
-			favoritesService.removeFavoriteBasedOnPath(path);
-			favoritesService.removeFavoriteBasedOnRelativePath(path);
 
 		} catch (JargonException e) {
 			logger.error("Could not delete item " + path + ": ", e);
