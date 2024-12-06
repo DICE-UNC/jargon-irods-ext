@@ -67,14 +67,14 @@ public interface UserService {
 	public List<DataGridUser> findByUsername(String username);
 
 	/**
-	 * Return a user whose name is 'username' and additional info is
-	 * 'additionalInfo'
+	 * Return a user whose name is 'username' and zone is
+	 * 'zone'
 	 *
 	 * @param username
-	 * @param additionalInfo
+	 * @param zone
 	 * @return
 	 */
-	public DataGridUser findByUsernameAndAdditionalInfo(String username, String additionalInfo);
+	public DataGridUser findByUsernameAndZone(String username, String zone);
 
 	/**
 	 * Returns the quantity of users persisted on our database.
@@ -105,11 +105,11 @@ public interface UserService {
 	 * Returns the list of IDs of each group the user belongs to.
 	 *
 	 * @param username       name of the user
-	 * @param additionalInfo zone name where the user is
+	 * @param zone zone name where the user is
 	 * @return list of data grid IDs
 	 * @throws DataGridConnectionRefusedException
 	 */
-	public String[] getGroupIdsForUser(String username, String additionalInfo)
+	public String[] getGroupIdsForUser(String username, String zone)
 			throws DataGridConnectionRefusedException;
 
 	/**

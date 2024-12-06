@@ -20,7 +20,7 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 
 	private String password;
 
-	private String additionalInfo;
+	private String zone;
 
 	private boolean enabled;
 
@@ -71,10 +71,10 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @return the additionalInfo
+	 * @return the zone
 	 */
-	public String getAdditionalInfo() {
-		return additionalInfo;
+	public String getZone() {
+		return zone;
 	}
 
 	/**
@@ -120,10 +120,10 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 	}
 
 	/**
-	 * @param additionalInfo the additionalInfo to set
+	 * @param zone the zone to set
 	 */
-	public void setAdditionalInfo(String additionalInfo) {
-		this.additionalInfo = additionalInfo;
+	public void setZone(String zone) {
+		this.zone = zone;
 	}
 
 	/**
@@ -224,8 +224,8 @@ public class DataGridUser implements Serializable, Comparable<DataGridUser> {
 		if (password != null) {
 			builder.append("password=").append(password).append(", ");
 		}
-		if (additionalInfo != null) {
-			builder.append("additionalInfo=").append(additionalInfo).append(", ");
+		if (zone != null) {
+			builder.append("zone=").append(zone).append(", ");
 		}
 		builder.append("enabled=").append(enabled).append(", ");
 		if (locale != null) {
