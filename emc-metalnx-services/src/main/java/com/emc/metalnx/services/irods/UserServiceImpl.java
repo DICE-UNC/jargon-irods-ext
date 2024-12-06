@@ -68,14 +68,14 @@ public class UserServiceImpl implements UserService {
 		StringBuilder sb = new StringBuilder();
 		sb.append(dataGridUser.getUsername());
 
-		if (dataGridUser.getAdditionalInfo().isEmpty()) {
+		if (dataGridUser.getZone().isEmpty()) {
 			// no zone info
-		} else if (dataGridUser.getAdditionalInfo().equals(irodsServices.getCurrentUserZone())) {
+		} else if (dataGridUser.getZone().equals(irodsServices.getCurrentUserZone())) {
 			// no need for zone, same zone
 		} else {
 			logger.debug("adding zone");
 			sb.append("#");
-			sb.append(dataGridUser.getAdditionalInfo());
+			sb.append(dataGridUser.getZone());
 		}
 
 		return sb.toString();
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 		// Translating to iRODS model format
 		User irodsUser = new User();
 		irodsUser.setName(user.getUsername());
-		irodsUser.setZone(user.getAdditionalInfo());
+		irodsUser.setZone(user.getZone());
 
 		if (user.getUserType().compareTo(UserTypeEnum.RODS_ADMIN.getTextValue()) == 0) {
 			irodsUser.setUserType(UserTypeEnum.RODS_ADMIN);
@@ -164,8 +164,8 @@ public class UserServiceImpl implements UserService {
 			boolean iRodsFieldsModified = false;
 
 			// check which fields were modified (iRODS)
-			if (iRodsUser.getZone().compareTo(modifyUser.getAdditionalInfo()) != 0) {
-				iRodsUser.setZone(modifyUser.getAdditionalInfo());
+			if (iRodsUser.getZone().compareTo(modifyUser.getZone()) != 0) {
+				iRodsUser.setZone(modifyUser.getZone());
 				iRodsFieldsModified = true;
 			}
 
@@ -215,8 +215,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public DataGridUser findByUsernameAndAdditionalInfo(String username, String additionalInfo) {
-		return userDao.findByUsernameAndZone(username, additionalInfo);
+	public DataGridUser findByUsernameAndZone(String username, String zone) {
+		return userDao.findByUsernameAndZone(username, zone);
 	}
 
 	@Override
@@ -256,10 +256,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String[] getGroupIdsForUser(String username, String additionalInfo)
+	public String[] getGroupIdsForUser(String username, String zone)
 			throws DataGridConnectionRefusedException {
 
-		DataGridUser user = findByUsernameAndAdditionalInfo(username, additionalInfo);
+		DataGridUser user = findByUsernameAndZone(username, zone);
 
 		if (user == null) {
 			return new String[0];
@@ -310,7 +310,7 @@ public class UserServiceImpl implements UserService {
 				if (groupsFromIrodsMap.get(key) == null) {
 					logger.info("adding group:{}", key);
 					// groupAO.addUserToGroup(key, this.buildConcatUserName(user), "");
-					groupAO.addUserToGroup(key, user.getUsername(), user.getAdditionalInfo());
+					groupAO.addUserToGroup(key, user.getUsername(), user.getZone());
 				}
 			}
 
@@ -319,7 +319,7 @@ public class UserServiceImpl implements UserService {
 			for (String key : groupsFromIrodsMap.keySet()) {
 				if (groupsFromUiMap.get(key) == null) {
 					logger.info("removing group:{}", key);
-					groupAO.removeUserFromGroup(key, user.getUsername(), user.getAdditionalInfo());
+					groupAO.removeUserFromGroup(key, user.getUsername(), user.getZone());
 				}
 			}
 
@@ -351,11 +351,11 @@ public class UserServiceImpl implements UserService {
 				irodsFile = irodsFileFactory.instanceIRODSFile(path);
 				if (irodsFile.isDirectory()) {
 					// applying read permissions on a collection (not recursively)
-					collectionAO.setAccessPermissionReadAsAdmin(user.getAdditionalInfo(), path, user.getUsername(),
+					collectionAO.setAccessPermissionReadAsAdmin(user.getZone(), path, user.getUsername(),
 							addCollectionsToRead.get(path));
 				} else {
 					// applying read permissions on a data object
-					dataObjectAO.setAccessPermissionReadInAdminMode(user.getAdditionalInfo(), path, user.getUsername());
+					dataObjectAO.setAccessPermissionReadInAdminMode(user.getZone(), path, user.getUsername());
 				}
 			}
 			removeAccessPermissionForUserAsAdmin(user, removeCollectionsToRead);
@@ -385,10 +385,10 @@ public class UserServiceImpl implements UserService {
 			for (String path : addCollectionsToWrite.keySet()) {
 				irodsFile = irodsFileFactory.instanceIRODSFile(path);
 				if (irodsFile.isDirectory()) {
-					collectionAO.setAccessPermissionWriteAsAdmin(user.getAdditionalInfo(), path, user.getUsername(),
+					collectionAO.setAccessPermissionWriteAsAdmin(user.getZone(), path, user.getUsername(),
 							addCollectionsToWrite.get(path));
 				} else {
-					dataObjectAO.setAccessPermissionWriteInAdminMode(user.getAdditionalInfo(), path,
+					dataObjectAO.setAccessPermissionWriteInAdminMode(user.getZone(), path,
 							user.getUsername());
 				}
 			}
@@ -420,10 +420,10 @@ public class UserServiceImpl implements UserService {
 			for (String path : addCollectionsToOwn.keySet()) {
 				irodsFile = irodsFileFactory.instanceIRODSFile(path);
 				if (irodsFile.isDirectory()) {
-					collectionAO.setAccessPermissionOwnAsAdmin(user.getAdditionalInfo(), path, user.getUsername(),
+					collectionAO.setAccessPermissionOwnAsAdmin(user.getZone(), path, user.getUsername(),
 							addCollectionsToOwn.get(path));
 				} else {
-					dataObjectAO.setAccessPermissionOwnInAdminMode(user.getAdditionalInfo(), path, user.getUsername());
+					dataObjectAO.setAccessPermissionOwnInAdminMode(user.getZone(), path, user.getUsername());
 				}
 			}
 
@@ -463,10 +463,10 @@ public class UserServiceImpl implements UserService {
 		for (String path : paths.keySet()) {
 			irodsFile = irodsFileFactory.instanceIRODSFile(path);
 			if (irodsFile.isDirectory()) {
-				collectionAO.removeAccessPermissionForUserAsAdmin(user.getAdditionalInfo(), path, user.getUsername(),
+				collectionAO.removeAccessPermissionForUserAsAdmin(user.getZone(), path, user.getUsername(),
 						paths.get(path));
 			} else {
-				dataObjectAO.removeAccessPermissionsForUserInAdminMode(user.getAdditionalInfo(), path,
+				dataObjectAO.removeAccessPermissionsForUserInAdminMode(user.getZone(), path,
 						user.getUsername());
 			}
 		}

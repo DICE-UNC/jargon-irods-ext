@@ -74,7 +74,7 @@ public class UserDaoImpl implements UserDao {
 		dataGridUser.setId(Integer.parseInt(u.getId()));
 		dataGridUser.setDataGridId(dataGridUser.getId());
 		dataGridUser.setUserType(u.getUserType().getTextValue());
-		dataGridUser.setAdditionalInfo(u.getZone());
+		dataGridUser.setZone(u.getZone());
 		
 		// add user to list
 		userList.add(dataGridUser);
@@ -158,7 +158,7 @@ public class UserDaoImpl implements UserDao {
 			dataGridUser.setId(Integer.parseInt(u.getId()));
 			dataGridUser.setDataGridId(dataGridUser.getId());
 			dataGridUser.setUserType(u.getUserType().getTextValue());
-			dataGridUser.setAdditionalInfo(u.getZone());
+			dataGridUser.setZone(u.getZone());
 			logger.info("findByUsernameAndZone: dataGridUser.id=[{}] dataGridUser.dataGridId=[{}]", dataGridUser.getId(), dataGridUser.getDataGridId());
 			return dataGridUser;
 		} catch (JargonException e) {
@@ -254,7 +254,7 @@ public class UserDaoImpl implements UserDao {
 				dataGridUser.setId(Integer.parseInt(u.getId()));
 				dataGridUser.setDataGridId(dataGridUser.getId());
 				dataGridUser.setUserType(u.getUserType().getTextValue());
-				dataGridUser.setAdditionalInfo(u.getZone());
+				dataGridUser.setZone(u.getZone());
 				userList.add(dataGridUser);
 			}
 			return userList;
@@ -301,7 +301,7 @@ public class UserDaoImpl implements UserDao {
 			dataGridUser.setId(Integer.parseInt(u.getId()));
 			dataGridUser.setDataGridId(dataGridUser.getId());
 			dataGridUser.setUserType(u.getUserType().getTextValue());
-			dataGridUser.setAdditionalInfo(u.getZone());
+			dataGridUser.setZone(u.getZone());
 			
 			result.add(dataGridUser);
 		}
@@ -336,7 +336,7 @@ public class UserDaoImpl implements UserDao {
 		dataGridUser.setId(Integer.parseInt(u.getId()));
 		dataGridUser.setDataGridId(dataGridUser.getId());
 		dataGridUser.setUserType(u.getUserType().getTextValue());
-		dataGridUser.setAdditionalInfo(u.getZone());
+		dataGridUser.setZone(u.getZone());
 		
 		return dataGridUser;
 	}
@@ -404,7 +404,7 @@ public class UserDaoImpl implements UserDao {
 			dataGridUser.setId(Integer.parseInt(u.getId()));
 			dataGridUser.setDataGridId(dataGridUser.getId());
 			dataGridUser.setUserType(u.getUserType().getTextValue());
-			dataGridUser.setAdditionalInfo(u.getZone());
+			dataGridUser.setZone(u.getZone());
 
 			// add user to list
 			dataGridUserList.add(dataGridUser);

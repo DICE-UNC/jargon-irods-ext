@@ -212,7 +212,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 				if (user == null) {
 					user = new DataGridUser();
 					user.setUsername(irodsUser.getName());
-					user.setAdditionalInfo(irodsUser.getZone());
+					user.setZone(irodsUser.getZone());
 					user.setDataGridId(Long.parseLong(irodsUser.getId()));
 					user.setEnabled(true);
 					if (irodsUser.getUserType().equals(UserTypeEnum.RODS_ADMIN)) {

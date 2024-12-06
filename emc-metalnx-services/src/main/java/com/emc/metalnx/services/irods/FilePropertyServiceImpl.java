@@ -176,7 +176,7 @@ public class FilePropertyServiceImpl implements FilePropertyService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = (String) auth.getPrincipal();
 
-		return userService.findByUsernameAndAdditionalInfo(username, configService.getIrodsZone());
+		return userService.findByUsernameAndZone(username, configService.getIrodsZone());
 	}
 
 }

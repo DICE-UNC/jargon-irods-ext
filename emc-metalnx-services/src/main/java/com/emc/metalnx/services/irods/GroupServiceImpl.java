@@ -265,7 +265,7 @@ public class GroupServiceImpl implements GroupService {
 				if (!keysFromUi.contains(keyFromIrods)) {
 					DataGridUser user = new DataGridUser();
 					user.setUsername(idsFromIrods.get(keyFromIrods).getName());
-					user.setAdditionalInfo(idsFromIrods.get(keyFromIrods).getZone());
+					user.setZone(idsFromIrods.get(keyFromIrods).getZone());
 					removeUserFromGroup(user, group);
 					logger.info("removing user:{}", user);
 				}
@@ -289,7 +289,7 @@ public class GroupServiceImpl implements GroupService {
 		logger.info("group:{}", group);
 		UserGroupAO groupAO = irodsServices.getGroupAO();
 		try {
-			groupAO.removeUserFromGroup(group.getUserGroupName(), user.getUsername(), user.getAdditionalInfo());
+			groupAO.removeUserFromGroup(group.getUserGroupName(), user.getUsername(), user.getZone());
 		} catch (InvalidUserException e) {
 			logger.warn("invalid user, ignored", e);
 		} catch (InvalidGroupException e) {
@@ -313,7 +313,7 @@ public class GroupServiceImpl implements GroupService {
 		UserGroupAO groupAO = irodsServices.getGroupAO();
 		try {
 			groupAO.addUserToGroup(group.getUserGroupName(), dataGridUser.getUsername(),
-					dataGridUser.getAdditionalInfo());
+					dataGridUser.getZone());
 		} catch (JargonException e) {
 			logger.error("error adding user to group", e);
 			throw new DataGridException("error adding user to group", e);

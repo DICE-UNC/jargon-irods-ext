@@ -119,7 +119,7 @@ public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 			dataGridUser.setPassword(irodsAccount.getPassword());
 			return dataGridUser;
 		} else {
-			return userService.findByUsernameAndAdditionalInfo(irodsAccount.getUserName(), irodsAccount.getZone());
+			return userService.findByUsernameAndZone(irodsAccount.getUserName(), irodsAccount.getZone());
 		}
 
 	}
