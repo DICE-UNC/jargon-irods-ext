@@ -247,12 +247,6 @@
 
 									######################################
 
-									jobs.irods.username=${jargon.test.irods.admin}
-									jobs.irods.password=${jargon.test.irods.admin.password}
-									jobs.irods.auth.scheme=${metalnx.auth.scheme}
-									runSyncJobs=true
-
-
 									rmd.connection.timeout=500
 									rmd.connection.port=8000
 

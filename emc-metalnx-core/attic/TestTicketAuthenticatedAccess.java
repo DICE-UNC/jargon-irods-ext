@@ -56,10 +56,10 @@ public class TestTicketAuthenticatedAccess {
 	@Value("${irods.port}")
 	private String port;
 
-	@Value("${jobs.irods.username}")
+	@Value("${irods.admin.user}")
 	private String username;
 
-	@Value("${jobs.irods.password}")
+	@Value("${irods.admin.password}")
 	private String password;
 
 	@Autowired

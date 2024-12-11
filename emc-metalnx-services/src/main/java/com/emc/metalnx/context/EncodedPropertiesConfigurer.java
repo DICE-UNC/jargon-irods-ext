@@ -22,7 +22,7 @@ import java.util.*;
 public class EncodedPropertiesConfigurer extends PropertyPlaceholderConfigurer {
 
     private static final String PROPERTIES_TO_BE_DECODED = "encoded.properties";
-    private static final String DEFAULT_ENCODED_FIELDS = "db.password,jobs.irods.password";
+    private static final String DEFAULT_ENCODED_FIELDS = "db.password,irods.admin.password";
     private static final String PWD_SALT = "!M3t4Lnx@1234";
 
     private static final Logger logger = LoggerFactory.getLogger(EncodedPropertiesConfigurer.class);

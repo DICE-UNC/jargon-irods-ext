@@ -40,7 +40,7 @@ public class TestTicketWithGroupRestriction {
     @Value("${irods.zoneName}")
     private String zone;
 
-    @Value("${jobs.irods.username}")
+    @Value("${irods.admin.user}")
     private String username;
 
     @Autowired
