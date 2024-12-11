@@ -40,8 +40,8 @@
 	<bean id="irodsAccount" class="org.irods.jargon.core.connection.IRODSAccount">
 		<constructor-arg value="${irods.host}"></constructor-arg>
 		<constructor-arg value="${irods.port}"></constructor-arg>
-		<constructor-arg value="${jobs.irods.username}"></constructor-arg>
-		<constructor-arg value="${jobs.irods.password}"></constructor-arg>
+		<constructor-arg value="${irods.admin.user}"></constructor-arg>
+		<constructor-arg value="${irods.admin.password}"></constructor-arg>
 		<constructor-arg value=""></constructor-arg>
 		<constructor-arg value="${irods.zoneName}"></constructor-arg>
 		<constructor-arg value="demoResc"></constructor-arg>

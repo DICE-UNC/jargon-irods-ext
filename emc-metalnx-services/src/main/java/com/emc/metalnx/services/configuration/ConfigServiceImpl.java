@@ -51,13 +51,13 @@ public class ConfigServiceImpl implements ConfigService {
 	@Value("${irods.zoneName}")
 	private String irodsZone;
 
-	@Value("${jobs.irods.username}")
-	private String irodsJobUser;
+	@Value("${irods.admin.user}")
+	private String irodsAdminUser;
 
-	@Value("${jobs.irods.password}")
-	private String irodsJobPassword;
+	@Value("${irods.admin.password}")
+	private String irodsAdminPassword;
 
-	@Value("${jobs.irods.auth.scheme}")
+	@Value("${irods.auth.scheme}")
 	private String irodsAuthScheme;
 
 	@Value("${populate.msi.enabled}")
@@ -189,13 +189,13 @@ public class ConfigServiceImpl implements ConfigService {
 	}
 
 	@Override
-	public String getIrodsJobUser() {
-		return irodsJobUser;
+	public String getIrodsAdminUser() {
+		return irodsAdminUser;
 	}
 
 	@Override
-	public String getIrodsJobPassword() {
-		return irodsJobPassword;
+	public String getIrodsAdminPassword() {
+		return irodsAdminPassword;
 	}
 
 	@Override
@@ -367,8 +367,8 @@ public class ConfigServiceImpl implements ConfigService {
 		if (irodsZone != null) {
 			builder.append("irodsZone=").append(irodsZone).append(", ");
 		}
-		if (irodsJobUser != null) {
-			builder.append("irodsJobUser=").append(irodsJobUser).append(", ");
+		if (irodsAdminUser != null) {
+			builder.append("irodsAdminUser=").append(irodsAdminUser).append(", ");
 		}
 		if (irodsAuthScheme != null) {
 			builder.append("irodsAuthScheme=").append(irodsAuthScheme).append(", ");
@@ -439,13 +439,13 @@ public class ConfigServiceImpl implements ConfigService {
 	}
 
 	@Override
-	public void setIrodsJobUser(String irodsJobUser) {
-		this.irodsJobUser = irodsJobUser;
+	public void setIrodsAdminUser(String irodsAdminUser) {
+		this.irodsAdminUser = irodsAdminUser;
 	}
 
 	@Override
-	public void setIrodsJobPassword(String irodsJobPassword) {
-		this.irodsJobPassword = irodsJobPassword;
+	public void setIrodsAdminPassword(String irodsAdminPassword) {
+		this.irodsAdminPassword = irodsAdminPassword;
 	}
 
 	@Override

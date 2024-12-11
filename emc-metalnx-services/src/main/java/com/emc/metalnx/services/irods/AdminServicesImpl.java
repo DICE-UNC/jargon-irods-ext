@@ -102,8 +102,8 @@ public class AdminServicesImpl implements AdminServices {
 		String host = configService.getIrodsHost();
 		int port = Integer.parseInt(configService.getIrodsPort());
 		String zone = configService.getIrodsZone();
-		String user = configService.getIrodsJobUser();
-		String password = configService.getIrodsJobPassword();
+		String user = configService.getIrodsAdminUser();
+		String password = configService.getIrodsAdminPassword();
 		String authScheme = configService.getIrodsAuthScheme();
 		String resc = "";
 		String homeDir = "";
