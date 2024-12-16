@@ -64,8 +64,7 @@ public class UploadServiceImpl implements UploadService {
 
 		logger.info("upload()");
 
-		if (file == null || file.isEmpty() || "".equals(targetPath) || targetPath == null || "".equals(destResc)
-				|| destResc == null) {
+		if (file == null || file.isEmpty() || targetPath == null || "".equals(targetPath)) {
 			logger.error("File could not be sent to the data grid.");
 			return false;
 		}
@@ -75,7 +74,7 @@ public class UploadServiceImpl implements UploadService {
 		logger.info("computeCheckSum:{}", computeCheckSum);
 		logger.info("replicateFile:{}", replicateFile);
 		logger.info("replicationResc:{}", replicationResc);
-		logger.info("destResc:{}", destResc);
+		logger.info("destResc:{}", destResc == null ? "null" : destResc);
 		logger.info("overwrite:{}", overwrite);
 
 		InputStream inputStream;
@@ -90,7 +89,9 @@ public class UploadServiceImpl implements UploadService {
 		logger.info("Setting default resource to {}", destResc);
 
 		// Setting temporarily the defaultStorageResource for the logged user
-		is.setDefaultStorageResource(destResc);
+		if (destResc != null && !("".equals(destResc))) {
+			is.setDefaultStorageResource(destResc);
+		}
 
 		boolean isFileUploaded;
 
