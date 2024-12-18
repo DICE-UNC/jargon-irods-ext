@@ -54,6 +54,8 @@ public class GlobalConfig {
 	 */
 	private boolean handleNoAccessViaProxy = false;
 
+	private boolean publicSidebarLinkEnabled;
+
 	public boolean isTicketsEnabled() {
 		return ticketsEnabled;
 	}
@@ -133,5 +135,15 @@ public class GlobalConfig {
 	public void setClassicSearchEnabled(boolean classicSearchEnabled) {
 		this.classicSearchEnabled = classicSearchEnabled;
 	}
+
+	public void setPublicSidebarLinkEnabled(boolean publicSidebarLinkEnabled) {
+		this.publicSidebarLinkEnabled = publicSidebarLinkEnabled;
+		
+	}
+	
+	public boolean isPublicSidebarLinkEnabled() {
+		return publicSidebarLinkEnabled;
+	}
+
 
 }

@@ -86,6 +86,9 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@Value("${pluggableshoppingcart.enabled}")
 	private boolean pluggableShoppingCartEnabled = false;
+	
+	@Value("${sidebar.show.public:false}")
+	private boolean publicSidebarLinkEnabled;
 
 	/**
 	 * Indicates whether the old file props and AVU search is visible in the menu
@@ -134,6 +137,7 @@ public class ConfigServiceImpl implements ConfigService {
 		globalConfig.setPluggableSearchEnabled(pluggableSearchEnabled);
 		globalConfig.setPluggableShoppingCartEnabled(pluggableShoppingCartEnabled);
 		globalConfig.setClassicSearchEnabled(classicSearchEnabled);
+		globalConfig.setPublicSidebarLinkEnabled(publicSidebarLinkEnabled);
 		logger.debug("globalConfig:{}", globalConfig);
 		return globalConfig;
 	}
@@ -462,4 +466,15 @@ public class ConfigServiceImpl implements ConfigService {
 	public void setDownloadLimit(long downloadLimit) {
 		this.downloadLimit = downloadLimit;
 	}
+
+	@Override
+	public boolean isPublicSidebarLinkEnabled() {
+		return publicSidebarLinkEnabled;
+	}
+	
+	@Override
+	public void setPublicSidebarLinkEnabled(boolean publicSidebarLinkEnabled) {
+		this.publicSidebarLinkEnabled = publicSidebarLinkEnabled;
+	}
+
 }
