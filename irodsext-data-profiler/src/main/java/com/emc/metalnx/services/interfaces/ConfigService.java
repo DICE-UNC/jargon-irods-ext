@@ -141,6 +141,14 @@ public interface ConfigService {
 	 *         {@link AuthScheme}
 	 */
 	String getDefaultIrodsAuthScheme();
+	
+	/**
+	 * Global setting turning on or off the public sidebar link
+	 *
+	 * @return <code>boolean</code> that is <code>true</code> when the public sidebar
+	 *         link is enabled
+	 */
+	boolean isPublicSidebarLinkEnabled();
 
 
 	/**
@@ -166,4 +174,5 @@ public interface ConfigService {
 	void setIrods41MSIsExpected(String irods41msIsExpected);
 	void setMlxMSIsExpected(String mlxMSIsExpected);
 	void setMsiAPIVersionSupported(String msiAPIVersionSupported);
+	void setPublicSidebarLinkEnabled(boolean publicSidebarLinkEnabled);
 }
