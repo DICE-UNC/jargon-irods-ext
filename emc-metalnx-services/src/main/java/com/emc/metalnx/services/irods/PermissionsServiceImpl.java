@@ -71,10 +71,24 @@ public class PermissionsServiceImpl implements PermissionsService {
 
 		if (permissions.contains("none")) {
 			mostRestrictivePermission = DataGridPermType.NONE;
+		} else if (permissions.contains("read_metadata")) {
+			mostRestrictivePermission = DataGridPermType.READ_METADATA;
 		} else if (permissions.contains("read")) {
 			mostRestrictivePermission = DataGridPermType.READ;
-		} else if (permissions.contains("write")) {
-			mostRestrictivePermission = DataGridPermType.WRITE;
+		} else if (permissions.contains("read_object")) {
+			mostRestrictivePermission = DataGridPermType.READ_OBJECT;
+		} else if (permissions.contains("create_metadata")) {
+			mostRestrictivePermission = DataGridPermType.CREATE_METADATA;
+		} else if (permissions.contains("modify_metadata")) {
+			mostRestrictivePermission = DataGridPermType.MODIFY_METADATA;
+		} else if (permissions.contains("delete_metadata")) {
+			mostRestrictivePermission = DataGridPermType.DELETE_METADATA;
+		} else if (permissions.contains("create_object")) {
+			mostRestrictivePermission = DataGridPermType.CREATE_OBJECT;
+		} else if (permissions.contains("write") || permissions.contains("modify_object")) {
+			mostRestrictivePermission = DataGridPermType.MODIFY_OBJECT;
+		} else if (permissions.contains("delete_object")) {
+			mostRestrictivePermission = DataGridPermType.DELETE_OBJECT;
 		} else if (permissions.contains("own")) {
 			mostRestrictivePermission = DataGridPermType.OWN;
 		}
@@ -119,7 +133,7 @@ public class PermissionsServiceImpl implements PermissionsService {
 				resultingPermission = irodsFileSystemAO.getFilePermissionsForGivenUser(fileObj, userName);
 			}
 
-			return resultingPermission > FilePermissionEnum.WRITE.getPermissionNumericValue();
+			return resultingPermission > FilePermissionEnum.DELETE_OBJECT.getPermissionNumericValue();
 
 		} catch (final Exception e) {
 			logger.error("Could not get permissions for current user: {}", e.getMessage());
@@ -229,18 +243,10 @@ public class PermissionsServiceImpl implements PermissionsService {
 			if (!inAdminMode) {
 				FilePermissionEnum filePermission = FilePermissionEnum.valueOf(permType.toString());
 				collectionAO.setAccessPermission(currentZone, path, uName, recursive, filePermission);
-			} else if (permType.equals(DataGridPermType.READ))
-				collectionAO.setAccessPermissionReadAsAdmin(currentZone, path, uName, recursive);
-
-			else if (permType.equals(DataGridPermType.WRITE))
-				collectionAO.setAccessPermissionWriteAsAdmin(currentZone, path, uName, recursive);
-
-			else if (permType.equals(DataGridPermType.OWN))
-				collectionAO.setAccessPermissionOwnAsAdmin(currentZone, path, uName, recursive);
-
-			else
-				collectionAO.removeAccessPermissionForUserAsAdmin(currentZone, path, uName, recursive);
-
+			} else {
+				FilePermissionEnum filePermission = FilePermissionEnum.valueOf(permType.toString());
+				collectionAO.setAccessPermissionAsAdmin(currentZone, path, uName, recursive, filePermission);
+			}
 			isPermissionSet = true;
 		} catch (JargonException e) {
 			logger.error("Could not set {} permission on path {} for user/group {}", permType, path, uName, e);
@@ -262,17 +268,10 @@ public class PermissionsServiceImpl implements PermissionsService {
 			if (!inAdminMode) {
 				FilePermissionEnum filePermission = FilePermissionEnum.valueOf(permType.toString());
 				dataObjectAO.setAccessPermission(currentZone, path, uName, filePermission);
-			} else if (permType.equals(DataGridPermType.READ))
-				dataObjectAO.setAccessPermissionReadInAdminMode(currentZone, path, uName);
-
-			else if (permType.equals(DataGridPermType.WRITE))
-				dataObjectAO.setAccessPermissionWriteInAdminMode(currentZone, path, uName);
-
-			else if (permType.equals(DataGridPermType.OWN))
-				dataObjectAO.setAccessPermissionOwnInAdminMode(currentZone, path, uName);
-
-			else
-				dataObjectAO.removeAccessPermissionsForUserInAdminMode(currentZone, path, uName);
+			} else {
+				FilePermissionEnum filePermission = FilePermissionEnum.valueOf(permType.toString());
+				dataObjectAO.setAccessPermissionAsAdmin(currentZone, path, uName, filePermission);
+			}
 
 			isPermissionSet = true;
 		} catch (JargonException e) {
@@ -456,7 +455,16 @@ public class PermissionsServiceImpl implements PermissionsService {
 		DataGridFilePermission dgfp = new DataGridFilePermission();
 		dgfp.setUserId(ufp.getUserId());
 		dgfp.setUsername(ufp.getUserName());
-		dgfp.setPermission(ufp.getFilePermissionEnum().toString());
+		
+		// Translate WRITE and READ to the new strings MODIFY_OBJECT and READ_OBJECT
+		if ("WRITE".equals(ufp.getFilePermissionEnum().toString())) {
+			dgfp.setPermission("MODIFY_OBJECT");
+		} else if ("READ".equals(ufp.getFilePermissionEnum().toString())) {
+			dgfp.setPermission("READ_OBJECT");
+		} else {
+			dgfp.setPermission(ufp.getFilePermissionEnum().toString());
+		}
+		
 		dgfp.setUserType(ufp.getUserType().getTextValue());
 		dgfp.setUserZone(ufp.getUserZone());
 		return dgfp;

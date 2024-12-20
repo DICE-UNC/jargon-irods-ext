@@ -76,12 +76,12 @@ public class TestReadPermissionOnFiles {
 
     @Test
     public void testSetReadPermissionOnFiles() throws DataGridConnectionRefusedException {
-        assertPermissionFiles(DataGridPermType.READ, false, false);
+        assertPermissionFiles(DataGridPermType.READ_OBJECT, false, false);
     }
 
     @Test
     public void testSetWritePermissionOnFiles() throws DataGridConnectionRefusedException {
-        assertPermissionFiles(DataGridPermType.WRITE, false, false);
+        assertPermissionFiles(DataGridPermType.MODIFY_OBJECT, false, false);
     }
 
     @Test
