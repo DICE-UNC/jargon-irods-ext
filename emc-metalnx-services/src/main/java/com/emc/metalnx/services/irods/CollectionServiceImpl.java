@@ -600,13 +600,13 @@ public class CollectionServiceImpl implements CollectionService {
 	@Override
 	public Set<String> listReadPermissionsForPathAndUser(String path, String userName)
 			throws DataGridConnectionRefusedException {
-		return listCollectionsWithPermissionsForUser(path, userName, FilePermissionEnum.READ);
+		return listCollectionsWithPermissionsForUser(path, userName, FilePermissionEnum.READ_OBJECT);
 	}
 
 	@Override
 	public Set<String> listWritePermissionsForPathAndUser(String path, String userName)
 			throws DataGridConnectionRefusedException {
-		return listCollectionsWithPermissionsForUser(path, userName, FilePermissionEnum.WRITE);
+		return listCollectionsWithPermissionsForUser(path, userName, FilePermissionEnum.MODIFY_OBJECT);
 	}
 
 	@Override
@@ -618,13 +618,13 @@ public class CollectionServiceImpl implements CollectionService {
 	@Override
 	public Set<String> listReadPermissionsForPathAndGroup(String path, String groupName)
 			throws DataGridConnectionRefusedException {
-		return listCollectionsWithPermissionsForGroup(path, groupName, FilePermissionEnum.READ);
+		return listCollectionsWithPermissionsForGroup(path, groupName, FilePermissionEnum.READ_OBJECT);
 	}
 
 	@Override
 	public Set<String> listWritePermissionsForPathAndGroup(String path, String groupName)
 			throws DataGridConnectionRefusedException {
-		return listCollectionsWithPermissionsForGroup(path, groupName, FilePermissionEnum.WRITE);
+		return listCollectionsWithPermissionsForGroup(path, groupName, FilePermissionEnum.MODIFY_OBJECT);
 	}
 
 	@Override
