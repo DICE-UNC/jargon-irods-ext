@@ -12,8 +12,8 @@ import org.irods.jargon.core.pub.domain.SpecificQueryDefinition;
 import org.irods.jargon.core.query.JargonQueryException;
 import org.irods.jargon.core.query.SpecificQuery;
 import org.irods.jargon.core.query.SpecificQueryResultSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +44,7 @@ public class SpecQueryServiceImpl implements SpecQueryService {
 	@Autowired
 	IRODSServices irodsServices;
 
-	private static final Logger logger = LoggerFactory.getLogger(SpecQueryServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(SpecQueryServiceImpl.class);
 	/*
 	 * This will switch based on the iCat to create sql statements for various back
 	 * end databases

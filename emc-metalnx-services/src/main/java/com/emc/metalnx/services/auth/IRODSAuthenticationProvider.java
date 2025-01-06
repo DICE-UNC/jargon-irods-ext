@@ -18,8 +18,8 @@ import org.irods.jargon.core.protovalues.UserTypeEnum;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.UserAO;
 import org.irods.jargon.core.pub.domain.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,7 +59,7 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 
 	private DataGridUser user;
 
-	private static final Logger logger = LoggerFactory.getLogger(IRODSAuthenticationProvider.class);
+	private static final Logger logger = LogManager.getLogger(IRODSAuthenticationProvider.class);
 
 	private static final long serialVersionUID = -4984545776727334580L;
 

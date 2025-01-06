@@ -20,8 +20,8 @@ import org.irods.jargon.core.pub.domain.User;
 import org.irods.jargon.core.pub.domain.UserGroup;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private ConfigService configService;
 
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
 	/**
 	 * Compare the data grid user to the current zone and build a proper fully

@@ -10,8 +10,8 @@ import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.IRODSFileSystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The object that is encapsulated in the user session
@@ -22,7 +22,7 @@ public class UserTokenDetails {
 	private DataGridUser user;
 	private IRODSAccount irodsAccount;
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserTokenDetails.class);
+	private static final Logger logger = LogManager.getLogger(UserTokenDetails.class);
 	
 	/**
 	 * @return the irodsAccount

@@ -25,7 +25,7 @@ public class RemoteExecutionServiceImpl implements RemoteExecutionService {
 	private static final int bufferSize = 8192;
 	private static final String defaultEncoding = "UTF-8";
 
-	//private static final Logger logger = LoggerFactory.getLogger(RemoteExecutionServiceImpl.class);
+	//private static final Logger logger = LogManager.getLogger(RemoteExecutionServiceImpl.class);
 	
 	@Override
 	public String execute(String command) throws JargonException, IOException, 

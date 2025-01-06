@@ -18,8 +18,8 @@ import org.irods.jargon.core.pub.domain.SpecificQueryDefinition;
 import org.irods.jargon.core.query.JargonQueryException;
 import org.irods.jargon.core.query.SpecificQuery;
 import org.irods.jargon.core.query.SpecificQueryResultSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class SpecificQueryServiceImpl implements SpecificQueryService {
 	@Autowired
 	private IRODSServices irodsServices;
 	
-	private static final Logger logger = LoggerFactory.getLogger(SpecificQueryServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(SpecificQueryServiceImpl.class);
 	
 	private final DataGridSpecificQuery createDataGridSpecificQuery(SpecificQueryDefinition specificQueryFromIrods) {
 		DataGridSpecificQuery newQuery = new DataGridSpecificQuery();

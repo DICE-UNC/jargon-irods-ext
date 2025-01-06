@@ -20,8 +20,8 @@ import org.irods.jargon.core.pub.domain.UserGroup;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.core.utils.MiscIRODSUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +55,7 @@ public class PermissionsServiceImpl implements PermissionsService {
 	// String representing the rodsgroup type on the UserFilePermission enum
 	private static final String RODS_GROUP = "rodsgroup";
 
-	private static final Logger logger = LoggerFactory.getLogger(PermissionsServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(PermissionsServiceImpl.class);
 
 	@Override
 	public DataGridPermType findMostRestrictivePermission(String... paths) throws DataGridConnectionRefusedException {

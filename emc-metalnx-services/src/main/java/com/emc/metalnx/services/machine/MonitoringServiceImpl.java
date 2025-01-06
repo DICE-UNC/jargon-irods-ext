@@ -8,8 +8,8 @@ package com.emc.metalnx.services.machine;
 import com.emc.metalnx.services.interfaces.MonitoringService;
 import com.emc.metalnx.services.machine.enums.ServerRequestInfoType;
 import com.emc.metalnx.services.machine.util.ServerUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class MonitoringServiceImpl implements MonitoringService {
     @Value("${rmd.connection.timeout}")
     private String rmdConnectionTimeout;
 
-    private static final Logger logger = LoggerFactory.getLogger(MonitoringServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(MonitoringServiceImpl.class);
 
     @Override
     public String getDataFromHost(String type, String host) {

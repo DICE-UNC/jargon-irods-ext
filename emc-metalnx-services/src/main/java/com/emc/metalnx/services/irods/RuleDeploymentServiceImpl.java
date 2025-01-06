@@ -17,8 +17,8 @@ import org.irods.jargon.core.pub.Stream2StreamAO;
 import org.irods.jargon.core.pub.domain.Resource;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -40,7 +40,7 @@ import com.emc.metalnx.services.interfaces.RuleService;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
 public class RuleDeploymentServiceImpl implements RuleDeploymentService {
 
-	private static final Logger logger = LoggerFactory.getLogger(RuleDeploymentServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(RuleDeploymentServiceImpl.class);
 
 	private static final int BUFFER_SIZE = 4 * 1024 * 1024;
 	private static final String RULE_CACHE_DIR_NAME = ".rulecache";

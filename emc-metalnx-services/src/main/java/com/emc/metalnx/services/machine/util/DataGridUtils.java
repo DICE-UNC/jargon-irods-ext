@@ -17,8 +17,8 @@ import org.irods.jargon.core.query.IRODSQueryResultRow;
 import org.irods.jargon.core.query.SpecificQueryResultSet;
 import org.irods.jargon.core.utils.IRODSDataConversionUtil;
 import org.irods.jargon.core.utils.MiscIRODSUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.*;
 
 public class DataGridUtils {
-    private static final Logger logger = LoggerFactory.getLogger(DataGridUtils.class);
+    private static final Logger logger = LogManager.getLogger(DataGridUtils.class);
 
     /**
      * Maps a query result set coming from a metadata search into a list of collections.

@@ -14,8 +14,8 @@ import org.irods.jargon.core.pub.CollectionAO;
 import org.irods.jargon.core.pub.DataObjectAO;
 import org.irods.jargon.core.pub.domain.UserFilePermission;
 import org.irods.jargon.core.query.SpecificQueryResultSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,7 +51,7 @@ public class FilePropertyServiceImpl implements FilePropertyService {
 	@Autowired
 	private ConfigService configService;
 
-	private static final Logger logger = LoggerFactory.getLogger(FilePropertyServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(FilePropertyServiceImpl.class);
 
 	@Override
 	public List<DataGridCollectionAndDataObject> findByFileProperties(List<DataGridFilePropertySearch> searchList,

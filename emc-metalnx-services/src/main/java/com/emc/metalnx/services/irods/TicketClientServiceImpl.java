@@ -21,8 +21,8 @@ import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.ticket.TicketClientOperations;
 import org.irods.jargon.ticket.TicketServiceFactory;
 import org.irods.jargon.ticket.TicketServiceFactoryImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -41,7 +41,7 @@ import java.util.Map;
 @Transactional
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
 public class TicketClientServiceImpl implements TicketClientService {
-    private static final Logger logger = LoggerFactory.getLogger(TicketClientServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(TicketClientServiceImpl.class);
     private static final String TEMP_TICKET_DIR = "tmp-ticket-files";
     private static final String RESOURCE = "";
     private static final String ANONYMOUS_HOME_DIRECTORY = "";

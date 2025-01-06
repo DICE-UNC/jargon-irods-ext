@@ -12,8 +12,8 @@ import org.irods.jargon.core.pub.domain.DataObject;
 import org.irods.jargon.extensions.dataprofiler.DataProfile;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.emc.metalnx.core.domain.entity.DataGridUser;
 
@@ -31,7 +31,7 @@ public class IrodsextDataProfilerService extends DataProfilerService {
 	 */
 	private DataGridUser dataGridUser;
 
-	public static final Logger log = LoggerFactory.getLogger(IrodsextDataProfilerService.class);
+	public static final Logger log = LogManager.getLogger(IrodsextDataProfilerService.class);
 
 	public IrodsextDataProfilerService(DataProfilerSettings defaultDataProfilerSettings,
 			IRODSAccessObjectFactory irodsAccessObjectFactory, IRODSAccount irodsAccount) {

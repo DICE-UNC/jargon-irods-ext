@@ -16,8 +16,8 @@ import org.irods.jargon.core.pub.ResourceAO;
 import org.irods.jargon.core.pub.Stream2StreamAO;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +41,7 @@ import com.emc.metalnx.services.machine.util.DataGridUtils;
 public class UploadServiceImpl implements UploadService {
 
 	private static final int BUFFER_SIZE = 4 * 1024 * 1024;
-	private static final Logger logger = LoggerFactory.getLogger(UploadServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(UploadServiceImpl.class);
 
 	@Autowired
 	private RuleService rs;

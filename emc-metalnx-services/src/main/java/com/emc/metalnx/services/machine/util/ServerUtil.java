@@ -10,8 +10,8 @@ import com.emc.metalnx.services.machine.enums.ServerRequestInfoType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 public class ServerUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(ServerUtil.class);
+    private static final Logger logger = LogManager.getLogger(ServerUtil.class);
 
     /**
      * Get machine information such as disk, memory, and cpu status

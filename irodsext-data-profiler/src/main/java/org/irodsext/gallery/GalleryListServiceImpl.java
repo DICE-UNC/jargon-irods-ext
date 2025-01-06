@@ -16,8 +16,8 @@ import org.irods.jargon.core.service.AbstractJargonService;
 import org.irods.jargon.extensions.thumbnail.GalleryListService;
 import org.irods.jargon.extensions.thumbnail.ThumbnailList;
 import org.irodsext.dataprofiler.IrodsextDataProfilerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class GalleryListServiceImpl extends AbstractJargonService implements GalleryListService {
 
-	public static final Logger log = LoggerFactory.getLogger(IrodsextDataProfilerService.class);
+	public static final Logger log = LogManager.getLogger(IrodsextDataProfilerService.class);
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	/**

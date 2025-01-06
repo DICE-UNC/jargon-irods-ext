@@ -19,8 +19,8 @@ import com.emc.metalnx.services.machine.util.ServerUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -56,7 +56,7 @@ public class ServerServiceImpl implements ServerService {
 
     private List<ServerInformationRetrievalThread> threadList = new ArrayList<ServerInformationRetrievalThread>();
 
-    private static final Logger logger = LoggerFactory.getLogger(ServerServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(ServerServiceImpl.class);
 
     @Override
     public List<DataGridServer> getAllServers(List<DataGridResource> resources, HashMap<String, DataGridServer> serverMapInCache)

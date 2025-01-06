@@ -46,8 +46,8 @@ import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
 import org.irods.jargon.zipservice.api.JargonZipService;
 import org.irods.jargon.zipservice.api.ZipServiceConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,7 +87,7 @@ public class CollectionServiceImpl implements CollectionService {
 	private static final String SQL_TOTAL_NUMBER_OF_DATA_OBJECTS_MATCHING_SEARCH_TEXT_ALIAS = "metalnxTotalNumberOfDataObjectsThatMatchSearchText";
 	private static final String SQL_TOTAL_NUMBER_OF_COLLS_MATCHING_SEARCH_TEXT_ALIAS = "metalnxTotalNumberOfCollectionsThatMatchSearchText";
 	private static final int MAX_RESULTS_PER_PAGE = 200;
-	private static final Logger logger = LoggerFactory.getLogger(CollectionServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(CollectionServiceImpl.class);
 
 	private SpecificQueryProviderFactory specificQueryProviderFactory = new SpecificQueryProviderFactoryImpl();
 

@@ -5,8 +5,8 @@ package com.emc.metalnx.services.irods.mail;
 
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailServiceFactory {
 
-	private static final Logger logger = LoggerFactory.getLogger(MailServiceFactory.class);
+	private static final Logger logger = LogManager.getLogger(MailServiceFactory.class);
 
 	/**
 	 * {@link MailProperties} that configures the mail settings

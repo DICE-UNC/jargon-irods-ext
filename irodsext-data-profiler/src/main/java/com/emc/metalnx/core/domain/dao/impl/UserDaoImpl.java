@@ -21,8 +21,8 @@ import org.irods.jargon.core.query.IRODSQueryResultRow;
 import org.irods.jargon.core.query.IRODSQueryResultSetInterface;
 import org.irods.jargon.core.query.JargonQueryException;
 import org.irods.jargon.core.query.RodsGenQueryEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
 	
 	final int DEFAULT_REC_COUNT = 500;
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
+	private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 
 	@Override
 	public List<DataGridUser> findByUsername(String username) {

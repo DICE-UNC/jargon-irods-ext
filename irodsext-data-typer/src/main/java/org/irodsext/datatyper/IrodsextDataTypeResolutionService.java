@@ -19,8 +19,8 @@ import org.irods.jargon.extensions.datatyper.DataType;
 import org.irods.jargon.extensions.datatyper.DataTypeResolutionService;
 import org.irods.jargon.extensions.datatyper.DataTyperSettings;
 import org.irods.jargon.extensions.datatyper.IrodsMimeTypes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Data type resolution service to determine MIME and info types of a file. Note
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  */
 public class IrodsextDataTypeResolutionService extends DataTypeResolutionService {
 
-	public static final Logger log = LoggerFactory.getLogger(IrodsextDataTypeResolutionService.class);
+	public static final Logger log = LogManager.getLogger(IrodsextDataTypeResolutionService.class);
 
 	public IrodsextDataTypeResolutionService(IRODSAccessObjectFactory irodsAccessObjectFactory,
 			IRODSAccount irodsAccount, DataTyperSettings dataTyperSettings) {

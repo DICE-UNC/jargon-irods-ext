@@ -22,8 +22,8 @@ import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.core.query.JargonQueryException;
 import org.irods.jargon.core.query.MetaDataAndDomainData;
 import org.irods.jargon.core.query.SpecificQueryResultSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +56,7 @@ public class MetadataServiceImpl implements MetadataService {
 	@Autowired
 	PermissionsService permissionsService;
 
-	private static final Logger logger = LoggerFactory.getLogger(MetadataServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(MetadataServiceImpl.class);
 
 	@Override
 	public List<DataGridCollectionAndDataObject> findByMetadata(final List<DataGridMetadataSearch> searchList,
