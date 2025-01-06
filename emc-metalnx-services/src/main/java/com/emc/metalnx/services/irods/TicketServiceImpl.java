@@ -17,8 +17,8 @@ import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.ticket.Ticket;
 import org.irods.jargon.ticket.TicketAdminService;
 import org.irods.jargon.ticket.packinstr.TicketCreateModeEnum;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -34,7 +34,7 @@ import java.util.List;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
 public class TicketServiceImpl implements TicketService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TicketServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(TicketServiceImpl.class);
     private static final int OFFSET = 0;
     private static final String GRID_FILE_SEPARATOR = "/";
 

@@ -14,8 +14,8 @@ import org.irods.jargon.core.pub.DataObjectAO;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.SpecificQueryAO;
 import org.irods.jargon.core.pub.UserAO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -40,7 +40,7 @@ public class AdminServicesImpl implements AdminServices {
 
 	private IRODSAccount irodsAccount;
 
-	private static final Logger logger = LoggerFactory.getLogger(AdminServicesImpl.class);
+	private static final Logger logger = LogManager.getLogger(AdminServicesImpl.class);
 
 	@Override
 	public UserAO getUserAO() throws DataGridConnectionRefusedException {

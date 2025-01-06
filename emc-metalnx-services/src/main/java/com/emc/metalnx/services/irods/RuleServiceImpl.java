@@ -12,8 +12,8 @@ import org.irods.jargon.core.exception.OperationNotSupportedByThisServerExceptio
 import org.irods.jargon.core.pub.EnvironmentalInfoAO;
 import org.irods.jargon.core.rule.IRODSRuleExecResult;
 import org.irods.jargon.core.rule.IRODSRuleExecResultOutputParameter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -38,7 +38,7 @@ import com.emc.metalnx.services.interfaces.RuleService;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
 public class RuleServiceImpl implements RuleService {
 
-	private static final Logger logger = LoggerFactory.getLogger(RuleServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(RuleServiceImpl.class);
 
 	@Autowired
 	CollectionService cs;

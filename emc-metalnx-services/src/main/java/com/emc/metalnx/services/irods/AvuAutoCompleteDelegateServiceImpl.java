@@ -4,8 +4,8 @@ import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.datautils.avuautocomplete.AvuAutocompleteService;
 import org.irods.jargon.datautils.avuautocomplete.AvuAutocompleteService.AvuTypeEnum;
 import org.irods.jargon.datautils.avuautocomplete.AvuSearchResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class AvuAutoCompleteDelegateServiceImpl implements AvuAutoCompleteDelega
 	@Autowired
 	private IRODSServices irodsServices;
 
-	private static final Logger logger = LoggerFactory.getLogger(AvuAutoCompleteDelegateServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(AvuAutoCompleteDelegateServiceImpl.class);
 
 	@Override
 	public String getMetadataAttrs(final String prefix, final int offset, final AvuTypeEnum avuTypeEnum) throws JargonException {

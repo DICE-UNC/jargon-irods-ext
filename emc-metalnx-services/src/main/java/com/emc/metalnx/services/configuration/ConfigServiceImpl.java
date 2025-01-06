@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.irods.jargon.core.connection.AuthScheme;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +25,7 @@ import com.emc.metalnx.services.interfaces.ConfigService;
 //@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
 public class ConfigServiceImpl implements ConfigService {
 
-	public final static Logger logger = LoggerFactory.getLogger(ConfigServiceImpl.class);
+	public final static Logger logger = LogManager.getLogger(ConfigServiceImpl.class);
 
 	@Value("${msi.api.version}")
 	private String msiAPIVersionSupported;

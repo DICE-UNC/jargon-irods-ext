@@ -10,8 +10,8 @@ import org.irods.jargon.extensions.dataprofiler.DataProfilerFactory;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerService;
 import org.irods.jargon.extensions.dataprofiler.DataProfilerSettings;
 import org.irods.jargon.extensions.datatyper.DataTypeResolutionServiceFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.emc.metalnx.core.domain.entity.DataGridUser;
 import com.emc.metalnx.services.interfaces.UserService;
@@ -24,7 +24,7 @@ import com.emc.metalnx.services.interfaces.UserService;
  */
 public class IrodsextDataProfilerFactoryImpl implements DataProfilerFactory {
 
-	public static final Logger log = LoggerFactory.getLogger(IrodsextDataProfilerFactoryImpl.class);
+	public static final Logger log = LogManager.getLogger(IrodsextDataProfilerFactoryImpl.class);
 
 	private IRODSAccessObjectFactory irodsAccessObjectFactory;
 

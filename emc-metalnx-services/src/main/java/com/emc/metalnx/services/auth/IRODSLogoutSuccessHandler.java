@@ -15,8 +15,8 @@
  import org.apache.commons.io.FileUtils;
  import org.irods.jargon.core.connection.IRODSAccount;
  import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
- import org.slf4j.Logger;
- import org.slf4j.LoggerFactory;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
  import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.security.core.Authentication;
  import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -27,7 +27,7 @@
 	 @Autowired
 	 IRODSAccessObjectFactory irodsAccessObjectFactory;
  
-	 private static final Logger logger = LoggerFactory.getLogger(IRODSLogoutSuccessHandler.class);
+	 private static final Logger logger = LogManager.getLogger(IRODSLogoutSuccessHandler.class);
  
 	 @Override
 	 public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)

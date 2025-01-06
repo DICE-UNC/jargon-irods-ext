@@ -6,8 +6,8 @@
 package com.emc.metalnx.services.machine.util;
 
 import com.emc.metalnx.services.machine.enums.ServerRequestInfoType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ServerInformationRetrievalThread extends Thread {
 
@@ -17,7 +17,7 @@ public class ServerInformationRetrievalThread extends Thread {
 	private String result;
 	private int timeout;
 	
-	private static final Logger logger = LoggerFactory.getLogger(ServerInformationRetrievalThread.class);
+	private static final Logger logger = LogManager.getLogger(ServerInformationRetrievalThread.class);
 	
 	public ServerInformationRetrievalThread(String serverHost, String serverPort, ServerRequestInfoType command, int timeout) {
 		this.serverHost = serverHost;

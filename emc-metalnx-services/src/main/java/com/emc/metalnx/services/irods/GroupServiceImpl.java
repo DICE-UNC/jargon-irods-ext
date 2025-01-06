@@ -17,8 +17,8 @@ import org.irods.jargon.core.pub.DataObjectAO;
 import org.irods.jargon.core.pub.UserGroupAO;
 import org.irods.jargon.core.pub.domain.User;
 import org.irods.jargon.core.pub.domain.UserGroup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +43,7 @@ public class GroupServiceImpl implements GroupService {
 	@Autowired
 	private ConfigService configService;
 
-	private static final Logger logger = LoggerFactory.getLogger(GroupServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(GroupServiceImpl.class);
 
 	@Override
 	public List<UserGroup> findAll() throws DataGridException {

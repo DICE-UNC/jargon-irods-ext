@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.emc.metalnx.core.domain.utils.DataGridJsonDateDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * Class that represents a ticket.
  */
 public class DataGridTicket implements Serializable {
-	private static final Logger logger = LoggerFactory.getLogger(DataGridTicket.class);
+	private static final Logger logger = LogManager.getLogger(DataGridTicket.class);
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	private String ticketString, path, owner;

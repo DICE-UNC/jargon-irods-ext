@@ -7,8 +7,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.ParseException;
 
 import org.irods.jargon.midtier.utils.configuration.MidTierConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -49,7 +49,7 @@ public class MailServiceImpl implements MailService {
 
 	private JavaMailSender javaMailSender;
 
-	private static final Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(MailServiceImpl.class);
 
 	public IRODSServices getIrodsServices() {
 		return irodsServices;

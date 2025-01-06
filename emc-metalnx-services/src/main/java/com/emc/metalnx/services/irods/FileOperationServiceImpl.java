@@ -18,8 +18,8 @@ import org.irods.jargon.core.pub.TrashOperationsAO;
 import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.pub.io.IRODSFileFactory;
 import org.irods.jargon.core.pub.io.IRODSFileInputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +40,7 @@ public class FileOperationServiceImpl implements FileOperationService {
 
 	private static final String CONTENT_TYPE = "application/octet-stream";
 	private static final String HEADER_FORMAT = "attachment;filename=\"%s\"";
-	private static final Logger logger = LoggerFactory.getLogger(FileOperationServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(FileOperationServiceImpl.class);
 
 	@Autowired
 	private IRODSServices irodsServices;

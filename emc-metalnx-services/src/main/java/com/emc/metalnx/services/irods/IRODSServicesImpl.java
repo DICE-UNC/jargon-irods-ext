@@ -44,8 +44,8 @@ import org.irods.jargon.zipservice.api.JargonZipService;
 import org.irods.jargon.zipservice.api.JargonZipServiceImpl;
 import org.irods.jargon.zipservice.api.ZipServiceConfiguration;
 import org.irodsext.gallery.GalleryListServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -73,7 +73,7 @@ public class IRODSServicesImpl implements IRODSServices {
 	private UserTokenDetails userTokenDetails;
 	private IRODSAccount irodsAccount;
 
-	private static final Logger logger = LoggerFactory.getLogger(IRODSServicesImpl.class);
+	private static final Logger logger = LogManager.getLogger(IRODSServicesImpl.class);
 
 	public IRODSServicesImpl() {
 		/*

@@ -13,8 +13,8 @@ import com.emc.metalnx.services.interfaces.StorageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class StorageServiceImpl implements StorageService {
     // block size
     private int blockSize = 1024;
 
-    private static final Logger logger = LoggerFactory.getLogger(StorageServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(StorageServiceImpl.class);
 
     @Override
     public long totalUsedStorageOfGrid(List<DataGridServer> servers) {

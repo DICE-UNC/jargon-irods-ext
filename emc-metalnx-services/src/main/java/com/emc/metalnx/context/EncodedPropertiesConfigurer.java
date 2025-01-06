@@ -5,8 +5,8 @@
 
 package com.emc.metalnx.context;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
@@ -25,7 +25,7 @@ public class EncodedPropertiesConfigurer extends PropertyPlaceholderConfigurer {
     private static final String DEFAULT_ENCODED_FIELDS = "db.password,irods.admin.password";
     private static final String PWD_SALT = "!M3t4Lnx@1234";
 
-    private static final Logger logger = LoggerFactory.getLogger(EncodedPropertiesConfigurer.class);
+    private static final Logger logger = LogManager.getLogger(EncodedPropertiesConfigurer.class);
 
     @Override
     protected void processProperties(ConfigurableListableBeanFactory beanFactory, Properties props) throws BeansException {

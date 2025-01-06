@@ -7,8 +7,8 @@ package com.emc.metalnx.services.zip;
 
 import com.emc.metalnx.services.interfaces.ZipService;
 import org.irods.jargon.core.exception.FileNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ import java.util.zip.ZipOutputStream;
 @Transactional
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
 public class ZipServiceImpl implements ZipService {
-    private static final Logger logger = LoggerFactory.getLogger(ZipServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(ZipServiceImpl.class);
     private static final String ZIP_EXTENSION = ".zip";
 
     public File createZip(File directoryToPlaceZip, File directoryToZip) {

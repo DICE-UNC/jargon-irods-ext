@@ -8,8 +8,8 @@ import org.irods.jargon.core.connection.ClientServerNegotiationPolicy.SslNegotia
 import org.irods.jargon.core.connection.IRODSSession;
 import org.irods.jargon.core.connection.SettableJargonProperties;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
@@ -24,7 +24,7 @@ public class StartupConfigurator {
 	private IRODSSession irodsSession;
 	private IRODSAccessObjectFactory irodsAccessObjectFactory;
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = LogManager.getLogger(this.getClass());
 
 	public StartupConfigurator() {
 
