@@ -440,9 +440,9 @@ public class UserServiceImpl implements UserService {
 	public List<String> listUserTypes() {
 		List<String> userTypes = new ArrayList<String>();
 
+		userTypes.add(UserTypeEnum.RODS_USER.getTextValue());
 		userTypes.add(UserTypeEnum.RODS_ADMIN.getTextValue());
 		userTypes.add(UserTypeEnum.GROUP_ADMIN.getTextValue());
-		userTypes.add(UserTypeEnum.RODS_USER.getTextValue());
 
 		return userTypes;
 	}
