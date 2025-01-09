@@ -11,9 +11,9 @@
 	<properties>
 		<javassist.version>3.12.1.GA</javassist.version>
 		<!-- Spring -->
-		<spring.version>4.3.18.RELEASE</spring.version>
-		<spring.security.version>3.2.10.RELEASE</spring.security.version>
-		<spring.batch.version>3.0.8.RELEASE</spring.batch.version>
+		<spring.version>5.3.39</spring.version>
+		<spring.security.version>5.8.16</spring.security.version>
+		<spring.batch.version>4.3.10</spring.batch.version>
 		<postgresql.version>8.4-702.jdbc4</postgresql.version>
 		<!-- Javax el version -->
 		<el.version>2.2</el.version>
@@ -91,42 +91,42 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aop</artifactId>
-				<version>${spring.core.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
-				<version>${spring.core.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-beans</artifactId>
-				<version>${spring.core.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>${spring.core.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jdbc</artifactId>
-				<version>${spring.core.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
-				<version>${spring.core.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
-				<version>${spring.core.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-tx</artifactId>
-				<version>${spring.core.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -136,7 +136,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-expression</artifactId>
-				<version>${spring.core.version}</version>
+				<version>${spring.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/xml-apis/xml-apis -->
 			<dependency>
