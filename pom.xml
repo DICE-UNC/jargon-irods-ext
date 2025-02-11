@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.irods</groupId>
 		<artifactId>jargon-pom</artifactId>
-		<version>4.3.5.0-SNAPSHOT</version>
+		<version>4.3.5.0-RELEASE</version>
 	</parent>
 	<properties>
 		<javassist.version>3.12.1.GA</javassist.version>
