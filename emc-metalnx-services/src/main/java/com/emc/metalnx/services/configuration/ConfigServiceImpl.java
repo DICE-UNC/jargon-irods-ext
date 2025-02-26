@@ -51,12 +51,6 @@ public class ConfigServiceImpl implements ConfigService {
 	@Value("${irods.zoneName}")
 	private String irodsZone;
 
-	@Value("${irods.admin.user}")
-	private String irodsAdminUser;
-
-	@Value("${irods.admin.password}")
-	private String irodsAdminPassword;
-
 	@Value("${irods.auth.scheme}")
 	private String irodsAuthScheme;
 
@@ -71,9 +65,6 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@Value("${metalnx.download.limit}")
 	private long downloadLimit;
-
-	@Value("${access.proxy}")
-	private boolean handleNoAccessViaProxy;
 
 	@Value("${irods.auth.scheme}")
 	private String defaultIrodsAuthScheme;
@@ -132,7 +123,6 @@ public class ConfigServiceImpl implements ConfigService {
 		GlobalConfig globalConfig = new GlobalConfig();
 		globalConfig.setTicketsEnabled(this.isTicketsEnabled());
 		globalConfig.setUploadRulesEnabled(isUploadRulesEnabled());
-		globalConfig.setHandleNoAccessViaProxy(handleNoAccessViaProxy);
 		globalConfig.setDashboardEnabled(dashboardEnabled);
 		globalConfig.setPluggableSearchEnabled(pluggableSearchEnabled);
 		globalConfig.setPluggableShoppingCartEnabled(pluggableShoppingCartEnabled);
@@ -193,16 +183,6 @@ public class ConfigServiceImpl implements ConfigService {
 	}
 
 	@Override
-	public String getIrodsAdminUser() {
-		return irodsAdminUser;
-	}
-
-	@Override
-	public String getIrodsAdminPassword() {
-		return irodsAdminPassword;
-	}
-
-	@Override
 	public String getIrodsAuthScheme() {
 		return irodsAuthScheme;
 	}
@@ -232,14 +212,6 @@ public class ConfigServiceImpl implements ConfigService {
 
 	public void setUploadRulesEnabled(boolean uploadRulesEnabled) {
 		this.uploadRulesEnabled = uploadRulesEnabled;
-	}
-
-	public boolean isHandleNoAccessViaProxy() {
-		return handleNoAccessViaProxy;
-	}
-
-	public void setHandleNoAccessViaProxy(boolean handleNoAccessViaProxy) {
-		this.handleNoAccessViaProxy = handleNoAccessViaProxy;
 	}
 
 	@Override
@@ -371,16 +343,12 @@ public class ConfigServiceImpl implements ConfigService {
 		if (irodsZone != null) {
 			builder.append("irodsZone=").append(irodsZone).append(", ");
 		}
-		if (irodsAdminUser != null) {
-			builder.append("irodsAdminUser=").append(irodsAdminUser).append(", ");
-		}
 		if (irodsAuthScheme != null) {
 			builder.append("irodsAuthScheme=").append(irodsAuthScheme).append(", ");
 		}
 		builder.append("populateMsiEnabled=").append(populateMsiEnabled).append(", ticketsEnabled=")
 				.append(ticketsEnabled).append(", uploadRulesEnabled=").append(uploadRulesEnabled)
-				.append(", downloadLimit=").append(downloadLimit).append(", handleNoAccessViaProxy=")
-				.append(handleNoAccessViaProxy).append(", ");
+				.append(", downloadLimit=").append(downloadLimit).append(", handleNoAccessViaProxy=");
 		if (defaultIrodsAuthScheme != null) {
 			builder.append("defaultIrodsAuthScheme=").append(defaultIrodsAuthScheme).append(", ");
 		}
@@ -440,16 +408,6 @@ public class ConfigServiceImpl implements ConfigService {
 	@Override
 	public void setIrodsZone(String irodsZone) {
 		this.irodsZone = irodsZone;
-	}
-
-	@Override
-	public void setIrodsAdminUser(String irodsAdminUser) {
-		this.irodsAdminUser = irodsAdminUser;
-	}
-
-	@Override
-	public void setIrodsAdminPassword(String irodsAdminPassword) {
-		this.irodsAdminPassword = irodsAdminPassword;
 	}
 
 	@Override

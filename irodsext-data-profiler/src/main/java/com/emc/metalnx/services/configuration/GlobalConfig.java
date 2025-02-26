@@ -46,14 +46,6 @@ public class GlobalConfig {
 	 */
 	private boolean classicSearchEnabled = true;
 
-	/**
-	 * Turn on or off the ability to generate no-access pages for files and
-	 * collections
-	 *
-	 * @return {@code boolean} of {@code true} if no-access pages are enabled
-	 */
-	private boolean handleNoAccessViaProxy = false;
-
 	private boolean publicSidebarLinkEnabled;
 
 	public boolean isTicketsEnabled() {
@@ -71,8 +63,7 @@ public class GlobalConfig {
 				.append(uploadRulesEnabled).append(", dashboardEnabled=").append(dashboardEnabled)
 				.append(", pluggableSearchEnabled=").append(pluggableSearchEnabled)
 				.append(", classicSearchEnabled=").append(classicSearchEnabled)
-				.append(", pluggableShoppingCartEnabled=").append(pluggableShoppingCartEnabled)
-				.append(", handleNoAccessViaProxy=").append(handleNoAccessViaProxy).append("]");
+				.append(", pluggableShoppingCartEnabled=").append(pluggableShoppingCartEnabled);
 		return builder.toString();
 	}
 
@@ -82,14 +73,6 @@ public class GlobalConfig {
 
 	public void setUploadRulesEnabled(boolean uploadRulesEnabled) {
 		this.uploadRulesEnabled = uploadRulesEnabled;
-	}
-
-	public boolean isHandleNoAccessViaProxy() {
-		return handleNoAccessViaProxy;
-	}
-
-	public void setHandleNoAccessViaProxy(boolean handleNoAccessViaProxy) {
-		this.handleNoAccessViaProxy = handleNoAccessViaProxy;
 	}
 
 	/**
