@@ -45,8 +45,6 @@ public class AdminServicesImpl implements AdminServices {
 	@Override
 	public UserAO getUserAO() throws DataGridConnectionRefusedException {
 		try {
-			authenticateIRODSAccount();
-
 			// Returning UserAO instance
 			return irodsAccessObjectFactory.getUserAO(irodsAccount);
 
@@ -63,8 +61,6 @@ public class AdminServicesImpl implements AdminServices {
 	@Override
 	public SpecificQueryAO getSpecificQueryAO() throws DataGridConnectionRefusedException {
 		try {
-			authenticateIRODSAccount();
-
 			// Returning CollectionAndDataObjectListAndSearchAO instance
 			return irodsAccessObjectFactory.getSpecificQueryAO(irodsAccount);
 
@@ -81,8 +77,6 @@ public class AdminServicesImpl implements AdminServices {
 	@Override
 	public DataObjectAO getDataObjectAO() throws DataGridConnectionRefusedException {
 		try {
-			authenticateIRODSAccount();
-
 			// Returning CollectionAndDataObjectListAndSearchAO instance
 			return irodsAccessObjectFactory.getDataObjectAO(irodsAccount);
 
@@ -97,34 +91,10 @@ public class AdminServicesImpl implements AdminServices {
 		return null;
 	}
 
-	private void authenticateIRODSAccount() throws JargonException {
-
-		String host = configService.getIrodsHost();
-		int port = Integer.parseInt(configService.getIrodsPort());
-		String zone = configService.getIrodsZone();
-		String user = configService.getIrodsAdminUser();
-		String password = configService.getIrodsAdminPassword();
-		String authScheme = configService.getIrodsAuthScheme();
-		String resc = "";
-		String homeDir = "";
-
-		if (irodsAccount == null) {
-			IRODSAccount tempAccount = IRODSAccount.instance(host, port, user, password, homeDir, zone, resc);
-			tempAccount.setAuthenticationScheme(AuthScheme.findTypeByString(authScheme));
-
-			AuthResponse authResponse = irodsAccessObjectFactory.authenticateIRODSAccount(tempAccount);
-
-			if (authResponse.isSuccessful()) {
-				irodsAccount = authResponse.getAuthenticatedIRODSAccount();
-			}
-		}
-	}
-
 	@Override
 	public CollectionAndDataObjectListAndSearchAO getCollectionAndDataObjectListAndSearchAO()
 			throws DataGridConnectionRefusedException {
 		try {
-			authenticateIRODSAccount();
 
 			// Returning CollectionAndDataObjectListAndSearchAO instance
 			return irodsAccessObjectFactory.getCollectionAndDataObjectListAndSearchAO(irodsAccount);

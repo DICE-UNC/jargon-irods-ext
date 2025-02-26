@@ -37,6 +37,8 @@ import com.emc.metalnx.core.domain.exceptions.DataGridAuthenticationException;
 import com.emc.metalnx.core.domain.exceptions.DataGridDatabaseException;
 import com.emc.metalnx.core.domain.exceptions.DataGridServerException;
 import com.emc.metalnx.services.interfaces.AuthenticationProviderService;
+import com.emc.metalnx.services.interfaces.AdminServices;
+import com.emc.metalnx.services.irods.AdminServicesImpl;
 
 public class IRODSAuthenticationProvider implements AuthenticationProviderService, Serializable {
 	private static final String IRODS_ANONYMOUS_ACCOUNT = "anonymous";
@@ -46,6 +48,9 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 
 	@Autowired
 	IRODSAccessObjectFactory irodsAccessObjectFactory;
+	
+	@Autowired
+	AdminServices adminServices;
 
 	private String irodsHost;
 	private String irodsPort;
@@ -196,6 +201,9 @@ public class IRODSAuthenticationProvider implements AuthenticationProviderServic
 			// Settings iRODS account
 			this.irodsAccount = authResponse.getAuthenticatingIRODSAccount();
 			logger.debug("authenticating irodsAccount:{}", this.irodsAccount);
+			
+			// Save iRODS account to AdminServices
+			adminServices.setIrodsAccount(this.irodsAccount);
 
 			// Retrieving logging user
 			UserAO userAO = this.irodsAccessObjectFactory.getUserAO(this.irodsAccount);
