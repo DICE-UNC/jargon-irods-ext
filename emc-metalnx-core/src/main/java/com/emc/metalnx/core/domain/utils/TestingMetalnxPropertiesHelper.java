@@ -100,21 +100,4 @@ public class TestingMetalnxPropertiesHelper {
 		}
 		return properties;
 	}
-
-	/**
-	 * Check if mail is to be tested
-	 *
-	 * @param testingProperties
-	 *            {@link Properties}
-	 * @return <code>boolean</code> with option
-	 */
-	public boolean isMailEnabled(final Properties testingProperties) {
-		String val = (String) testingProperties.get(MetalnxTestUtils.MAIL_ENABLED);
-		if (val == null) {
-			return false;
-		} else {
-			return Boolean.parseBoolean(val);
-		}
-	}
-
 }

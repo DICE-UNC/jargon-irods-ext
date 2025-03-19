@@ -44,8 +44,6 @@
 									append="true">
 									test.confirm=${jargon.test.confirm}
 									test.data.directory=${jargon.test.data.directory}
-									test.irods.admin=${jargon.test.irods.admin}
-									test.irods.admin.password=${jargon.test.irods.admin.password}
 									test.irods.user=${jargon.test.irods.user}
 									test.irods.password=${jargon.test.irods.password}
 									test.irods.resource=${jargon.test.irods.resource}

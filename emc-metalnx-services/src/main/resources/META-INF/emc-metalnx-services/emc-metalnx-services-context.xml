@@ -53,7 +53,7 @@
 	</bean>
 
 	<context:component-scan
-		base-package="com.emc.metalnx.services.irods com.emc.metalnx.services.ssh com.emc.metalnx.services.irods.mail
+		base-package="com.emc.metalnx.services.irods com.emc.metalnx.services.ssh
 	    com.emc.metalnx.services.machine com.emc.metalnx.services.configuration com.emc.metalnx.services.zip" />
 
 	<bean id="midTierConfiguration"
@@ -66,17 +66,6 @@
 		<property name="sslNegotiationPolicy"
 			value="${ssl.negotiation.policy}" />
 		<property name="computeChecksum" value="${compute.checksum}" />
-		<property name="irodsAdminAccountHost" value="${irods.host}" />
-		<property name="irodsAdminAccountPort" value="${irods.port}" />
-		<property name="irodsAdminAccountUser"
-			value="${irods.admin.user}" />
-		<property name="irodsAdminAccountPassword"
-			value="${irods.admin.password}" />
-		<property name="irodsAdminAccountZone"
-			value="${irods.zoneName}" />
-		<property name="irodsAdminAccountAuthScheme"
-			value="${irods.admin.authscheme}" />
-		<property name="irodsAdminEmail" value="${irods.admin.email}"/>
 	</bean>
 
 	<!-- settings to influence the behavior of the 'home pages' for data objects
@@ -123,21 +112,6 @@
 		<property name="dataTypeResolutionServiceFactory"
 			ref="dataTypeResolutionServiceFactory" />
 		<property name="userService" ref="userService" />
-	</bean>
-
-	<bean id="mailProperties" class="com.emc.metalnx.services.irods.mail.MailProperties">
-		<property name="host" value="${mail.host}" />
-		<property name="port" value="${mail.port}" />
-		<property name="username" value="${mail.username}" />
-		<property name="password" value="${mail.password}" />
-		<property name="from" value="${mail.from}" />
-		<property name="startTlsEnable" value="${mail.smtp.starttls.enable}" />
-		<property name="smtpAuth" value="${mail.smtp.auth}" />
-		<property name="mailTransportProtocol" value="${mail.transport.protocol}" />
-		<property name="debug" value="${mail.debug}" />
-		<property name="enabled" value="${mail.enabled}" />
-		<property name="to" value="${mail.to}" />
-		<property name="cc" value="${mail.cc}" />
 	</bean>
 
 </beans>
