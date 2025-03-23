@@ -768,7 +768,7 @@ public class CollectionServiceImpl implements CollectionService {
 			logger.info("downloadLimit: {}", downloadLimit);
 
 			if (bunLength > downloadLimit) {
-				throw new FileSizeTooLargeException("file size too large for bundle creation");
+				throw new FileSizeTooLargeException("file size too large for bundle creation", bunLength);
 			} else {
 				/*
 				 * Setting default BundleType to TAR. In the future multiple bundle types may be
