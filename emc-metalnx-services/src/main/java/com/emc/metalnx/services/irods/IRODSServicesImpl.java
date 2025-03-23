@@ -155,7 +155,7 @@ public class IRODSServicesImpl implements IRODSServices {
 	@Override
 	public JargonZipService getJargonZipService() throws JargonException {
 
-		logger.info("getJargonZipService()"); // TODO: make config metalnx.properties and/or config options
+		logger.info("getJargonZipService()");
 		ZipServiceConfiguration zipServiceConfiguration = new ZipServiceConfiguration();
 		return new JargonZipServiceImpl(zipServiceConfiguration, irodsAccessObjectFactory, irodsAccount);
 

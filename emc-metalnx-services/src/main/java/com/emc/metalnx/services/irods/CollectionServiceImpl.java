@@ -759,11 +759,15 @@ public class CollectionServiceImpl implements CollectionService {
 		try {
 
 			bunLength = jargonZipService.computeBundleSizeInBytes(sourcePaths);
+			logger.info("bunLength: {}", bunLength);
+
 			/*
-			 * Download limit is in MB, bunLenght is in bytes
+			 * Download limit is in MB, bunLength is in bytes
 			 */
-			logger.info("bunLength :{}", bunLength);
-			if (bunLength > configService.getDownloadLimit() * 1024 * 1024) {
+			final long downloadLimit = configService.getDownloadLimit() * 1024 * 1024;
+			logger.info("downloadLimit: {}", downloadLimit);
+
+			if (bunLength > downloadLimit) {
 				throw new FileSizeTooLargeException("file size too large for bundle creation");
 			} else {
 				/*
@@ -771,6 +775,7 @@ public class CollectionServiceImpl implements CollectionService {
 				 * supported
 				 */
 				zipServiceConfiguration.setPreferredBundleType(BundleType.TAR);
+				zipServiceConfiguration.setMaxTotalBytesForZip(downloadLimit);
 				jargonZipService.setZipServiceConfiguration(zipServiceConfiguration);
 
 				if (!sourcePaths.isEmpty()) {
