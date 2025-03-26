@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>jargon-irods-ext</artifactId>
 		<groupId>org.irods.jargon</groupId>
-		<version>4.3.5.0-RELEASE</version>
+		<version>4.3.6.0-RELEASE</version>
 	</parent>
 	<artifactId>emc-metalnx-core</artifactId>
 	<dependencies>
