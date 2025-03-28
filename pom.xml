@@ -11,7 +11,7 @@
 	<properties>
 		<javassist.version>3.12.1.GA</javassist.version>
 		<!-- Spring -->
-		<spring.version>5.3.39</spring.version>
+		<spring.version>6.1.14</spring.version>
 		<spring.security.version>5.8.16</spring.security.version>
 		<spring.batch.version>4.3.10</spring.batch.version>
 		<postgresql.version>8.4-702.jdbc4</postgresql.version>
